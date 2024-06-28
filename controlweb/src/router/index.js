@@ -14,12 +14,14 @@ const router = createRouter({
     {
       path:'/project/:projectId',
       name:'main',
+      props: true,
       component: () => import('../views/main/ProjectMainView.vue'),
       children:[
         {
           
           path: '/project/:projectId/tasks',
           name: 'tasks',
+          props: true,
           component: () => import('../views/main/TasksView.vue')
         
       },
@@ -27,6 +29,7 @@ const router = createRouter({
           
             path: '/project/:projectId/about',
             name: 'about',
+            props: true,
             component: () => import('../views/main/AboutView.vue')
           
         }

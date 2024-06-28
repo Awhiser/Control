@@ -52,7 +52,7 @@
           <a-layout-content
             :style="{ background: '#FFF', padding: '24px', margin: 0, minHeight: '1000px' }"
           >
-            <RouterView/>
+            <RouterView  />
           </a-layout-content>
         </a-layout>
       </a-layout>
@@ -61,6 +61,7 @@
 
 
 
+<!-- <a-button type="primary" @click="showDrawer">Open</a-button> -->
 
 
 
@@ -73,17 +74,29 @@
   </template>
   <script lang="ts" setup>
   
-  import { ref } from 'vue';
+  import { ref,onMounted } from 'vue';
   import CreateTask from '@/components/CreateTask.vue'
+
+  import { useRouter  } from 'vue-router'
+
+  const props = defineProps({
+    projectId: String
+  })
+
+  const router = useRouter();
   const selectedKeys1 = ref(['1']);
   const openKeys = ref(['sub1']);
 
-  function onMounted(){
-    //getProject
-    //localStorage.setItem("project","X")
+  onMounted(() => {
+  //  console.log(props.projectId)
+    router.push({name:'tasks',params:{projectId:props.projectId}});
 
-  }
+   // taskTable.$forceUpdate()
+  })
 
+  
+
+  
 
 
   </script>

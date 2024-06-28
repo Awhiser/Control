@@ -2,7 +2,7 @@
  
 
 
-    <a-table  @change="changeTable" ref="taskTable" :scroll="{ y: 800 }" :pagination="false" :key="new Date().getTime()" :row-key="record => record.id"  :columns="columns" :data-source="data">
+    <a-table   ref="taskTable" :scroll="{ y: 850 }" :pagination="false" :key="new Date().getTime()" :row-key="record => record.id"  :columns="columns" :data-source="data">
 
 <template #headerCell="{ column }">
   <template v-if="column.key === 'title'">
@@ -15,7 +15,7 @@
 
 <template #bodyCell="{ column, record }">
   <template v-if="column.key === 'title'">
-    <a :href="record.id" >
+    <a @click="showTaskDetails(record.id)" >
       {{ record.title}}
     </a>
   </template>
@@ -31,20 +31,35 @@
 </a-table>
 
 
- <!-- <a-pagination
+ <a-pagination
       v-model:current="current"
       v-model:page-size="pageSize"
-      :total="85"
+      show-size-changer
+      :total="total"
       :show-total="total => `Total ${total} items`"
-    />  -->
+    /> 
+
+
+
+
+  <TaskDetails v-model:show="openTaskDetails"  v-model:taskId="taskId" > </TaskDetails>
   
   
 </template>
 <script lang="ts" setup>
-import { SmileOutlined, DownOutlined } from '@ant-design/icons-vue';
+import { SmileOutlined } from '@ant-design/icons-vue';
 import { ref } from 'vue'
 import taskService from '@/api/taskservice';
-import { onMounted,computed } from 'vue'
+import { onMounted } from 'vue' 
+import TaskDetails from '@/components/TaskDetails.vue'
+
+
+const props = defineProps({
+    projectId: String
+  })
+
+const openTaskDetails = ref(false);
+const taskId =ref('')
 const columns = [
   {
     title: 'title',
@@ -102,25 +117,13 @@ const columns = [
 
 ];
 
-// const pagination = {
-//       pageSize: ref(10),
-//       current: ref(1),
-//      showTotal: (total)=> `总共${total}页`
-// };
+const pageSize = ref(50)
+const  current = ref(1)
+const total = ref(100)
 
 
-let pagination = ref({
-    current: 1,
-    pageSize:50,
-    total: 100,
-    showTotal: () => `共 ${100} 条`
-})
 
-// const pagination = computed(() => ({
-//   total: 200,
-//   current: current.value,
-//   pageSize: pageSize.value,
-// }));
+
 
 let data = ref([
 //   {
@@ -137,21 +140,29 @@ let data = ref([
 
    onMounted(() => {
       taskService.getTaskList({projectId:'S'}).then(res => {
+        console.log(res.data.dataList[0])
         for(let i = 0 ; i < 50 ;i++ ){
             data.value.push(...res.data.dataList) ;
         }
          
-       
+        total.value = data.value.length;
       })
+   
 
      // taskTable.$forceUpdate()
   })
 
   function changeTable( pag,c,a){
     console.log(pag)
-    pagination.value.current = pag.current;
-    pagination.value.pageSize = pag.pageSize;
+   // pagination.value.current = pag.current;
+   // pagination.value.pageSize = pag.pageSize;
 
+  }
+
+  function showTaskDetails(id){
+    //console.log(id)
+    openTaskDetails.value = true;
+    taskId.value = id;
   }
 
 </script>

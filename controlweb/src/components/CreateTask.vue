@@ -63,10 +63,13 @@
 
 
 
-  <a-float-button type="primary" :style="{
+  <a-float-button 
+    type="primary" 
+    shape = "square"
+    :style="{
     right: '20px',
-    width: '2.5%',
-    height: '4.5%',
+    width: '2.3%',
+    height: '4%',
 
   }" @click="showModal">
     <template #icon>
