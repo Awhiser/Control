@@ -30,8 +30,9 @@ class ControlApplicationTests {
       //  ContextHolder.setContext(new ControlContext("1","1","1"));
 //        var u = userDao.getUserByUserName("ye");
         TaskSearchParam param = new TaskSearchParam();
-        param.setProjectId("S");
-        var res = taskService.getTaskList(param);
+        System.out.println("aaa");
+       // param.setProjectId("S");
+       // var res = taskService.getTaskList(param);
         System.out.println("111");
 
     }

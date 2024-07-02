@@ -4,16 +4,21 @@
 
         <a-flex justify="space-between" >
             <div class="logo" > Control  </div>
-            <a-menu style="background-color: #1677ff;"
-              v-model:selectedKeys="selectedKeys1"
-              theme="dark"
-              mode="horizontal"
-              :style="{ lineHeight: '64px' }"
-            >
-            <a-menu-item key="1"  >nav 1</a-menu-item>
-              <a-menu-item key="2">nav 2</a-menu-item>
-              <a-menu-item key="3">nav 3</a-menu-item>
-            </a-menu>
+
+            <div style="width: 600px;">  <a-menu style="background-color: #1677ff;"
+            
+            theme="dark"
+            mode="horizontal"
+           
+          >
+            <a-menu-item key="1"  > {{ $t('home.name') }}</a-menu-item>
+            <a-menu-item key="2">  <RouterLink  :to="{name:'sys'}" >{{ $t('button.syssetting') }}</RouterLink>   </a-menu-item>
+
+            <a-menu-item key="3">{{ $t('button.usersetting') }} </a-menu-item>
+
+            <a-menu-item key="4"> <I18NChoose></I18NChoose> </a-menu-item>
+          </a-menu>  </div>
+           
         
         </a-flex>
       </a-layout-header>
@@ -29,7 +34,7 @@
             <a-sub-menu key="sub1">
               <template #title>
                 <span>
-                  <user-outlined />
+                 
                   subnav 1
                 </span>
               </template>
@@ -76,6 +81,7 @@
   
   import { ref,onMounted } from 'vue';
   import CreateTask from '@/components/CreateTask.vue'
+  import I18NChoose from '@/components/I18NChoose.vue';
 
   import { useRouter  } from 'vue-router'
 

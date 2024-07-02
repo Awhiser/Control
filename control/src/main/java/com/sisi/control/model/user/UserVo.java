@@ -18,6 +18,14 @@ public class UserVo {
 
     }
 
+    public UserVo(UserInfo user){
+        this.id = user.getId();
+        this.name = user.getName();
+        this.displayName = user.getDisplayName();
+        this.phone = user.getPhone();
+        this.mail = user.getMail();
+        this.password = user.getPassword();
+    }
 
 
 }

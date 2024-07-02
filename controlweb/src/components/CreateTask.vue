@@ -27,7 +27,7 @@
         </a-form-item>
       
         <a-form-item label="经办人">
-          <a-select v-model:value="task.assignee" placeholder="Input Search">
+          <a-select v-model:value="task.assignee">
           </a-select>
         </a-form-item>
 
@@ -40,12 +40,7 @@
           <!-- <a-select mode="multiple" v-model:value="task.tags" placeholder="Input Search">
           </a-select> -->
 
-          <a-select
-      v-model:value="task.tags"
-      mode="tags"
-      placeholder="Please select"
-     
-    ></a-select>
+          <a-select  v-model:value="task.tags" mode="tags"></a-select>
 
         </a-form-item>
 
@@ -76,17 +71,19 @@
       <PlusOutlined />
     </template>
     <template #description>
-     <span style="font-size: 15px;"> 新增 </span>  
+     <span style="font-size: 15px;"> {{ $t('task.create') }} </span>  
     </template>
 
   </a-float-button>
 </template>
 <script lang="ts"  setup>
-import { ref } from 'vue';
+import { ref, h  } from 'vue';
 import {PlusOutlined} from '@ant-design/icons-vue';
 import type { Rule } from 'ant-design-vue/es/form';
 import taskService from '@/api/taskservice';
-import dayjs, { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs';
+import { message } from 'ant-design-vue';
+import i18n from '@/i18n/index'
 const createTaskForm = ref();
 const taskCreateRules: Record<string, Rule[]> = {
   projectId: [{ required: true, message: '', trigger: 'change' }],
@@ -118,9 +115,11 @@ const showModal = () => {
 
 const handleOk = (e) => {
   // console.log(e);
+ // message.success({ content: h( "a", { style: "" ,href:"http://www.baidu.com",target:"blank"}, "Success")});
   createTaskForm.value
     .validate()
     .then(() => {
+
       let taskparam = {
         title: task.value.title,
         assignee: task.value.assignee,
@@ -131,7 +130,12 @@ const handleOk = (e) => {
         projectId: task.value.projectId,
       }
     //  console.log(taskparam);
-     taskService.create(taskparam);
+      taskService.create(taskparam).then(res=>{
+          message.success({ content: h( "a", { target:"blank" ,href:"http://www.baidu.com"},   i18n.global.t("task.success")  )});
+      })
+     
+
+      
     }).catch((e) => {
       console.log(e)
     })

@@ -183,7 +183,7 @@
 
 import { ref, watch } from 'vue'
 import dayjs from 'dayjs';
-
+import taskService from '@/api/taskservice';
 import type { UploadProps } from 'ant-design-vue';
 const changeLogs = [
     {
@@ -260,7 +260,7 @@ const dateFormat = 'YYYY-MM-DD HH:mm:ss';
 const show = defineModel('show')
 const taskId = defineModel("taskId")
 const showDetails = ref(false)
-let taskView = {
+let taskView = ref({
     assignee: "YFM",
     createTime: "2024-06-27T06:40:35.543+00:00",
     description: "",
@@ -273,19 +273,24 @@ let taskView = {
     title: "xxxxxxx笑笑笑SSSXXXX",
     type: "Task",
     updateTime: "2024-06-27T06:40:35.543+00:00"
-}
+})
 
 watch(show, (value, oldvalue) => {
     if (value == false) {
         return
     }
-    console.log("showDetails")
-    showDetails.value = true;
-
-    setTimeout(() => {
-        console.log("TaskData")
+   
+    taskService.getTask(taskId.value).then(res=>{
+        taskView.value = res.data;
         showDetails.value = true;
-    }, 2000)
+    })
+    // console.log("showDetails")
+    // showDetails.value = true;
+
+    // setTimeout(() => {
+    //     console.log("TaskData")
+    //     showDetails.value = true;
+    // }, 2000)
 
 
 
@@ -294,17 +299,6 @@ watch(show, (value, oldvalue) => {
 function closeDraw() {
     showDetails.value = false;
 }
-
-//   watch(props,(props)=>{
-//     show.value = props.isShow
-//     console.log(props);
-//   })
-
-//   watch(props.isShow,(isShow)=>{
-//     console.log(isShow)
-//     show.value = isShow;
-//   })
-
 
 
 

@@ -60,6 +60,13 @@ const props = defineProps({
 
 const openTaskDetails = ref(false);
 const taskId =ref('')
+
+
+const pageSize = ref(50)
+const  current = ref(1)
+const total = ref(100)
+
+
 const columns = [
   {
     title: 'title',
@@ -116,13 +123,6 @@ const columns = [
 //   },
 
 ];
-
-const pageSize = ref(50)
-const  current = ref(1)
-const total = ref(100)
-
-
-
 
 
 let data = ref([

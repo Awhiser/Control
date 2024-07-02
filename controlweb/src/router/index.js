@@ -10,7 +10,6 @@ const router = createRouter({
       name: 'login',
       component: LoginView
     },
-   
     {
       path:'/project/:projectId',
       name:'main',
@@ -33,6 +32,25 @@ const router = createRouter({
             component: () => import('../views/main/AboutView.vue')
           
         }
+      ]
+    },
+    {
+      path:'/sys',
+      name:'sys',
+      component: () => import('../views/sysSetting/SysSettingView.vue'),
+      children:[
+          {
+            path: '/sys/project',
+            name: 'sys_project',
+            props: true,
+            component: () => import('../views/sysSetting/ProjectView.vue')
+          },
+          {
+            path: '/sys/user',
+            name: 'sys_user',
+            props: true,
+            component: () => import('../views/sysSetting/user/UserView.vue')
+          }
       ]
     }
   ]

@@ -24,9 +24,8 @@ public class UserInfo extends AbstractEntity {
     public String phone;
     public String mail;
     public String password;
-
-
     public String getDisplayName() {
         return StringUtils.hasText(displayName) ? displayName : name;
     }
+
 }

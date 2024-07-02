@@ -10,6 +10,10 @@ const taskService = {
 
     getTaskList(params){
         return post("/task/getList",params);
+    },
+    
+    getTask(id){
+        return get("/task/get?id="+id);
     }
 
  

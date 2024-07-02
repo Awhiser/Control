@@ -1,5 +1,7 @@
 import axios from 'axios'
 import { message } from 'ant-design-vue';
+import i18n from '@/i18n/index'
+
 // import signMd5Utils from '@/utils/encryption/signMd5Utils'
 import router from "@/router/index.js";
 const config = {
@@ -18,8 +20,8 @@ export function post(url,parameter) {
     return httpAction(url,parameter,'post');
 }
 
-export function get(url,parameter) {
-    return httpAction(url,parameter,'get');
+export function get(url) {
+    return httpAction(url,null,'get');
 }
 
 export function httpAction(url, parameter, method) {
@@ -41,8 +43,10 @@ export function httpAction(url, parameter, method) {
        // console.log(res)
         if(res.data.code != 200 )
         {
-            message.error(res.data.message,1);
+            message.error(i18n.global.t(res.data.message),1);
             if(res.data.code == 405) {
+                localStorage.removeItem('user');
+                localStorage.removeItem('token');
                 router.push({ path: "/" })
             }
             return new Promise(() => {});

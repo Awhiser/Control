@@ -85,18 +85,22 @@ public class AbstractDao<Entity extends AbstractEntity, Repo extends JpaReposito
         Specification<Entity> specification = new Specification<Entity>() {
             @Override
             public Predicate toPredicate(Root<Entity> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
+                List<Predicate> predicates = new ArrayList<>();
                 if (ids.size() == 1) {
-                    builder.and(builder.equal(root.get("id"), ids.get(0)));
+                    predicates.add(builder.equal(root.get("id"), ids.get(0)));
                 }else{
                     CriteriaBuilder.In<Object> in = builder.in(root.get("id"));
                     for (String id : ids) {
                         in.value(id);
                     }
-                    builder.and(in);
+                    predicates.add(in);
                 }
-                Predicate predicate02 = builder.equal(root.get("tenantId"), tenantId);
-                Predicate predicate03 = builder.equal(root.get("isDelete"), false);
-                return builder.and(predicate02, predicate03);
+                predicates.add(builder.equal(root.get("tenantId"), tenantId));
+                predicates.add(builder.equal(root.get("isDelete"), false));
+
+                Predicate[] array = new Predicate[predicates.size()];
+                predicates.toArray(array);
+                return builder.and(array);
             }
         };
         return specification;
@@ -135,4 +139,7 @@ public class AbstractDao<Entity extends AbstractEntity, Repo extends JpaReposito
         return  repo.save(entity);
     }
 
+    public void saveAll(List<Entity> entities){
+          repo.saveAll(entities);
+    }
 }
