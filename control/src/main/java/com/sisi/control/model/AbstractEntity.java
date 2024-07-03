@@ -3,6 +3,7 @@ package com.sisi.control.model;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Data;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Data
 @MappedSuperclass//实体继承映射

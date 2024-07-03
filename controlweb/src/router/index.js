@@ -50,6 +50,12 @@ const router = createRouter({
             name: 'sys_user',
             props: true,
             component: () => import('../views/sysSetting/user/UserView.vue')
+          },
+          {
+            path: '/sys/userconnector',
+            name: 'sys_userconnector',
+            props: true,
+            component: () => import('../views/sysSetting/user/UserConnectorView.vue')
           }
       ]
     }

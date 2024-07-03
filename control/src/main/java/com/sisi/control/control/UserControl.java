@@ -45,16 +45,46 @@ public class UserControl {
         return Response.success();
     }
 
+    @GetMapping("/delete")
+    public Response delete(String id) {
+        userService.delete(id);
+        return Response.success();
+    }
+
     @PostMapping("/saveUserConnector")
-    public Response saveUserPlugin(@RequestBody UserConnector userConnector) {
+    public Response saveUserConnector(@RequestBody UserConnector userConnector) {
         userConnectorService.save(userConnector);
         return Response.success();
     }
 
+    @PostMapping("/updateUserConnector")
+    public Response updateUserConnector(@RequestBody UserConnector userConnector) {
+        userConnectorService.update(userConnector);
+        return Response.success();
+    }
+
+    @GetMapping("/getUserConnectors")
+    public Response<UserConnector> getUserConnectors() {
+        var res = userConnectorService.getUserConnectors();
+        return Response.success(res);
+    }
     //todo 定时拉取
     @GetMapping("/syncUser")
     public Response syncUser(String id) {
         userConnectorService.syncUser(id);
+        return Response.success();
+    }
+
+    @GetMapping("/syncUserConnector")
+    public Response syncUserConnector(@RequestParam  String id){
+        userConnectorService.syncUser(id);
+        return Response.success();
+    }
+
+
+    @GetMapping("/deleteUserConnector")
+    public Response deleteUserConnector(@RequestParam  String id){
+        userConnectorService.delete(id);
         return Response.success();
     }
 

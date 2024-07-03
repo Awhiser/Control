@@ -107,4 +107,8 @@ public class UserService {
         userDao.save(user);
     }
 
+    public void delete(String id) {
+        userDao.deleteById(id);
+    }
+
 }

@@ -11,6 +11,7 @@ import com.sisi.control.repository.impl.UserDao;
 import com.sisi.control.utils.HttpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.net.http.HttpClient;
@@ -37,6 +38,14 @@ public class UserConnectorService {
         userConnector.setIsDelete(false);
         userConnector.setTenantId(context.getTenantId());
         userConnector.setId(context.getTenantId() + UUID.randomUUID().toString());
+        userConnectorDao.save(userConnector);
+    }
+
+    public List<UserConnector> getUserConnectors(){
+       return  userConnectorDao.findAll();
+    }
+
+    public void update(UserConnector userConnector){
         userConnectorDao.save(userConnector);
     }
 
@@ -69,5 +78,10 @@ public class UserConnectorService {
         userDao.saveAll(userInfoList);
     }
 
+
+    @Transactional(readOnly = false)
+    public void delete(String id){
+        userConnectorDao.deleteByIdWithRealRemove(id);
+    }
 
 }

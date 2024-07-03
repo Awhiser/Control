@@ -24,7 +24,7 @@
               </span>
             </template>
                 <a-menu-item key="2">  <RouterLink to="/sys/user">  {{$t('button.userManager') }} </RouterLink>  </a-menu-item>
-                <a-menu-item key="3">  <RouterLink to="/sys/user">  {{$t('button.userPluginManager') }} </RouterLink> </a-menu-item>
+                <a-menu-item key="3">  <RouterLink to="/sys/userconnector">  {{$t('button.userConnectorManager') }} </RouterLink> </a-menu-item>
             </a-sub-menu>
         
             </a-menu>

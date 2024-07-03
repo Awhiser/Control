@@ -4,10 +4,17 @@ export default {
     },
     task:{
         create:"创建",
-        success:"创建Task成功，点击跳转详情"
+        success:"创建Task成功，点击跳转详情",
+        title: '标题',
+        type: '类型',
+        priority: '优先级',
+        assignee: '经办人',
+        tags: '标签',
+        status: '状态'
+
     },
     button:{
-        create:"创建",
+        create:"新建",
         edit:"编辑",
         delete:"删除",
         syssetting:"系统设置",
@@ -15,9 +22,13 @@ export default {
         projectManager:"项目管理",
         createProject:"新建项目",
         user:"用户",
+        sync:"同步",
         userManager:"用户管理",
-        userPluginManager:"连接器管理",
+        userConnectorManager:"连接器管理",
         createUser:"创建用户"
+    },
+    input:{
+        placeholder:"输入名称搜索"
     },
     project:{
         name:"项目名",
@@ -32,6 +43,15 @@ export default {
         mail: '邮箱',
         password:"密码"
     },
+    userConnector :{
+        name : '名称',
+        url : '请求URL',
+        idField : 'Id字段',
+        nameField : '名称字段',
+        displayNameField : '显示名称字段',
+        mailField : '邮箱字段',
+        passwordField : '密码字段',
+     },
     message:{
         createSuccess:"创建成功",
         confirm:"再次确认!",

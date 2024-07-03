@@ -38,6 +38,10 @@ public class AbstractDao<Entity extends AbstractEntity, Repo extends JpaReposito
         return repo.findOne(getIdSpecification(id)).orElse(null);
     }
 
+    public List<Entity> findAll() {
+        return repo.findAll(getTenantIdAndIsDelete(-1));
+    }
+
     public List<Entity> findByIds(List<String> ids){
         return  repo.findAll(getIdsSpecification(ids));
     }
@@ -70,6 +74,12 @@ public class AbstractDao<Entity extends AbstractEntity, Repo extends JpaReposito
         entity.setIsDelete(true);
         repo.save(entity);
     }
+
+
+    public void deleteByIdWithRealRemove(String id) {
+        repo.delete(getIdSpecification(id));
+    }
+
     public void delete(Entity entity) {
         entity.setIsDelete(true);
         repo.save(entity);

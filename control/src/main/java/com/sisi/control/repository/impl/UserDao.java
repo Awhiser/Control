@@ -54,11 +54,12 @@ public class UserDao extends AbstractDao<UserInfo,UserRepository> {
                 predicates.add(predicate);
             }
             if(StringUtils.hasText(param.getName())){
-                predicates.add(builder.like(root.get("name"), "%" + param.getName()+ "%" ));
-                predicates.add(builder.like(root.get("displayName"), "%" + param.getName()+ "%" ));
+                var nameP =builder.like(root.get("name"), "%" + param.getName()+ "%" );
+                var displayNameP = builder.like(root.get("displayName"), "%" + param.getName()+ "%" );
+                predicates.add(builder.or(nameP , displayNameP))  ;
             }
             if(StringUtils.hasText(param.getDisplayName())){
-                predicates.add(builder.like(root.get("displayName"), "%" + param.getName()+ "%" ));
+                predicates.add(builder.like(root.get("displayName"), "%" + param.getDisplayName()+ "%" ));
             }
             Predicate[] arr = new Predicate[predicates.size()];
             return builder.and( predicates.toArray(arr) );
