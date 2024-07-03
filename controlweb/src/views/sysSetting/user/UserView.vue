@@ -4,9 +4,10 @@
   </a-row>
 
   <a-row style="margin-bottom:10px">
-
+  
+   
     <a-col col="10">
-      <a-input-search v-model:value="searchName" placeholder="input Name search" enter-button @search="onSearch" />
+        <a-input-search v-model:value="searchName" :placeholder="i18n.global.t('input.placeholder')" enter-button @search="onSearch" />
     </a-col>
 
   </a-row>
@@ -28,7 +29,7 @@
         <a-button @click="showEdit(record)"> {{ $t('button.edit') }} </a-button>
 
 
-        <a-popconfirm :title="i18n.global.t('message.confirm')">
+        <a-popconfirm :title="i18n.global.t('message.confirm')"  @confirm="deleteUser(record.id)"  >
           <a-button danger style="margin-left: 15px;"> {{ $t('button.delete') }} </a-button>
         </a-popconfirm>
 
@@ -41,7 +42,11 @@
 
   <div style="float: right; margin-top: 10px;">
 
-    <a-pagination v-model:current="current" v-model:page-size="pageSize" show-size-changer :total="total"
+    <a-pagination 
+    v-model:current="current" 
+    v-model:page-size="pageSize" 
+    show-size-changer :total="total" 
+    @change="onChangePage"
       :show-total="total => i18n.global.t('page.total') + ` : ${total}`" />
 
 
@@ -107,19 +112,29 @@ onBeforeMount(() => {
 })
 
 function loadData() {
-  userService.getList({ pageSize: pageSize.value, pageIndex: current.value - 1, name: searchName.value }).then(res => {
-    total.value = res.data.totalElement;
-    data.value = res.data.dataList;
-  });
+  // userService.getList({ pageSize: pageSize.value, pageIndex: current.value - 1, name: searchName.value }).then(res => {
+  //   total.value = res.data.totalElement;
+  //   data.value = res.data.dataList;
+  // });
 }
 
 function onSearch() {
   loadData();
 }
 
+function onChangePage(){
+  loadData();
+}
+
 function showEdit(user) {
   editUser.value = user;
   editShow.value = true;
+}
+
+function deleteUser(id){
+  userService.delete(id).then(res => {
+      location.reload()
+    });;
 }
 
 

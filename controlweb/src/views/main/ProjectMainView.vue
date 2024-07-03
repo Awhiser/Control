@@ -1,126 +1,77 @@
 <template>
+  <a-layout>
+    <HeaderLayOut :projectId="projectId"> </HeaderLayOut>
     <a-layout>
-      <a-layout-header style="background-color: #1677ff;">
+      <a-layout-sider width="200">
+        <a-menu v-model:selectedKeys="selectedKeys1" v-model:openKeys="openKeys" mode="inline"
+          :style="{ height: '100%', borderRight: 0 }">
+          <a-sub-menu key="sub1">
+            <template #title>
+              <span>
+                subnav 1
+              </span>
+            </template>
+            <a-menu-item key="1">
+              <RouterLink :to="{ name: 'tasks', params: { projectId: props.projectId } }">Tasks</RouterLink>
+            </a-menu-item>
+            <a-menu-item key="2">
+              <RouterLink :to="{ name: 'about', params: { projectId: 'X' } }">About</RouterLink>
+            </a-menu-item>
+            <a-menu-item key="3">option3</a-menu-item>
+            <a-menu-item key="4">option4</a-menu-item>
+          </a-sub-menu>
 
-        <a-flex justify="space-between" >
-            <div class="logo" > Control  </div>
+        </a-menu>
+      </a-layout-sider>
 
-            <div style="width: 600px;">  <a-menu style="background-color: #1677ff;"
-            
-            theme="dark"
-            mode="horizontal"
-           
-          >
-            <a-menu-item key="1"  > {{ $t('home.name') }}</a-menu-item>
-            <a-menu-item key="2">  <RouterLink  :to="{name:'sys'}" >{{ $t('button.syssetting') }}</RouterLink>   </a-menu-item>
+      <a-layout style="padding: 0 24px 24px">
+        <a-breadcrumb style="margin: 10px 0">
+          <a-breadcrumb-item>
+            <SmileOutlined :style="{ fontSize: '22px', color: '#08c' }"> </SmileOutlined>
+          </a-breadcrumb-item>
 
-            <a-menu-item key="3">{{ $t('button.usersetting') }} </a-menu-item>
-
-            <a-menu-item key="4"> <I18NChoose></I18NChoose> </a-menu-item>
-          </a-menu>  </div>
-           
-        
-        </a-flex>
-      </a-layout-header>
-
-      <a-layout>
-        <a-layout-sider width="200" >
-          <a-menu
-            v-model:selectedKeys="selectedKeys1"
-            v-model:openKeys="openKeys"
-            mode="inline"
-            :style="{ height: '100%', borderRight: 0 }"
-          >
-            <a-sub-menu key="sub1">
-              <template #title>
-                <span>
-                 
-                  subnav 1
-                </span>
-              </template>
-              <a-menu-item key="1"><RouterLink  :to="{name:'tasks',params:{projectId:'X'}}" >Tasks</RouterLink></a-menu-item>
-              <a-menu-item key="2"><RouterLink :to="{name:'about',params:{projectId:'X'}}">About</RouterLink></a-menu-item>
-              <a-menu-item key="3">option3</a-menu-item>
-              <a-menu-item key="4">option4</a-menu-item>
-            </a-sub-menu>
-    
-          </a-menu>
-        </a-layout-sider>
-
-
-        <a-layout style="padding: 0 24px 24px">
-          <a-breadcrumb style="margin: 16px 0">
-            <a-breadcrumb-item>Home</a-breadcrumb-item>
-            <a-breadcrumb-item>List</a-breadcrumb-item>
-            <a-breadcrumb-item>App</a-breadcrumb-item>
-          </a-breadcrumb>
-          <a-layout-content
-            :style="{ background: '#FFF', padding: '24px', margin: 0, minHeight: '1000px' }"
-          >
-            <RouterView  />
-          </a-layout-content>
-        </a-layout>
+        </a-breadcrumb>
+        <a-layout-content :style="{ background: '#FFF', padding: '24px', margin: 0, minHeight: '1000px' }">
+          <RouterView />
+        </a-layout-content>
       </a-layout>
     </a-layout>
+  </a-layout>
 
 
+  <CreateTask></CreateTask>
+</template>
+<script lang="ts" setup>
+import { SmileOutlined } from '@ant-design/icons-vue';
+import { ref, onMounted, watch } from 'vue';
+import CreateTask from '@/components/CreateTask.vue'
+import HeaderLayOut from '@/components/HeaderLayOut.vue';
+import { useRouter } from 'vue-router'
+const router = useRouter();
+const props = defineProps({
+  projectId: String
+})
 
 
-<!-- <a-button type="primary" @click="showDrawer">Open</a-button> -->
+const selectedKeys1 = ref(['1']);
+const openKeys = ref(['sub1']);
 
+onMounted(() => {
+  if (props.projectId == 'undefined') {
+    return;
 
-
-
-
-
-
-<CreateTask></CreateTask>
-
-  </template>
-  <script lang="ts" setup>
-  
-  import { ref,onMounted } from 'vue';
-  import CreateTask from '@/components/CreateTask.vue'
-  import I18NChoose from '@/components/I18NChoose.vue';
-
-  import { useRouter  } from 'vue-router'
-
-  const props = defineProps({
-    projectId: String
-  })
-
-  const router = useRouter();
-  const selectedKeys1 = ref(['1']);
-  const openKeys = ref(['sub1']);
-
-  onMounted(() => {
-  //  console.log(props.projectId)
-    router.push({name:'tasks',params:{projectId:props.projectId}});
-
-   // taskTable.$forceUpdate()
-  })
-
-  
-
-  
-
-
-  </script>
-  <style scoped>
-  #components-layout-demo-top-side-2 .logo {
-    float: left;
-    width: 120px;
-    height: 31px;
-    margin: 16px 24px 16px 0;
-    background: rgba(255, 255, 255, 0.3);
   }
-  
-  .ant-row-rtl #components-layout-demo-top-side-2 .logo {
-    float: right;
-    margin: 16px 0 16px 24px;
-  }
-  
-  .site-layout-background {
-    background: #fff;
-  }
-  </style>
+  router.push({ name: 'tasks', params: { projectId: props.projectId } });
+})
+
+watch(props, (value) => {
+  router.push({ name: 'tasks', params: { projectId: value.projectId } });
+})
+
+
+
+
+
+
+</script>
+<style scoped></style>

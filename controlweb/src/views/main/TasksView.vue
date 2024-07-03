@@ -4,14 +4,7 @@
 
     <a-table   ref="taskTable" :scroll="{ y: 850 }" :pagination="false" :key="new Date().getTime()" :row-key="record => record.id"  :columns="columns" :data-source="data">
 
-<template #headerCell="{ column }">
-  <template v-if="column.key === 'title'">
-    <span >
-      <smile-outlined />
-      title
-    </span>
-  </template>
-</template>
+
 
 <template #bodyCell="{ column, record }">
   <template v-if="column.key === 'title'">
@@ -47,7 +40,6 @@
   
 </template>
 <script lang="ts" setup>
-import { SmileOutlined } from '@ant-design/icons-vue';
 import { ref } from 'vue'
 import taskService from '@/api/taskservice';
 import { onMounted } from 'vue' 
@@ -100,27 +92,6 @@ const columns = [
     key: 'status',
     dataIndex: 'status',
   }
-//   ,
-//   {
-//     title: 'duedate',
-//     key: 'duedate',
-//     dataIndex: 'duedate',
-//   },
-//   {
-//     title: 'description',
-//     key: 'description',
-//     dataIndex: 'description',
-//   },
-//   {
-//     title: 'updateTime',
-//     key: 'updateTime',
-//     dataIndex: 'updateTime',
-//   },
-//   {
-//     title: 'createTime',
-//     key: 'createTime',
-//     dataIndex: 'createTime',
-//   },
 
 ];
 
@@ -139,8 +110,8 @@ let data = ref([
 
 
    onMounted(() => {
-      taskService.getTaskList({projectId:'S'}).then(res => {
-        console.log(res.data.dataList[0])
+      taskService.getTaskList({projectId:props.projectId}).then(res => {
+       
         for(let i = 0 ; i < 50 ;i++ ){
             data.value.push(...res.data.dataList) ;
         }

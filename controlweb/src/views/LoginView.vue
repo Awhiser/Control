@@ -45,12 +45,12 @@ function handleAction() {
    // console.log(username)
    // console.log(password)
    if(actionName.value == 'Login') {
-    userService.login({'name':username.value,'password':password.value}).then(res=>{
-        localStorage.setItem('user',res.data.userInfo)
-        localStorage.setItem('token',res.data.token)
-        router.push({ path: "/project/X" })
-    })
-
+        userService.login({'name':username.value,'password':password.value}).then(res=>{
+            localStorage.setItem('user',res.data.userInfo)
+            localStorage.setItem('token',res.data.token)
+            let projectId =  localStorage.getItem("projectId") ?? "undefined";
+            router.push({ name: "main" ,params:{projectId: projectId }})
+        })
    }
 
    if(actionName.value == 'Register'){
