@@ -7,7 +7,7 @@
   <a-row style="margin-bottom:10px">
 
     <a-col col="10">
-      <a-input-search v-model:value="searchName" :placeholder="i18n.global.t('input.placeholder')" enter-button @search="onSearch" />
+      <a-input-search v-model:value="searchName" :placeholder="i18n.global.t('input.searchName')" enter-button @search="onSearch" />
     </a-col>
 
   </a-row>
@@ -36,9 +36,7 @@
 
         <a-button @click="showEdit(record)" >{{$t('button.edit') }}</a-button>
 
-        <a-button style="margin-left:10px"> Member</a-button>
-
-        
+        <a-button type="primary" style="margin-left:15px" @click="showProjectMember(record.id)"  >  {{ $t('button.member') }} </a-button>
 
         <a-popconfirm :title="$t('message.confirm')"  @confirm="deleteProject(record.id)" >
           <a-button danger style="margin-left: 15px;"> {{ $t('button.delete') }} </a-button>
@@ -60,6 +58,8 @@
   </div>
 
   <EditProject v-model:open="editShow" v-model:projectModel="editModel" ></EditProject>
+
+  <ProjectMemberView v-model:open="showProjectMemberModal" :projectId="selectProjectId" > </ProjectMemberView>
 </template>
 
 
@@ -69,6 +69,7 @@ import { ref, onMounted } from 'vue';
 import i18n from '@/i18n/index';
 import CreateProject from '@/components/sys/project/CreateProject.vue';
 import EditProject from '@/components/sys/project/EditProject.vue';
+import ProjectMemberView from '@/components/sys/project/ProjectMemberView.vue';
 import projectService from '@/api/projectservice';
 const columns = [
   {
@@ -101,6 +102,9 @@ const total = ref(0)
 const editShow = ref(false);
 const editModel = ref({})
 
+
+const showProjectMemberModal = ref(false);
+const selectProjectId = ref('');
 onMounted(() => {
   loadData();
 })
@@ -128,6 +132,11 @@ function deleteProject(id) {
   function showEdit(value) {
     editModel.value = value;
     editShow.value = true;
+  }
+
+  function showProjectMember(projectId){
+    selectProjectId.value = projectId;
+    showProjectMemberModal.value = true;
   }
 
 </script>

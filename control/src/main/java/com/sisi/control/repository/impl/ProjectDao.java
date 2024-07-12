@@ -40,9 +40,7 @@ public class ProjectDao extends AbstractDao<Project, ProjectRepository>{
             return builder.and( predicates.toArray(arr) );
         };
 
-        PageRequest pageRequest = PageRequest.of(param.getPageIndex(), param.getPageSize());
-
-        return findByPage(sp,pageRequest);
+        return findByPage(sp,param.getPageRequest());
     }
 
 

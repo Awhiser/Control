@@ -17,6 +17,17 @@ const projectService = {
         return post("/project/update", params);
     },
 
+    saveProjectMember(params){
+        return post("/project/projectMemmber/save", params);
+    },
+    getProjectMemberList(params){
+        return post("/project/projectMemmber/getList", params);
+    },
+    deleteProjectMember(id){
+        return get("/project/projectMemmber/delete?id=" + id);
+    }
+
+
 }
 
 export default projectService

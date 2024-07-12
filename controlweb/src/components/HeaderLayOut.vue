@@ -73,14 +73,13 @@ onMounted(() => {
          
             if (projectList.value[i].id == props.projectId) {
                 projectName.value = projectList.value[i].name;
-               
                 break;
             }
         } 
 
-        if(projectName.value == null) {
-            router.push({name:'main',params:{projectId: projectList.value[0].id}})
-        }
+        // if(projectName.value == null) {
+        //     router.push({name:'main',params:{projectId: projectList.value[0].id}})
+        // }
 
 
     })
@@ -89,6 +88,7 @@ onMounted(() => {
 
 function handleMenuClick(e) {
     projectName.value = e.item.title
+    localStorage.setItem("projectId",e.key)
     router.push({name:'main',params:{projectId: e.key}})
    
 }

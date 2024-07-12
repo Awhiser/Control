@@ -16,6 +16,7 @@ export default {
     },
     button: {
         create: "Create",
+        add:"Add",
         edit: "Edit",
         delete: "Delete",
         syssetting: "SysSetting",
@@ -24,16 +25,21 @@ export default {
         createProject: "CreateProject",
         sync:"Sync",
         user: "User",
+        member:"Member",
         userManager: "UserManager",
         userConnectorManager: "UserConnectorManager",
         createUser: "CreateUser"
     },
     input:{
-        placeholder:"input Name search"
+        searchName:"input Name search"
     },
     project: {
         name: "ProjectName",
         leader: "Leader"
+    },
+    projectMember:{
+        role:"ProjectRole",
+        name:"Name"
     },
     table: {
         operation: "Operation"

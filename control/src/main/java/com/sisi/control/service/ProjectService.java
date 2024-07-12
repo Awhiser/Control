@@ -8,6 +8,7 @@ import com.sisi.control.model.project.ProjectVo;
 import com.sisi.control.model.user.UserInfo;
 import com.sisi.control.model.user.UserVo;
 import com.sisi.control.repository.impl.ProjectDao;
+import com.soundicly.jnanoidenhanced.jnanoid.NanoIdUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -34,7 +35,7 @@ public class ProjectService {
         String tenantId = ContextHolder.getContext().getTenantId();
         project.setTenantId(tenantId);
         project.setIsDelete(false);
-        project.setId(tenantId + UUID.randomUUID());
+        project.setId(tenantId + NanoIdUtils.randomNanoId());
         return projectDao.save(project);
     }
 

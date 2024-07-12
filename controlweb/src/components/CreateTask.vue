@@ -18,6 +18,7 @@
             <a-select-option value="Task">Task</a-select-option>
             <a-select-option value="Bug">Bug</a-select-option>
             <a-select-option value="Story">Story</a-select-option>
+            <a-select-option value="Story">Epic</a-select-option>
           </a-select>
         </a-form-item>
         <a-divider />
@@ -83,7 +84,10 @@ import type { Rule } from 'ant-design-vue/es/form';
 import taskService from '@/api/taskservice';
 import { Dayjs } from 'dayjs';
 import { message } from 'ant-design-vue';
-import i18n from '@/i18n/index'
+import i18n from '@/i18n/index';
+
+import projectService from '@/api/projectservice';
+
 const createTaskForm = ref();
 const taskCreateRules: Record<string, Rule[]> = {
   projectId: [{ required: true, message: '', trigger: 'change' }],
@@ -110,6 +114,8 @@ const task = ref({
 const open = ref<boolean>(false);
 
 const showModal = () => {
+  projectService.getList();
+  //加载资源
   open.value = true;
 };
 

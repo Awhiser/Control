@@ -29,7 +29,7 @@
       v-model:page-size="pageSize"
       show-size-changer
       :total="total"
-      :show-total="total => `Total ${total} items`"
+      :show-total="total => i18n.global.t('page.total') + ` : ${total}`"
     /> 
 
 
@@ -44,7 +44,7 @@ import { ref } from 'vue'
 import taskService from '@/api/taskservice';
 import { onMounted } from 'vue' 
 import TaskDetails from '@/components/TaskDetails.vue'
-
+import i18n from '@/i18n';
 
 const props = defineProps({
     projectId: String
@@ -61,34 +61,34 @@ const total = ref(100)
 
 const columns = [
   {
-    title: 'title',
+    title: i18n.global.t('task.title'),
     dataIndex: 'title',
     key: 'title',
   },
   {
-    title: 'type',
+    title: i18n.global.t('task.type'),
     dataIndex: 'type',
     key: 'type',
   },
 
   {
-    title: 'priority',
+    title: i18n.global.t('task.priority'),
     key: 'priority',
     dataIndex: 'priority',
   },
   {
-    title: 'assignee',
+    title: i18n.global.t('task.assignee'),
     key: 'assignee',
     dataIndex: 'assignee',
   },
   {
-    title: 'tags',
+    title: i18n.global.t('task.tags'),
     key: 'tags',
     dataIndex: 'tags',
   },
  
   {
-    title: 'status',
+    title: i18n.global.t('task.status'),
     key: 'status',
     dataIndex: 'status',
   }

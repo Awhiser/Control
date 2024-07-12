@@ -59,7 +59,6 @@ const openKeys = ref(['sub1']);
 onMounted(() => {
   if (props.projectId == 'undefined') {
     return;
-
   }
   router.push({ name: 'tasks', params: { projectId: props.projectId } });
 })

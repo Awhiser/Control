@@ -41,11 +41,11 @@ Plan Demo
 单子编辑 todo
 项目管理
     展示 ok
-    新建 todo
-    编辑
-    删除
-    成员
-    成员角色
+    新建 ok
+    编辑 ok
+    删除 ok
+    成员  coding
+    成员角色 todo
 
 用户管理
     展示

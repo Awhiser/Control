@@ -16,23 +16,30 @@ export default {
     button:{
         create:"新建",
         edit:"编辑",
+        add:"新增",
         delete:"删除",
         syssetting:"系统设置",
         usersetting:"用户设置",
         projectManager:"项目管理",
         createProject:"新建项目",
         user:"用户",
+        member:"成员",
         sync:"同步",
         userManager:"用户管理",
         userConnectorManager:"连接器管理",
         createUser:"创建用户"
     },
+
     input:{
-        placeholder:"输入名称搜索"
+        searchName:"输入名称搜索"
     },
     project:{
         name:"项目名",
         leader:"负责人"
+    },
+    projectMember:{
+        role:"项目角色",
+        name:"名称"
     },
     table:{
         operation:"操作"

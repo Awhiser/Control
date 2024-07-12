@@ -7,7 +7,7 @@
   
    
     <a-col col="10">
-        <a-input-search v-model:value="searchName" :placeholder="i18n.global.t('input.placeholder')" enter-button @search="onSearch" />
+        <a-input-search v-model:value="searchName" :placeholder="i18n.global.t('input.searchName')" enter-button @search="onSearch" />
     </a-col>
 
   </a-row>

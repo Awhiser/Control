@@ -10,6 +10,7 @@ import com.sisi.control.model.task.TaskVo;
 import com.sisi.control.model.user.UserInfo;
 import com.sisi.control.model.user.UserVo;
 import com.sisi.control.repository.impl.TaskDao;
+import com.soundicly.jnanoidenhanced.jnanoid.NanoIdUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -35,7 +36,7 @@ public class TaskService {
 
         Task task = new Task(taskCreateParam);
         var tenantId = ContextHolder.getContext().getTenantId();
-        task.setId(tenantId + task.projectId + UUID.randomUUID().toString());
+        task.setId(tenantId + task.projectId + NanoIdUtils.randomNanoId());
         task.setTenantId(tenantId);
         //todo 实现自定义字段 workFlow create
         taskDao.save(task);

@@ -9,6 +9,7 @@ import com.sisi.control.model.user.UserInfo;
 import com.sisi.control.repository.impl.UserConnectorDao;
 import com.sisi.control.repository.impl.UserDao;
 import com.sisi.control.utils.HttpUtils;
+import com.soundicly.jnanoidenhanced.jnanoid.NanoIdUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,7 +38,8 @@ public class UserConnectorService {
         ControlContext context = ContextHolder.getContext();
         userConnector.setIsDelete(false);
         userConnector.setTenantId(context.getTenantId());
-        userConnector.setId(context.getTenantId() + UUID.randomUUID().toString());
+
+        userConnector.setId(context.getTenantId() + NanoIdUtils.randomNanoId());
         userConnectorDao.save(userConnector);
     }
 

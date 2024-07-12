@@ -152,4 +152,7 @@ public class AbstractDao<Entity extends AbstractEntity, Repo extends JpaReposito
     public void saveAll(List<Entity> entities){
           repo.saveAll(entities);
     }
+
+
+
 }

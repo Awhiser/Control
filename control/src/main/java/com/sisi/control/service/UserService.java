@@ -97,7 +97,7 @@ public class UserService {
     public void update(UserInfo userInfo){
         var user = userDao.findById(userInfo.getId());
 
-        if( StringUtils.hasText(userInfo.getDisplayName()) ){
+        if(StringUtils.hasText(userInfo.getDisplayName()) ){
             user.setDisplayName(userInfo.getDisplayName());
         }
 

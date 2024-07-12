@@ -6,9 +6,12 @@ import com.sisi.control.model.task.TaskSearchParam;
 import com.sisi.control.repository.impl.UserDao;
 import com.sisi.control.service.TaskService;
 import com.sisi.control.utils.token.TokenUtil;
+import com.soundicly.jnanoidenhanced.jnanoid.NanoIdUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.UUID;
 
 @SpringBootTest
 class ControlApplicationTests {
@@ -29,8 +32,9 @@ class ControlApplicationTests {
       //  var resp2 = Response.fail(new UserInfo());
       //  ContextHolder.setContext(new ControlContext("1","1","1"));
 //        var u = userDao.getUserByUserName("ye");
-        TaskSearchParam param = new TaskSearchParam();
-        System.out.println("aaa");
+       // TaskSearchParam param = new TaskSearchParam();
+        System.out.println(NanoIdUtils.randomNanoId());
+        System.out.println(UUID.randomUUID().toString());
        // param.setProjectId("S");
        // var res = taskService.getTaskList(param);
         System.out.println("111");

@@ -86,6 +86,12 @@
 			<artifactId>okhttp</artifactId>
 			<version>4.10.0</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.soundicly</groupId>
+			<artifactId>jnanoid-enhanced</artifactId>
+			<version>1650e4357c</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -106,6 +112,12 @@
 	</build>
 
 	<repositories>
+
+		<repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</repository>
+
 		<repository>
 			<id>aliyun</id>
 			<name>aliyun</name>
@@ -120,6 +132,7 @@
 				<updatePolicy>never</updatePolicy>
 			</snapshots>
 		</repository>
+
 	</repositories>
 
 	<pluginRepositories>
