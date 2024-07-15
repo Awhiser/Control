@@ -50,18 +50,6 @@ public class UserDao extends AbstractDao<UserInfo,UserRepository> {
     public Page<UserInfo> getUserList(UserSearchParam param){
         Specification<Task> sp = (root,query,builder) ->{
             List<Predicate> predicates = new ArrayList<>();
-            if (!CollectionUtils.isEmpty(param.getIds())) {
-                if (param.getIds().size() == 1) {
-                    Predicate predicate = builder.equal(root.get("id"), param.getIds().get(0));
-                    predicates.add(predicate);
-                } else {
-                    CriteriaBuilder.In<Object> in = builder.in(root.get("id"));
-                    for (String id : param.getIds()) {
-                        in.value(id);
-                    }
-                    predicates.add(in);
-                }
-            }
             if(StringUtils.hasText(param.getName())){
                 var nameP =builder.like(root.get("name"), "%" + param.getName()+ "%" );
                 var displayNameP = builder.like(root.get("displayName"), "%" + param.getName()+ "%" );
@@ -73,7 +61,7 @@ public class UserDao extends AbstractDao<UserInfo,UserRepository> {
             Predicate[] arr = new Predicate[predicates.size()];
             return builder.and( predicates.toArray(arr) );
         };
-        return findByPage(sp,param.getPageRequest());
+        return findByPage(sp,param);
     }
 
 

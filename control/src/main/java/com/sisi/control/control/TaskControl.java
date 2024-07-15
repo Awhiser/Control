@@ -38,5 +38,12 @@ public class TaskControl {
         return Response.success(res);
     }
 
+    @GetMapping("/getCreateParam")
+    public Response getCreateParam(){
+
+
+        return null;
+    }
+
 
 }

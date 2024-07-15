@@ -30,10 +30,7 @@ public class TaskDao extends AbstractDao<Task, TaskRepository>{
     public Page<Task> getTaskList(TaskSearchParam param){
         Specification<Task> sp = (root,query,builder) ->{
             List<Predicate> predicates = new ArrayList<>();
-            if(StringUtils.hasText(param.getId())){
-                Predicate predicate = builder.equal(root.get("id"), param.getId());
-                predicates.add(predicate);
-            }
+
             if(StringUtils.hasText(param.getProjectId())){
                 Predicate predicate = builder.equal(root.get("projectId"), param.getProjectId());
                 predicates.add(predicate);
@@ -47,6 +44,6 @@ public class TaskDao extends AbstractDao<Task, TaskRepository>{
         };
 
 
-        return findByPage(sp,param.getPageRequest());
+        return findByPage(sp,param);
     }
 }

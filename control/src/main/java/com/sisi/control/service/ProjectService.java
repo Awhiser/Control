@@ -39,6 +39,10 @@ public class ProjectService {
         return projectDao.save(project);
     }
 
+    public List<Project> getProjectsByIds(List<String> projectIds) {
+        return projectDao.getProjectsByIds(projectIds);
+    }
+
 
     public PageView<ProjectVo> getProjectList(ProjectSearchParam searchParam) {
         var pageRes = projectDao.getProjectList(searchParam);
@@ -46,6 +50,8 @@ public class ProjectService {
         pageRes.stream().forEach(project -> {
             projectVos.add(new ProjectVo(project));
         });
+
+
         if(searchParam.isExtLeader()){
             List<String> userIds = pageRes.stream()
                     .filter(i->StringUtils.hasText(i.getLeaderId()))

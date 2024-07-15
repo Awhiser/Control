@@ -4,6 +4,7 @@ import com.sisi.control.context.ContextHolder;
 import com.sisi.control.model.AbstractEntity;
 import com.sisi.control.model.AbstractSearch;
 import com.sisi.control.model.PageView;
+import com.sisi.control.model.task.Task;
 import com.sisi.control.model.user.UserInfo;
 import com.sisi.control.utils.log.LogHelper;
 import io.micrometer.common.KeyValues;
@@ -19,6 +20,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -135,8 +138,24 @@ public class AbstractDao<Entity extends AbstractEntity, Repo extends JpaReposito
         return specification;
     }
 
-    public Page<Entity> findByPage(Specification specification,PageRequest pageRequest){
-        var page =repo.findAll(specification.and(getTenantIdAndIsDelete(-1)),pageRequest);
+    public Page<Entity> findByPage(Specification specification,AbstractSearch params){
+        if(!CollectionUtils.isEmpty(params.getIds())) {
+            Specification<Entity> idSp = (root, query, builder) -> {
+                List<Predicate> predicates = new ArrayList<>();
+                if (params.getIds().size() == 1) {
+                    Predicate predicate = builder.equal(root.get("id"), params.getIds().get(0));
+                    return  builder.and(predicate);
+                }
+                    CriteriaBuilder.In<Object> in = builder.in(root.get("id"));
+                    for (String id : params.getIds()) {
+                        in.value(id);
+                    }
+
+                    return  builder.and(in);
+            };
+            specification = specification.and(idSp);
+        }
+        var page =repo.findAll(specification.and(getTenantIdAndIsDelete(-1)),params.getPageRequest());
         return page;
     }
 

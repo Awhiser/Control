@@ -3,9 +3,11 @@ package com.sisi.control.model;
 import lombok.Data;
 import org.springframework.data.domain.PageRequest;
 
+import java.util.List;
+
 @Data
 public class AbstractSearch {
-
+    public List<String> ids;
     public boolean disablePage = false;
     public int pageSize = 50;
     public int pageIndex = 0;

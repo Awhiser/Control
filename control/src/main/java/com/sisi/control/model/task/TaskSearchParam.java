@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Data
 public class TaskSearchParam extends AbstractSearch {
 
-    public String id;
+
     public String projectId;
     public String title;
 

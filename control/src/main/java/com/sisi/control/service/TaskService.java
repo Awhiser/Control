@@ -2,17 +2,18 @@ package com.sisi.control.service;
 
 import com.sisi.control.context.ContextHolder;
 import com.sisi.control.model.PageView;
+import com.sisi.control.model.ProjectMember.ProjectMember;
+import com.sisi.control.model.project.ProjectSearchParam;
+import com.sisi.control.model.project.ProjectVo;
 import com.sisi.control.model.response.Response;
-import com.sisi.control.model.task.Task;
-import com.sisi.control.model.task.TaskCreateParam;
-import com.sisi.control.model.task.TaskSearchParam;
-import com.sisi.control.model.task.TaskVo;
+import com.sisi.control.model.task.*;
 import com.sisi.control.model.user.UserInfo;
 import com.sisi.control.model.user.UserVo;
 import com.sisi.control.repository.impl.TaskDao;
 import com.soundicly.jnanoidenhanced.jnanoid.NanoIdUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
@@ -23,11 +24,14 @@ public class TaskService {
 
     private TaskDao taskDao;
     private UserService userService;
-
+    private ProjectService projectService;
+    private ProjectMemberService projectMemberService;
     @Autowired
-    public TaskService(TaskDao taskDao, UserService userService) {
+    public TaskService(TaskDao taskDao, UserService userService, ProjectService projectService, ProjectMemberService projectMemberService) {
         this.taskDao = taskDao;
         this.userService = userService;
+        this.projectService = projectService;
+        this.projectMemberService = projectMemberService;
     }
 
     public Response create(TaskCreateParam taskCreateParam) {
@@ -51,7 +55,7 @@ public class TaskService {
 //        }
 //        TaskVo taskVo = new TaskVo(task, userInfo);
         TaskSearchParam searchParam = new TaskSearchParam();
-        searchParam.setId(taskId);
+        searchParam.setIds(Arrays.asList(taskId));
         var list = getTaskList(searchParam).getDataList();
         if (list.isEmpty()) {
             return null;
@@ -74,6 +78,30 @@ public class TaskService {
         PageView<TaskVo> taskVoPageView = new PageView(pageRes);
         taskVoPageView.setDataList(taskVoList);
         return taskVoPageView;
+    }
+
+
+    public  CreateTaskVo getTaskCreateParam(){
+        CreateTaskVo vo = new CreateTaskVo();
+
+        var projectMembers =  projectMemberService.getProjectMemberByUserId(ContextHolder.getContext().getToken().getUserId());
+        if(!CollectionUtils.isEmpty(projectMembers)) {
+            var projectIds = projectMembers.stream().map(ProjectMember::getProjectId).toList();
+            ProjectSearchParam searchParam = new ProjectSearchParam();
+            searchParam.setIds(projectIds);
+            searchParam.setDisablePage(true);
+            var project =  projectService.getProjectList(searchParam);
+            vo.setProjectList(project.getDataList());
+        }
+
+        //获取Type
+
+        //获取版本
+
+        //扩展的自定义字段
+
+
+        return vo;
     }
 
 

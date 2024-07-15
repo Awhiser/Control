@@ -6,7 +6,6 @@ import com.sisi.control.model.ProjectMember.ProjectMember;
 import com.sisi.control.model.ProjectMember.ProjectMemberSearchParam;
 import com.sisi.control.model.ProjectMember.ProjectMemberVo;
 import com.sisi.control.model.user.UserSearchParam;
-import com.sisi.control.model.user.UserVo;
 import com.sisi.control.repository.impl.ProjectMemberDao;
 import com.soundicly.jnanoidenhanced.jnanoid.NanoIdUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +30,11 @@ public class ProjectMemberService {
     }
 
     public ProjectMember save(ProjectMember projectMember) {
+
         if(!StringUtils.hasText(projectMember.getId())){
+            if(projectMemberDao.exist(projectMember.getUserId(), projectMember.getProjectId())){
+                return null;
+            }
             projectMember.setId( ContextHolder.getContext().tenantId + NanoIdUtils.randomNanoId());
             projectMember.setTenantId(ContextHolder.getContext().getTenantId());
             projectMember.setIsDelete(false);
@@ -44,7 +47,7 @@ public class ProjectMemberService {
         if (!StringUtils.hasText(searchParam.getProjectId())) {
             return null;
         }
-        List<ProjectMember> projectMemberList = projectMemberDao.findByProjectId(searchParam.getProjectId());
+        List<ProjectMember> projectMemberList = projectMemberDao.getByProjectId(searchParam.getProjectId());
         var userIds = projectMemberList.stream().map(i -> i.userId).toList();
         //查询的用户都在项目成员中
         UserSearchParam userSearchParam = new UserSearchParam();
@@ -75,6 +78,10 @@ public class ProjectMemberService {
        pageView.setTotalElement(userRes.getTotalElement());
        pageView.setTotalPages(userRes.getTotalPages());
        return pageView;
+    }
+
+    public List<ProjectMember> getProjectMemberByUserId(String userId) {
+        return  projectMemberDao.getByUserId(userId);
     }
 
     @Transactional
