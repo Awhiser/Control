@@ -1,4 +1,4 @@
-package com.sisi.control.control;
+package com.sisi.control.controller;
 
 import com.sisi.control.model.PageView;
 import com.sisi.control.model.response.Response;
@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/task")
-public class TaskControl {
+public class TaskController {
 
     private TaskService taskService;
 
     @Autowired
-    public TaskControl(TaskService taskService){
+    public TaskController(TaskService taskService){
         this.taskService = taskService;
     }
 
@@ -39,10 +39,9 @@ public class TaskControl {
     }
 
     @GetMapping("/getCreateParam")
-    public Response getCreateParam(){
-
-
-        return null;
+    public Response getTaskParam(){
+        var res = taskService.getTaskParam();
+        return Response.success(res);
     }
 
 

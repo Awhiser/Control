@@ -1,4 +1,4 @@
-package com.sisi.control.control;
+package com.sisi.control.controller;
 
 import com.sisi.control.model.PageView;
 import com.sisi.control.model.ProjectMember.ProjectMember;
@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/project")
-public class ProjectControl {
+public class ProjectController {
 
     private ProjectService projectService;
     private ProjectMemberService projectMemberService;
 
     @Autowired
-    public ProjectControl(ProjectService projectService,ProjectMemberService projectMemberService){
+    public ProjectController(ProjectService projectService, ProjectMemberService projectMemberService){
         this.projectService = projectService;
         this.projectMemberService = projectMemberService;
     }
@@ -35,6 +35,12 @@ public class ProjectControl {
     public Response getList(@RequestBody ProjectSearchParam searchParam){
         var res =  projectService.getProjectList(searchParam);
         return Response.success(res);
+    }
+
+    @GetMapping("/getProjectByUserId")
+    public Response getProjectByUserId(@RequestParam String userId) {
+
+        return null;
     }
 
     @GetMapping("/delete")

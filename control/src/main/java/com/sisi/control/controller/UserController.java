@@ -1,27 +1,24 @@
-package com.sisi.control.control;
+package com.sisi.control.controller;
 
 import com.sisi.control.model.PageView;
-import com.sisi.control.model.project.Project;
 import com.sisi.control.model.response.Response;
 import com.sisi.control.model.user.*;
 import com.sisi.control.service.UserConnectorService;
 import com.sisi.control.service.UserService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/user")
-public class UserControl {
+public class UserController {
 
     private UserService userService;
 
     private UserConnectorService userConnectorService;
 
-    UserControl(UserService userService, UserConnectorService userConnectorService)
+    UserController(UserService userService, UserConnectorService userConnectorService)
     {
         this.userService = userService;
         this.userConnectorService = userConnectorService;
-
     }
 
     @PostMapping("/login")

@@ -25,13 +25,13 @@ public class TaskService {
     private TaskDao taskDao;
     private UserService userService;
     private ProjectService projectService;
-    private ProjectMemberService projectMemberService;
+    private TaskTypeService taskTypeService;
     @Autowired
-    public TaskService(TaskDao taskDao, UserService userService, ProjectService projectService, ProjectMemberService projectMemberService) {
+    public TaskService(TaskDao taskDao, UserService userService, ProjectService projectService, TaskTypeService taskTypeService) {
         this.taskDao = taskDao;
         this.userService = userService;
         this.projectService = projectService;
-        this.projectMemberService = projectMemberService;
+        this.taskTypeService = taskTypeService;
     }
 
     public Response create(TaskCreateParam taskCreateParam) {
@@ -81,27 +81,23 @@ public class TaskService {
     }
 
 
-    public  CreateTaskVo getTaskCreateParam(){
+    public  CreateTaskVo getTaskParam(){
         CreateTaskVo vo = new CreateTaskVo();
-
-        var projectMembers =  projectMemberService.getProjectMemberByUserId(ContextHolder.getContext().getToken().getUserId());
-        if(!CollectionUtils.isEmpty(projectMembers)) {
-            var projectIds = projectMembers.stream().map(ProjectMember::getProjectId).toList();
-            ProjectSearchParam searchParam = new ProjectSearchParam();
-            searchParam.setIds(projectIds);
-            searchParam.setDisablePage(true);
-            var project =  projectService.getProjectList(searchParam);
-            vo.setProjectList(project.getDataList());
-        }
-
+        var projects =projectService.getProjectByUserId(ContextHolder.getContext().getToken().getUserId());
+        vo.setProjectList(projects);
         //获取Type
-
+        var taskTypeList = taskTypeService.getList();
+        vo.setTaskTypeList(taskTypeList);
         //获取版本
 
+
+
         //扩展的自定义字段
-
-
         return vo;
+    }
+
+    public void transition(String taskId,String status){
+
     }
 
 
