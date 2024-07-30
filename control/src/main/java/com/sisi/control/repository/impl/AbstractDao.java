@@ -165,11 +165,17 @@ public class AbstractDao<Entity extends AbstractEntity, Repo extends JpaReposito
     }
 
     public Entity save(Entity entity){
+        entity.setTenantId(ContextHolder.getContext().getTenantId());
+        entity.setIsDelete(false);
         return  repo.save(entity);
     }
 
     public void saveAll(List<Entity> entities){
-          repo.saveAll(entities);
+        entities.forEach(entity -> {
+            entity.setTenantId(ContextHolder.getContext().getTenantId());
+            entity.setIsDelete(false);
+        });
+        repo.saveAll(entities);
     }
 
 

@@ -2,6 +2,7 @@ package com.sisi.control.controller;
 
 import com.sisi.control.model.PageView;
 import com.sisi.control.model.response.Response;
+import com.sisi.control.model.task.Task;
 import com.sisi.control.model.task.TaskCreateParam;
 import com.sisi.control.model.task.TaskSearchParam;
 import com.sisi.control.model.task.TaskVo;
@@ -22,8 +23,9 @@ public class TaskController {
 
     //...
     @PostMapping("/create")
-    public Response<TaskVo> create(@RequestBody TaskCreateParam taskCreateParam) {
-        return taskService.create(taskCreateParam);
+    public Response<Task> create(@RequestBody Task task) {
+        var res = taskService.create(task);
+        return Response.success(res);
     }
 
     @GetMapping("/get")
@@ -44,5 +46,10 @@ public class TaskController {
         return Response.success(res);
     }
 
+    @PostMapping("/update")
+    public Response<TaskVo> update(@RequestBody Task task) {
+        var res = taskService.update(task);
+        return Response.success(res);
+    }
 
 }

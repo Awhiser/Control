@@ -16,7 +16,7 @@ public class Task extends AbstractEntity {
     public String title;
     public String assignee;
     public String type;
- //   public String versionId;
+    public String versionId;
     public String priority;
     public String tags;
     public String description;

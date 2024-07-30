@@ -7,7 +7,6 @@ import com.sisi.control.model.project.Project;
 import com.sisi.control.model.project.ProjectSearchParam;
 import com.sisi.control.model.project.ProjectVo;
 import com.sisi.control.model.user.UserInfo;
-import com.sisi.control.model.user.UserVo;
 import com.sisi.control.repository.impl.ProjectDao;
 import com.soundicly.jnanoidenhanced.jnanoid.NanoIdUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,6 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
