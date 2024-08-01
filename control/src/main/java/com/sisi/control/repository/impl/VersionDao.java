@@ -1,13 +1,8 @@
 package com.sisi.control.repository.impl;
 
-import com.sisi.control.model.PageView;
 import com.sisi.control.model.task.Task;
-import com.sisi.control.model.tasktype.TaskType;
-import com.sisi.control.model.user.UserInfo;
-import com.sisi.control.model.user.UserSearchParam;
 import com.sisi.control.model.version.Version;
 import com.sisi.control.model.version.VersionSearchParam;
-import com.sisi.control.repository.TaskTypeRepository;
 import com.sisi.control.repository.VersionRepository;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.domain.Page;

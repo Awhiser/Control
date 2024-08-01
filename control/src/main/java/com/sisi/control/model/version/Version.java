@@ -12,7 +12,7 @@ import java.util.List;
 public class Version extends AbstractEntity {
     public String name;
     public String status;
-    public String desc;
+    public String description;
     public Date updateTime;
     public String projectId;
 

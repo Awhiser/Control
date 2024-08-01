@@ -1,10 +1,14 @@
 package com.sisi.control.service;
 
 import com.sisi.control.context.ContextHolder;
+import com.sisi.control.context.ControlContext;
 import com.sisi.control.model.PageView;
 import com.sisi.control.model.response.Response;
 import com.sisi.control.model.task.*;
 import com.sisi.control.model.taskchangelog.TaskChangeLog;
+import com.sisi.control.mq.MQService;
+import com.sisi.control.mq.MQType;
+import com.sisi.control.mq.model.TaskMessage;
 import com.sisi.control.repository.impl.TaskDao;
 import com.sisi.control.utils.DateUtils;
 import com.soundicly.jnanoidenhanced.jnanoid.NanoIdUtils;
@@ -25,15 +29,16 @@ public class TaskService {
     private TaskTypeService taskTypeService;
     private VersionService versionService;
     private TaskChangeLogService taskChangeLogService;
-
+    private MQService mqService;
     @Autowired
-    public TaskService(TaskDao taskDao, UserService userService, ProjectService projectService, TaskTypeService taskTypeService, VersionService versionService, TaskChangeLogService taskChangeLogService) {
+    public TaskService(TaskDao taskDao, UserService userService, ProjectService projectService, TaskTypeService taskTypeService, VersionService versionService, TaskChangeLogService taskChangeLogService,MQService mqService) {
         this.taskDao = taskDao;
         this.userService = userService;
         this.projectService = projectService;
         this.taskTypeService = taskTypeService;
         this.versionService = versionService;
         this.taskChangeLogService = taskChangeLogService;
+        this.mqService = mqService;
     }
 
     public Response create(Task task) {
@@ -101,14 +106,16 @@ public class TaskService {
 
     public Task update(Task task){
         //update change Log
-        var originTask = taskDao.findById(task.getId());
+        var oldTask = taskDao.findById(task.getId());
         var res = taskDao.save(task);
         //todo 异步
-        updateChangeLog(originTask,task,ContextHolder.getContext().getToken().getUserId());
+
+        mqService.publishTaskMsg(new TaskMessage(MQType.TaskUpdate,task,oldTask));
+          // updateChangeLog(originTask,task,ContextHolder.getContext().getToken().getUserId());
         return res;
     }
 
-    public void updateChangeLog(Task originTask, Task updateTask, String operateUser) {
+    public void updateChangeLog(Task originTask, Task updateTask,String operateUser) {
         List<TaskChangeLog> logs = new ArrayList<>();
         Date operateTime = new Date();
         String timeTag = DateUtils.parseCommonDateStr(operateTime);
@@ -117,8 +124,8 @@ public class TaskService {
             TaskChangeLog log = new TaskChangeLog();
             log.setId(updateTask.getTenantId() + timeTag + NanoIdUtils.randomNanoId());
             log.setName("Title");
-            log.setFrom(originTask.getTitle());
-            log.setTo(updateTask.getTitle());
+            log.setFromValue(originTask.getTitle());
+            log.setToValue(updateTask.getTitle());
             logs.add(log);
         }
 
@@ -129,9 +136,9 @@ public class TaskService {
             var users = userService.getUserByIds(Arrays.asList(originTask.getAssignee(),updateTask.getAssignee()));
             for (var user : users){
                 if(user.getId().equals(originTask.getAssignee())){
-                    log.setFrom(user.getDisplayName());
+                    log.setFromValue(user.getDisplayName());
                 }else{
-                    log.setTo(user.getDisplayName());
+                    log.setToValue(user.getDisplayName());
                 }
             }
             logs.add(log);
@@ -141,8 +148,8 @@ public class TaskService {
             TaskChangeLog log = new TaskChangeLog();
             log.setId(updateTask.getTenantId() + timeTag + NanoIdUtils.randomNanoId());
             log.setName("Description");
-            log.setFrom(originTask.getDescription());
-            log.setTo(updateTask.getDescription());
+            log.setFromValue(originTask.getDescription());
+            log.setToValue(updateTask.getDescription());
             logs.add(log);
         }
 
@@ -153,9 +160,9 @@ public class TaskService {
             var versions =  versionService.getByIds(Arrays.asList(originTask.getVersionId(),updateTask.getVersionId()));
             for (var version : versions){
                 if(version.getId().equals(originTask.getVersionId())){
-                    log.setFrom(originTask.getVersionId());
+                    log.setFromValue(originTask.getVersionId());
                 }else{
-                    log.setTo(updateTask.getVersionId());
+                    log.setToValue(updateTask.getVersionId());
                 }
             }
             logs.add(log);
@@ -165,8 +172,8 @@ public class TaskService {
             TaskChangeLog log = new TaskChangeLog();
             log.setId(updateTask.getTenantId() + timeTag + NanoIdUtils.randomNanoId());
             log.setName("tags");
-            log.setFrom( originTask.tags);
-            log.setTo(updateTask.tags);
+            log.setFromValue( originTask.tags);
+            log.setToValue(updateTask.tags);
             logs.add(log);
         }
 
@@ -174,14 +181,15 @@ public class TaskService {
             TaskChangeLog log = new TaskChangeLog();
             log.setId(updateTask.getTenantId() + timeTag + NanoIdUtils.randomNanoId());
             log.setName("duedate");
-            log.setFrom(DateUtils.parseCommonDateStr(originTask.getDuedate()));
-            log.setTo(DateUtils.parseCommonDateStr(updateTask.getDuedate()));
+            log.setFromValue(DateUtils.parseCommonDateStr(originTask.getDuedate()));
+            log.setToValue(DateUtils.parseCommonDateStr(updateTask.getDuedate()));
             logs.add(log);
         }
 
         if (CollectionUtils.isEmpty(logs)) {
             return;
         }
+
 
         logs.forEach(i -> {
             i.setUserId(operateUser);

@@ -9,11 +9,10 @@ import java.util.Date;
 @Data
 @Entity
 public class TaskChangeLog extends AbstractEntity {
-
     public String taskId;
     public String userId;
     public String name;
-    public String from;
-    public String to;
+    public String fromValue;
+    public String toValue;
     public Date operateTime;
 }

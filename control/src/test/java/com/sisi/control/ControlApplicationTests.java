@@ -1,8 +1,10 @@
 package com.sisi.control;
 
-import com.sisi.control.context.ContextHolder;
-import com.sisi.control.context.ControlContext;
-import com.sisi.control.model.task.TaskSearchParam;
+import com.sisi.control.model.task.Task;
+import com.sisi.control.mq.MQService;
+import com.sisi.control.mq.MQType;
+import com.sisi.control.mq.model.TaskMessage;
+import com.sisi.control.mq.mqconfig.MQConfig;
 import com.sisi.control.repository.impl.UserDao;
 import com.sisi.control.service.TaskService;
 import com.sisi.control.utils.token.TokenUtil;
@@ -24,6 +26,12 @@ class ControlApplicationTests {
     @Autowired
     TaskService taskService;
 
+    @Autowired
+    MQConfig MQConfig;
+
+    @Autowired
+    MQService mqService;
+
     @Test
     void contextLoads() {
        // var c = tokenUtil.getToken("aa","cc");
@@ -33,8 +41,13 @@ class ControlApplicationTests {
       //  ContextHolder.setContext(new ControlContext("1","1","1"));
 //        var u = userDao.getUserByUserName("ye");
        // TaskSearchParam param = new TaskSearchParam();
+        System.out.println(MQConfig.isEnableMQ());
         System.out.println(NanoIdUtils.randomNanoId());
-        System.out.println(UUID.randomUUID().toString());
+        System.out.println(Thread.currentThread().getName());
+        TaskMessage message = new TaskMessage();
+        message.mqType = MQType.TaskUpdate;
+        message.task = new Task();
+        mqService.publishTaskMsg(message);
        // param.setProjectId("S");
        // var res = taskService.getTaskList(param);
         System.out.println("111");
