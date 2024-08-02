@@ -1,12 +1,10 @@
 package com.sisi.control.mq.consumer;
 
 import com.sisi.control.context.ContextHolder;
-import com.sisi.control.model.task.Task;
-import com.sisi.control.mq.model.ControlMessage;
 import com.sisi.control.mq.MQType;
 import com.sisi.control.mq.model.TaskMessage;
 import com.sisi.control.mq.mqconfig.QueueConst;
-import com.sisi.control.service.TaskService;
+import com.sisi.control.service.task.TaskService;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;

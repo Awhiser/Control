@@ -1,7 +1,6 @@
-package com.sisi.control.service;
+package com.sisi.control.service.task;
 
 import com.sisi.control.context.ContextHolder;
-import com.sisi.control.context.ControlContext;
 import com.sisi.control.model.PageView;
 import com.sisi.control.model.response.Response;
 import com.sisi.control.model.task.*;
@@ -10,6 +9,9 @@ import com.sisi.control.mq.MQService;
 import com.sisi.control.mq.MQType;
 import com.sisi.control.mq.model.TaskMessage;
 import com.sisi.control.repository.impl.TaskDao;
+import com.sisi.control.service.ProjectService;
+import com.sisi.control.service.UserService;
+import com.sisi.control.service.VersionService;
 import com.sisi.control.utils.DateUtils;
 import com.soundicly.jnanoidenhanced.jnanoid.NanoIdUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,13 +107,9 @@ public class TaskService {
     }
 
     public Task update(Task task){
-        //update change Log
         var oldTask = taskDao.findById(task.getId());
         var res = taskDao.save(task);
-        //todo 异步
-
         mqService.publishTaskMsg(new TaskMessage(MQType.TaskUpdate,task,oldTask));
-          // updateChangeLog(originTask,task,ContextHolder.getContext().getToken().getUserId());
         return res;
     }
 

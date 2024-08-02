@@ -2,7 +2,7 @@ package com.sisi.control.controller;
 
 import com.sisi.control.model.response.Response;
 import com.sisi.control.model.tasktype.TaskType;
-import com.sisi.control.service.TaskTypeService;
+import com.sisi.control.service.task.TaskTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

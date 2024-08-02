@@ -1,13 +1,9 @@
 package com.sisi.control.repository.impl;
 
-import com.sisi.control.context.ContextHolder;
 import com.sisi.control.model.ProjectMember.ProjectMember;
 import com.sisi.control.repository.ProjectMemberRepository;
-import com.sisi.control.repository.TaskRepository;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
+import com.sisi.control.utils.jpatool.JPACondition;
 import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 
@@ -20,21 +16,13 @@ public class ProjectMemberDao extends AbstractDao<ProjectMember, ProjectMemberRe
     }
 
     public List<ProjectMember> getByProjectId(String projectId) {
-        Specification<ProjectMember> specification = (root, query, builder) -> {
-                Predicate predicate = builder.equal(root.get("projectId"),  projectId);
-                return builder.and(predicate);
-        };
-
-        return findBySpecification(specification);
+        Specification<ProjectMember> sp = JPACondition.<ProjectMember>builder().eq( ProjectMember::getProjectId, projectId).build();
+        return findBySpecification(sp);
     }
 
     public List<ProjectMember> getByUserId(String userId) {
-        Specification<ProjectMember> specification = (root, query, builder) -> {
-            Predicate predicate = builder.equal(root.get("userId"),  userId);
-            return builder.and(predicate);
-        };
-
-        return findBySpecification(specification);
+        Specification<ProjectMember> sp = JPACondition.<ProjectMember>builder().eq(ProjectMember::getUserId, userId).build();
+        return findBySpecification(sp);
     }
 
     public boolean exist(String userId,String projectId){
@@ -43,6 +31,10 @@ public class ProjectMemberDao extends AbstractDao<ProjectMember, ProjectMemberRe
             Predicate predicate2 = builder.equal(root.get("userId"),  userId);
             return builder.and(predicate,predicate2);
         };
+        JPACondition.<ProjectMember>builder()
+                .eq(ProjectMember::getProjectId,projectId)
+                .eq(ProjectMember::getUserId,userId)
+                .build();
         return repo.exists(specification);
     }
 

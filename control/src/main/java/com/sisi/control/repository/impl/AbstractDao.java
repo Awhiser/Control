@@ -141,7 +141,6 @@ public class AbstractDao<Entity extends AbstractEntity, Repo extends JpaReposito
     public Page<Entity> findByPage(Specification specification,AbstractSearch params){
         if(!CollectionUtils.isEmpty(params.getIds())) {
             Specification<Entity> idSp = (root, query, builder) -> {
-                List<Predicate> predicates = new ArrayList<>();
                 if (params.getIds().size() == 1) {
                     Predicate predicate = builder.equal(root.get("id"), params.getIds().get(0));
                     return  builder.and(predicate);
