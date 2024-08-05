@@ -26,12 +26,7 @@ public class ProjectMemberDao extends AbstractDao<ProjectMember, ProjectMemberRe
     }
 
     public boolean exist(String userId,String projectId){
-        Specification<ProjectMember> specification = (root, query, builder) -> {
-            Predicate predicate = builder.equal(root.get("projectId"),  projectId);
-            Predicate predicate2 = builder.equal(root.get("userId"),  userId);
-            return builder.and(predicate,predicate2);
-        };
-        JPACondition.<ProjectMember>builder()
+        var specification =  JPACondition.<ProjectMember>builder()
                 .eq(ProjectMember::getProjectId,projectId)
                 .eq(ProjectMember::getUserId,userId)
                 .build();

@@ -6,6 +6,7 @@ import com.sisi.control.model.AbstractSearch;
 import com.sisi.control.model.PageView;
 import com.sisi.control.model.task.Task;
 import com.sisi.control.model.user.UserInfo;
+import com.sisi.control.utils.jpatool.JPACondition;
 import com.sisi.control.utils.log.LogHelper;
 import io.micrometer.common.KeyValues;
 import jakarta.persistence.EntityManager;
@@ -69,7 +70,7 @@ public class AbstractDao<Entity extends AbstractEntity, Repo extends JpaReposito
     }
 
     public List<Entity> findBySpecificationWithDel(Specification specification){
-        return repo.findAll(specification.and(getTenantIdAndIsDelete(0)));
+        return repo.findAll(specification.and(getTenantIdAndIsDelete(1)));
     }
 
     public void deleteById(String id) {
@@ -93,73 +94,34 @@ public class AbstractDao<Entity extends AbstractEntity, Repo extends JpaReposito
     }
 
     public Specification<Entity> getIdsSpecification(List<String> ids) {
-        String tenantId = ContextHolder.getContext().getTenantId();
-
-        Specification<Entity> specification = new Specification<Entity>() {
-            @Override
-            public Predicate toPredicate(Root<Entity> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
-                List<Predicate> predicates = new ArrayList<>();
-                if (ids.size() == 1) {
-                    predicates.add(builder.equal(root.get("id"), ids.get(0)));
-                }else{
-                    CriteriaBuilder.In<Object> in = builder.in(root.get("id"));
-                    for (String id : ids) {
-                        in.value(id);
-                    }
-                    predicates.add(in);
-                }
-                predicates.add(builder.equal(root.get("tenantId"), tenantId));
-                predicates.add(builder.equal(root.get("isDelete"), false));
-
-                Predicate[] array = new Predicate[predicates.size()];
-                predicates.toArray(array);
-                return builder.and(array);
-            }
-        };
+        JPACondition<Entity> jpaCondition = new JPACondition<>();
+        if (ids.size() == 1) {
+            jpaCondition.eq(Entity::getId, ids.get(0));
+        } else {
+            jpaCondition.in(Entity::getId, ids);
+        }
+        var specification = jpaCondition.build().and(getTenantIdAndIsDelete(-1));
         return specification;
     }
 
     public Specification<Entity> getTenantIdAndIsDelete(int isDelete){
-        Specification<Entity> specification = new Specification<Entity>() {
-            @Override
-            public Predicate toPredicate(Root<Entity> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
-                Predicate predicate02 = builder.equal(root.get("tenantId"),  ContextHolder.getContext().getTenantId());
-
-                if(isDelete == 1){
-                    Predicate predicate03 = builder.equal(root.get("isDelete"), true);
-                    return builder.and(predicate02, predicate03);
-                }else if(isDelete == -1){
-                    Predicate predicate03 = builder.equal(root.get("isDelete"), false);
-                    return builder.and(predicate02, predicate03);
-                }
-                return builder.and(predicate02);
-            }
-        };
-        return specification;
+        var sp = new JPACondition<Entity>()
+                .eq(Entity::getTenantId,ContextHolder.getContext().tenantId)
+                .eq(Entity::getIsDelete,isDelete == 1 ? true : false)
+                .build();
+        return sp;
     }
 
     public Page<Entity> findByPage(Specification specification,AbstractSearch params){
         if(!CollectionUtils.isEmpty(params.getIds())) {
-            Specification<Entity> idSp = (root, query, builder) -> {
-                if (params.getIds().size() == 1) {
-                    Predicate predicate = builder.equal(root.get("id"), params.getIds().get(0));
-                    return  builder.and(predicate);
-                }
-                    CriteriaBuilder.In<Object> in = builder.in(root.get("id"));
-                    for (String id : params.getIds()) {
-                        in.value(id);
-                    }
-
-                    return  builder.and(in);
-            };
-            specification = specification.and(idSp);
+            specification = specification.and(getIdsSpecification(params.getIds()));
         }
         var page =repo.findAll(specification.and(getTenantIdAndIsDelete(-1)),params.getPageRequest());
         return page;
     }
 
     public Page<Entity> findByPageWithDel(Specification specification,PageRequest pageRequest){
-        var page = repo.findAll(specification.and(getTenantIdAndIsDelete(0)),pageRequest);
+        var page = repo.findAll(specification.and(getTenantIdAndIsDelete(1)),pageRequest);
         return page;
     }
 

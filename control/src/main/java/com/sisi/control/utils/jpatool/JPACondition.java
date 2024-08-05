@@ -72,6 +72,14 @@ public class JPACondition<T> {
         return this;
     }
 
+    public JPACondition<T> in(IJPAFieldGetter<T> field, List values){
+        if(values.size() == 1){
+            return eq(field,values.get(0));
+        }
+        conditions.add(new Condition(ConditionType.in,field,values));
+        return this;
+    }
+
     public JPACondition<T> like(String field, Object value){
         conditions.add(new Condition(ConditionType.like,field,value));
         return this;

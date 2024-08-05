@@ -6,6 +6,7 @@ import com.sisi.control.model.task.TaskSearchParam;
 import com.sisi.control.model.user.UserInfo;
 import com.sisi.control.model.user.UserSearchParam;
 import com.sisi.control.repository.UserRepository;
+import com.sisi.control.utils.jpatool.JPACondition;
 import jakarta.persistence.Tuple;
 import jakarta.persistence.criteria.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,44 +36,21 @@ public class UserDao extends AbstractDao<UserInfo,UserRepository> {
 
 
     public UserInfo getUserByUserName(String userName){
-
-        Specification<UserInfo> specification = new Specification<UserInfo>() {
-            @Override
-            public Predicate toPredicate(Root<UserInfo> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
-                return builder.and(builder.equal(root.get("name"), userName));
-            }
-        };
-
-        return findOneBySpecification(specification);
+        Specification<UserInfo> sp = JPACondition.<UserInfo>builder().eq(UserInfo::getName, userName).build();
+        return findOneBySpecification(sp);
     }
 
 
     public Page<UserInfo> getUserList(UserSearchParam param){
-        Specification<Task> sp = (root,query,builder) ->{
-            List<Predicate> predicates = new ArrayList<>();
-            if(StringUtils.hasText(param.getName())){
-                var nameP =builder.like(root.get("name"), "%" + param.getName()+ "%" );
-                var displayNameP = builder.like(root.get("displayName"), "%" + param.getName()+ "%" );
-                predicates.add(builder.or(nameP , displayNameP))  ;
-            }
-            if(StringUtils.hasText(param.getDisplayName())){
-                predicates.add(builder.like(root.get("displayName"), "%" + param.getDisplayName()+ "%" ));
-            }
-            Predicate[] arr = new Predicate[predicates.size()];
-            return builder.and( predicates.toArray(arr) );
-        };
-        return findByPage(sp,param);
+        var jpaCondition =  new JPACondition<UserInfo>();
+        if(StringUtils.hasText(param.getName())){
+            jpaCondition.like(UserInfo::getName, "%" + param.getName()+ "%" );
+        }
+        if(StringUtils.hasText(param.getDisplayName())){
+            jpaCondition.like(UserInfo::getDisplayName, "%" + param.getDisplayName()+ "%" );
+        }
+
+        return findByPage(jpaCondition.build(),param);
     }
-
-
-
-//
-//    private UserRepository repository;
-//
-//    @Autowired
-//    public UserRepositoryImpl(UserRepository repository) {
-//       this.repository = (repository);
-//    }
-
 
 }

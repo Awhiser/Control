@@ -4,6 +4,7 @@ import com.sisi.control.model.task.Task;
 import com.sisi.control.model.version.Version;
 import com.sisi.control.model.version.VersionSearchParam;
 import com.sisi.control.repository.VersionRepository;
+import com.sisi.control.utils.jpatool.JPACondition;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
@@ -20,16 +21,7 @@ public class VersionDao  extends AbstractDao<Version, VersionRepository>{
     }
 
     public Page<Version> search(VersionSearchParam param){
-        Specification<Task> sp = (root, query, builder) ->{
-            List<Predicate> predicates = new ArrayList<>();
-            if(StringUtils.hasText(param.getName())){
-                var nameP =builder.like(root.get("name"), "%" + param.getName()+ "%" );
-                predicates.add(nameP)  ;
-            }
-            Predicate[] arr = new Predicate[predicates.size()];
-            return builder.and( predicates.toArray(arr) );
-        };
-
+        var sp = JPACondition.<Version>builder().like(Version::getName,"%" + param.getName()+ "%").build();
         return findByPage(sp,param);
     }
 }
