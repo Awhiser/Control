@@ -35,7 +35,7 @@ public class ProjectMemberService {
             if(projectMemberDao.exist(projectMember.getUserId(), projectMember.getProjectId())){
                 return null;
             }
-            projectMember.setId( ContextHolder.getContext().tenantId + NanoIdUtils.randomNanoId());
+            projectMember.setId(ContextHolder.getContext().tenantId + NanoIdUtils.randomNanoId());
             projectMember.setTenantId(ContextHolder.getContext().getTenantId());
             projectMember.setIsDelete(false);
         }

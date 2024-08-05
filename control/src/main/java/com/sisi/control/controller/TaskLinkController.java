@@ -35,7 +35,7 @@ public class TaskLinkController {
 
     @GetMapping("/getByTaskId")
     public Response getByTaskId(@RequestParam String taskId){
-        var res = taskLinkService.getById(taskId);
+        var res = taskLinkService.getByTaskId(taskId);
         return Response.success(res);
     }
 
