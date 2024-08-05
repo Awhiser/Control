@@ -35,10 +35,10 @@ public class JPACondition<T> {
                 var field = condition.fieldFn == null ?  condition.field : JPAFieldConvert.convertToFieldName(condition.fieldFn);
                 var type = condition.conditionType;
                 if(type == ConditionType.eq){
-                    predicates.add(builder.equal(root.get(field), condition.value))  ;
+                    predicates.add(builder.equal(root.get(field), condition.value)) ;
                 }
                 if(type == ConditionType.like){
-                    predicates.add(builder.like(root.get("name"), (String) condition.value ));
+                    predicates.add(builder.like(root.get(field), (String) condition.value ));
                 }
                 if(type == ConditionType.in){
                     CriteriaBuilder.In<Object> in = builder.in(root.get(field));
