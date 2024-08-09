@@ -43,5 +43,11 @@ public class CommentController {
         return Response.success(res);
     }
 
+    @PostMapping("/getByIds")
+    public Response<List<Comment>> getByIds(@RequestBody List<String> ids) {
+        var res = commentService.getByIds(ids);
+        return Response.success(res);
+    }
+
 
 }

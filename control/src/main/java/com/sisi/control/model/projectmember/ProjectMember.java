@@ -1,4 +1,4 @@
-package com.sisi.control.model.ProjectMember;
+package com.sisi.control.model.projectmember;
 
 import com.sisi.control.model.AbstractEntity;
 import jakarta.persistence.Entity;

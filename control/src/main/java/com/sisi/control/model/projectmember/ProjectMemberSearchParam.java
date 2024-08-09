@@ -1,4 +1,4 @@
-package com.sisi.control.model.ProjectMember;
+package com.sisi.control.model.projectmember;
 
 import com.sisi.control.model.AbstractSearch;
 import lombok.Data;

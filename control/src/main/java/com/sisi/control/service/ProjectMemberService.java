@@ -2,9 +2,9 @@ package com.sisi.control.service;
 
 import com.sisi.control.context.ContextHolder;
 import com.sisi.control.model.PageView;
-import com.sisi.control.model.ProjectMember.ProjectMember;
-import com.sisi.control.model.ProjectMember.ProjectMemberSearchParam;
-import com.sisi.control.model.ProjectMember.ProjectMemberVo;
+import com.sisi.control.model.projectmember.ProjectMember;
+import com.sisi.control.model.projectmember.ProjectMemberSearchParam;
+import com.sisi.control.model.projectmember.ProjectMemberVo;
 import com.sisi.control.model.user.UserSearchParam;
 import com.sisi.control.repository.impl.ProjectMemberDao;
 import com.soundicly.jnanoidenhanced.jnanoid.NanoIdUtils;

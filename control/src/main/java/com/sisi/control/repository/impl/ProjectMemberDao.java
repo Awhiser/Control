@@ -1,9 +1,8 @@
 package com.sisi.control.repository.impl;
 
-import com.sisi.control.model.ProjectMember.ProjectMember;
+import com.sisi.control.model.projectmember.ProjectMember;
 import com.sisi.control.repository.ProjectMemberRepository;
 import com.sisi.control.utils.jpatool.JPACondition;
-import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 

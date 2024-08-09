@@ -1,8 +1,8 @@
 package com.sisi.control.controller;
 
 import com.sisi.control.model.PageView;
-import com.sisi.control.model.ProjectMember.ProjectMember;
-import com.sisi.control.model.ProjectMember.ProjectMemberSearchParam;
+import com.sisi.control.model.projectmember.ProjectMember;
+import com.sisi.control.model.projectmember.ProjectMemberSearchParam;
 import com.sisi.control.model.project.Project;
 import com.sisi.control.model.project.ProjectSearchParam;
 import com.sisi.control.model.response.Response;

@@ -2,7 +2,7 @@ package com.sisi.control.service;
 
 import com.sisi.control.context.ContextHolder;
 import com.sisi.control.model.PageView;
-import com.sisi.control.model.ProjectMember.ProjectMember;
+import com.sisi.control.model.projectmember.ProjectMember;
 import com.sisi.control.model.project.Project;
 import com.sisi.control.model.project.ProjectSearchParam;
 import com.sisi.control.model.project.ProjectVo;
