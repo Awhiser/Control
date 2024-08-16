@@ -7,14 +7,17 @@ const projectService = {
     save(params) {
         return post("/project/save", params);
     },
-    getList(params) {
-        return post("/project/getList", params);
+    getProjectPage(params) {
+        return post("/project/getProjectPage", params);
     },
     delete(id) {
         return get("/project/delete?id=" + id);
     },
     update(params) {
         return post("/project/update", params);
+    },
+    getProjectByUserId(userId){
+        return get("/project/getProjectByUserId?userId=" + userId);
     },
 
     saveProjectMember(params){

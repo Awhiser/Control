@@ -1,6 +1,6 @@
 <template>
   <a-layout>
-    <HeaderLayOut :projectId="projectId"> </HeaderLayOut>
+    <HeaderLayOut :projectId="projectId" > </HeaderLayOut>
     <a-layout>
       <a-layout-sider width="200">
         <a-menu v-model:selectedKeys="selectedKeys1" v-model:openKeys="openKeys" mode="inline"
@@ -47,6 +47,7 @@ import { ref, onMounted, watch } from 'vue';
 import CreateTask from '@/components/CreateTask.vue'
 import HeaderLayOut from '@/components/HeaderLayOut.vue';
 import { useRouter } from 'vue-router'
+import projectService from '@/api/projectservice';
 const router = useRouter();
 const props = defineProps({
   projectId: String
@@ -57,14 +58,23 @@ const selectedKeys1 = ref(['1']);
 const openKeys = ref(['sub1']);
 
 onMounted(() => {
-  if (props.projectId == 'undefined') {
-    return;
-  }
-  router.push({ name: 'tasks', params: { projectId: props.projectId } });
+  // console.log(props.projectId)
+  // if (props.projectId == 'undefined') {
+  //   let userId = localStorage.getItem('userId');
+  //   projectService.getProjectByUserId(userId).then(res => {
+  //     if (res.data.length == 0) {
+  //       return;
+  //     }
+  //     selectedProjectName.value = res.data[0].name;
+  //     //跳转到tasks页面
+  //     router.push({ name: 'main', params: { projectId: res.data[0].id} });
+  //   })
+  // }
+
 })
 
 watch(props, (value) => {
-  router.push({ name: 'tasks', params: { projectId: value.projectId } });
+  // router.push({ name: 'tasks', params: { projectId: value.projectId } });
 })
 
 

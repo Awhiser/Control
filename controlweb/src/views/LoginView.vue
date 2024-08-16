@@ -33,7 +33,9 @@
 import { ref } from 'vue'
 import userService from '@/api/userservice.js' 
 import { message } from 'ant-design-vue';
-import { useRouter  } from 'vue-router'
+import { useRouter  } from 'vue-router';
+
+import projectService from '@/api/projectservice';
 const username = ref('')
 const password = ref('')
 let actionName = ref("Login") ;
@@ -46,10 +48,14 @@ function handleAction() {
    // console.log(password)
    if(actionName.value == 'Login') {
         userService.login({'name':username.value,'password':password.value}).then(res=>{
-            localStorage.setItem('user',res.data.userInfo)
+            localStorage.setItem('userId', res.data.userInfo.id)
             localStorage.setItem('token',res.data.token)
-            let projectId =  localStorage.getItem("projectId") ?? "undefined";
-            router.push({ name: "main" ,params:{projectId: projectId }})
+            projectService.getProjectByUserId(res.data.userInfo.id).then(res => {
+                if (res.data.length == 0) {
+                    router.push({ name: "main" ,params:{projectId:  "undefined" }})
+                }
+                router.push({ name: 'main', params: { projectId: res.data[0].id} });
+            })
         })
    }
 

@@ -36,6 +36,7 @@ const router = createRouter({
     },
     {
       path:'/sys',
+      redirect: "/sys/project",
       name:'sys',
       component: () => import('../views/sysSetting/SysSettingView.vue'),
       children:[

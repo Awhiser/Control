@@ -46,14 +46,12 @@ public class ProjectService {
         return projectDao.getProjectsByIds(projectIds);
     }
 
-
-    public PageView<ProjectVo> getProjectList(ProjectSearchParam searchParam) {
+    public PageView<ProjectVo> getProjectPage(ProjectSearchParam searchParam) {
         var pageRes = projectDao.getProjectList(searchParam);
         List<ProjectVo> projectVos = new ArrayList<>();
         pageRes.stream().forEach(project -> {
             projectVos.add(new ProjectVo(project));
         });
-
 
         if(searchParam.isExtLeader()){
             List<String> userIds = pageRes.stream()
@@ -71,6 +69,7 @@ public class ProjectService {
                 project.getLeader().setDisplayName(user.getDisplayName());
             }
         }
+
         PageView<ProjectVo> pageView = new PageView(pageRes);
         pageView.setDataList(projectVos);
         return pageView;
@@ -82,11 +81,9 @@ public class ProjectService {
             return new ArrayList<>();
         }
         var projectIds = projectMembers.stream().map(ProjectMember::getProjectId).toList();
-        ProjectSearchParam searchParam = new ProjectSearchParam();
-        searchParam.setIds(projectIds);
-        searchParam.setDisablePage(true);
-        var project =  getProjectList(searchParam);
-        return project.getDataList();
+        var projects = getByIds(projectIds);
+        var res = projects.stream().map(i->new ProjectVo(i)).toList();
+        return res;
     }
 
     public void delete(String id){
@@ -98,4 +95,13 @@ public class ProjectService {
         project.updateField(update);
        return projectDao.save(project);
     }
+
+    public List<Project> getByIds(List<String> ids){
+        return projectDao.findByIds(ids);
+    }
+
+    public Project getById(String id) {
+        return projectDao.findById(id);
+    }
+
 }

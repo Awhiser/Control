@@ -17,10 +17,13 @@ public class ProjectDao extends AbstractDao<Project, ProjectRepository>{
     }
 
     public Page<Project> getProjectList(ProjectSearchParam param){
-        var sp = JPACondition.<Project>builder()
-                .like(Project::getName,"%" + param.getName()+ "%")
-                .build();
-        return findByPage(sp,param);
+        var sp = JPACondition.<Project>builder();
+                if(StringUtils.hasText(param.getName()) ){
+                    sp.like(Project::getName,"%" + param.getName()+ "%");
+                }
+
+
+        return findByPage(sp.build(),param);
     }
 
     public List<Project> getProjectsByIds(List<String> ids){

@@ -110,7 +110,7 @@ onMounted(() => {
 })
 
 function loadData() {
-  projectService.getList({ pageSize: pageSize.value, pageIndex: current.value - 1, extLeader: true, name: searchName.value }).then(res => {
+  projectService.getProjectPage({ pageSize: pageSize.value, pageIndex: current.value - 1, extLeader: true, name: searchName.value }).then(res => {
     data.value = res.data.dataList;
 
     total.value = res.data.totalElement;

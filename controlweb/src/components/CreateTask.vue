@@ -114,7 +114,7 @@ const task = ref({
 const open = ref<boolean>(false);
 
 const showModal = () => {
-  projectService.getList();
+  //projectService.getList();
   //加载资源
   open.value = true;
 };

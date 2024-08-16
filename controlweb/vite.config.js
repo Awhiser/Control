@@ -19,7 +19,7 @@ export default defineConfig({
     open: true,  //表示在启动开发服务器时，会自动打开浏览器并访问指定的地址
     proxy: {
       '/api': {
-        target: 'http://localhost:8088', //接口域名
+        target: 'http://localhost:8099', //接口域名
         changeOrigin: true,       //是否跨域
         ws: true,            //是否代理 websockets
         secure: true,          //是否https接口

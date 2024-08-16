@@ -1,19 +1,19 @@
 <template>
     <a-modal v-model:open="open" :footer="null" width="1100px" :title="i18n.global.t('button.member')">
-      
+
         <a-divider />
 
- 
-  
-    <a-flex  justify="space-between">
-    
-        <a-input-search  style="width: 200px;" :placeholder="i18n.global.t('input.searchName')" enter-button />
-    
-        <a-button type="primary"  @click="showAddModal"  > {{$t('button.add')}} </a-button>
-    
-    </a-flex >
-  
-      
+
+
+        <a-flex justify="space-between">
+
+            <a-input-search style="width: 200px;" :placeholder="i18n.global.t('input.searchName')" enter-button />
+
+            <a-button type="primary" @click="showAddModal"> {{ $t('button.add') }} </a-button>
+
+        </a-flex>
+
+
         <a-divider />
         <div style="height:800px; overflow-y:auto">
             <a-table :columns="columns" :data-source="data" :pagination="false">
@@ -34,7 +34,7 @@
                         <span>
                             <a>{{ $t('button.edit') }}</a>
                             <a-divider type="vertical" />
-                            <a  @click="deleteMember(record.id)"  >{{ $t('button.delete') }}</a>
+                            <a @click="deleteMember(record.id)">{{ $t('button.delete') }}</a>
 
                         </span>
                     </template>
@@ -53,13 +53,12 @@
 
 
 
-    <a-modal :open="openAdd" :closable="false" :title="i18n.global.t('button.add')" :ok-text="i18n.global.t('button.add')" @cancel="closeAdd" @ok="addMember">
+    <a-modal :open="openAdd" :closable="false" :title="i18n.global.t('button.add')" :ok-text="i18n.global.t('button.add')"
+        @cancel="closeAdd" @ok="addMember">
         <a-divider />
-        
-        用户：    <UserSelect v-model:userId="addUserId" ></UserSelect>
-</a-modal>
-  
 
+        用户： <UserSelect v-model:userId="addUserId"></UserSelect>
+    </a-modal>
 </template>
 <script lang="ts"  setup>
 
@@ -90,7 +89,7 @@ const columns = [
         width: 600
     },
     {
-        title:  i18n.global.t('table.operation'),
+        title: i18n.global.t('table.operation'),
         key: 'action',
     },
 ];
@@ -120,8 +119,8 @@ let data = ref([
 ]);
 
 
-watch(open,(value) => {
-    if(value == true){
+watch(open, (value) => {
+    if (value == true) {
         loadData()
     }
 
@@ -129,34 +128,35 @@ watch(open,(value) => {
 
 })
 
-function loadData(){
-    projectService.getProjectMemberList({projectId:projectId.value}).then(res=>{
+function loadData() {
+    projectService.getProjectMemberList({ projectId: projectId.value }).then(res => {
         data.value = res.data.dataList;
     })
 }
 
 
 
-function showAddModal(){
+function showAddModal() {
     openAdd.value = true;
 }
 
-function addMember(){
-    projectService.saveProjectMember({projectId:projectId.value,userId:addUserId.value}).then(res=>{
-        console.log(res)
+function addMember() {
+    projectService.saveProjectMember({ projectId: projectId.value, userId: addUserId.value }).then(res => {
+       
         openAdd.value = false;
+        addUserId.value = null;
         loadData();
     })
 }
 
-function deleteMember(id){
-    projectService.deleteProjectMember(id).then(res=>{
-      data.value =  data.value.filter(i=>i.id != id);
+function deleteMember(id) {
+    projectService.deleteProjectMember(id).then(res => {
+        data.value = data.value.filter(i => i.id != id);
     })
 }
 
-function closeAdd(){
-    console.log(addUserId.value)
+function closeAdd() {
+   
     openAdd.value = false;
 }
 

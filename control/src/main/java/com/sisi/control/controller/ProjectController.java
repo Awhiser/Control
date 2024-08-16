@@ -1,6 +1,7 @@
 package com.sisi.control.controller;
 
 import com.sisi.control.model.PageView;
+import com.sisi.control.model.project.ProjectVo;
 import com.sisi.control.model.projectmember.ProjectMember;
 import com.sisi.control.model.projectmember.ProjectMemberSearchParam;
 import com.sisi.control.model.project.Project;
@@ -10,6 +11,8 @@ import com.sisi.control.service.ProjectMemberService;
 import com.sisi.control.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/project")
@@ -31,17 +34,12 @@ public class ProjectController {
     }
 
 
-    @PostMapping("/getList")
-    public Response getList(@RequestBody ProjectSearchParam searchParam){
-        var res =  projectService.getProjectList(searchParam);
+    @PostMapping("/getProjectPage")
+    public Response getProjectPage(@RequestBody ProjectSearchParam searchParam){
+        var res =  projectService.getProjectPage(searchParam);
         return Response.success(res);
     }
 
-    @GetMapping("/getProjectByUserId")
-    public Response getProjectByUserId(@RequestParam String userId) {
-
-        return null;
-    }
 
     @GetMapping("/delete")
     public Response delete(@RequestParam String id){
@@ -55,6 +53,12 @@ public class ProjectController {
         var res = projectService.update(project);
         return Response.success(res);
 
+    }
+
+    @GetMapping("/getProjectByUserId")
+    public Response<List<ProjectVo>> getProjectByUserId(@RequestParam String userId){
+       var res =  projectService.getProjectByUserId(userId);
+       return Response.success(res);
     }
 
     @PostMapping("/projectMemmber/save")
