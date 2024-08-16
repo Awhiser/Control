@@ -8,6 +8,6 @@ public class CommonUtils {
 
     public static String idGenerate() {
 
-        return DateUtils.parseCommonDateStr(new Date()).trim() + NanoIdUtils.randomNanoId();
+        return DateUtils.parseIdDateStr(new Date()) + NanoIdUtils.randomNanoId();
     }
 }

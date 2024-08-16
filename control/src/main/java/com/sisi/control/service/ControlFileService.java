@@ -3,6 +3,8 @@ package com.sisi.control.service;
 import com.sisi.control.context.ContextHolder;
 import com.sisi.control.model.controlfile.ControlFile;
 import com.sisi.control.repository.impl.ControlFileDao;
+import com.sisi.control.utils.CommonUtils;
+import com.sisi.control.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -22,13 +24,14 @@ public class ControlFileService {
         this.controlFileDao = controlFileDao;
     }
 
-    private ControlFile create(MultipartFile file, String taskId) {
+    public ControlFile create(MultipartFile file, String taskId) {
         ControlFile controlFile = new ControlFile();
         controlFile.setCreateTime(new Date());
         controlFile.setName(file.getOriginalFilename());
         controlFile.setTaskId(taskId);
         controlFile.setTenantId(ContextHolder.getContext().getTenantId());
         controlFile.setIsDelete(false);
+        controlFile.setId(CommonUtils.idGenerate());
         var filePath = fileService.saveFile(file);
         if(StringUtils.hasText(filePath)) {
             controlFile.setUrl(filePath);

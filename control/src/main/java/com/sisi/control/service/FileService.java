@@ -1,8 +1,6 @@
 package com.sisi.control.service;
 
 import com.sisi.control.context.ContextHolder;
-import com.sisi.control.model.controlfile.ControlFile;
-import com.sisi.control.utils.CommonUtils;
 import com.sisi.control.utils.DateUtils;
 import com.sisi.control.utils.log.LogHelper;
 import com.soundicly.jnanoidenhanced.jnanoid.NanoIdUtils;
@@ -21,6 +19,8 @@ public class FileService {
 
 
     public File getFile(String path) {
+        //todo CustomerFileSore getFile
+
         File file = new File(rootPath+path);
         if(!file.exists()){
             return null;
@@ -39,7 +39,7 @@ public class FileService {
         String oldName = file.getOriginalFilename();
         String newName = NanoIdUtils.randomNanoId()+ oldName.substring(oldName.lastIndexOf("."));
 
-        //new FileDataS
+        //todo CustomerFileSore post传输文件流 给外部自定义接口
 
         try {
             // 文件保存

@@ -7,6 +7,7 @@ import com.sisi.control.mq.mqconfig.MQConfig;
 import com.sisi.control.repository.impl.TaskLinkDao;
 import com.sisi.control.repository.impl.UserDao;
 import com.sisi.control.service.task.TaskService;
+import com.sisi.control.utils.CommonUtils;
 import com.sisi.control.utils.token.TokenUtil;
 import com.soundicly.jnanoidenhanced.jnanoid.NanoIdUtils;
 import org.junit.jupiter.api.Test;
@@ -38,6 +39,8 @@ class ControlApplicationTests {
        // var c = tokenUtil.getToken("aa","cc");
       //  var a = userDao.findById("");
       //  var resp = Response.success(new UserInfo());
+
+        System.out.println(CommonUtils.idGenerate());
       //  var resp2 = Response.fail(new UserInfo());
         ContextHolder.setContext(new ControlContext("1"));
 //        var u = userDao.getUserByUserName("ye");
