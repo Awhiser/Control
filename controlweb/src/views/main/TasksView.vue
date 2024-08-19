@@ -42,7 +42,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import taskService from '@/api/taskservice';
-import { onMounted } from 'vue' 
+import { onMounted ,onUpdated} from 'vue' 
 import TaskDetails from '@/components/TaskDetails.vue'
 import i18n from '@/i18n';
 
@@ -110,17 +110,16 @@ let data = ref([
 
 
    onMounted(() => {
-      taskService.getTaskList({projectId:props.projectId}).then(res => {
-       
-        for(let i = 0 ; i < 50 ;i++ ){
-            data.value.push(...res.data.dataList) ;
-        }
-         
-        total.value = data.value.length;
-      })
    
+  })
 
-     // taskTable.$forceUpdate()
+  onUpdated(()=>{
+    //console.log(props.projectId)
+   // data.value = [];
+    taskService.getTaskList({projectId:props.projectId}).then(res => {
+          data.value = res.data.dataList ;
+          total.value = data.value.length;
+     })
   })
 
   function changeTable( pag,c,a){

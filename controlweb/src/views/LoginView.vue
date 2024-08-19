@@ -44,8 +44,7 @@ const router = useRouter();
 
 
 function handleAction() {
-   // console.log(username)
-   // console.log(password)
+
    if(actionName.value == 'Login') {
         userService.login({'name':username.value,'password':password.value}).then(res=>{
             localStorage.setItem('userId', res.data.userInfo.id)
@@ -60,16 +59,11 @@ function handleAction() {
    }
 
    if(actionName.value == 'Register'){
-    // message.success( {content: () => '注册成功,请登录', duration: 1,  style: {
-    //   marginTop: '20vh',
-    // } } );
     userService.register({'name':username.value,'password':password.value}).then(res=>{
-        // console.log("Register! ")
         message.success("注册成功,请登录");
         this.actionName.value = "Login"
     })
 
-   
    }
 
 }

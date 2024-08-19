@@ -25,7 +25,7 @@ export function get(url) {
 }
 
 export function httpAction(url, parameter, method) {
-    let user  = localStorage.getItem('user');
+   
     let token = localStorage.getItem('token')
 
     let header = {
@@ -45,7 +45,7 @@ export function httpAction(url, parameter, method) {
         {
             message.error(i18n.global.t(res.data.message),1);
             if(res.data.code == 405) {
-                localStorage.removeItem('user');
+                localStorage.removeItem('userId');
                 localStorage.removeItem('token');
                 router.push({ path: "/" })
             }

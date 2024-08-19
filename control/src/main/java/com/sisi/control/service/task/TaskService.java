@@ -88,7 +88,7 @@ public class TaskService {
     }
 
 
-    public CreateTaskVo getTaskParam(){
+    public CreateTaskVo getCreateParam(){
         CreateTaskVo vo = new CreateTaskVo();
         var projects =projectService.getProjectByUserId(ContextHolder.getContext().getToken().getUserId());
         vo.setProjectList(projects);

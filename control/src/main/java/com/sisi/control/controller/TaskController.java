@@ -40,8 +40,8 @@ public class TaskController {
     }
 
     @GetMapping("/getCreateParam")
-    public Response getTaskParam(){
-        var res = taskService.getTaskParam();
+    public Response getCreateParam(){
+        var res = taskService.getCreateParam();
         return Response.success(res);
     }
 

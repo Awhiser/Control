@@ -26,18 +26,23 @@ public class UserLoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         // 获取token
-        var uri = request.getRequestURI();
+
         String tenantId = request.getHeader("tenantid");
         String token = request.getHeader("token");
         var context = new ControlContext(tenantId);
         ContextHolder.setContext(context);
-        if(tenantId.equals("1")){
-            return true;
-        }
 
+        var uri = request.getRequestURI();
         if(uri.endsWith("/api/user/login") || uri.endsWith("/api/user/register") ){
             return true;
         }
+
+
+//        if(tenantId.equals("1")){
+//            return true;
+//        }
+
+
 
         if (StringUtils.isBlank(token) || (context.token = tokenUtil.containsToken(token) ) ==null  ){
             returnNoLogin(response);

@@ -68,9 +68,9 @@ router.beforeEach((to,from,next)=>{
   if(to.name == 'login'){
     next()
   }
-  let user  = localStorage.getItem('user');
+  //let user  = localStorage.getItem('userId');
   let token = localStorage.getItem('token')
-  if( token == null ||  user == null ){
+  if( token == null ){
     next({ name: 'login',query: { redirect: to.fullPath }})
   }
 

@@ -14,6 +14,9 @@ const taskService = {
     
     getTask(id){
         return get("/task/get?id="+id);
+    },
+    getCreateParams() {
+        return get("/task/getCreateParam");
     }
 
  
