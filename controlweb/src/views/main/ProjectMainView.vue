@@ -1,6 +1,6 @@
 <template>
   <a-layout>
-    <HeaderLayOut :projectId="projectId" > </HeaderLayOut>
+    <HeaderLayOut v-model:projectId="selectedProject" > </HeaderLayOut>
     <a-layout>
       <a-layout-sider width="200">
         <a-menu v-model:selectedKeys="selectedKeys1" v-model:openKeys="openKeys" mode="inline"
@@ -43,21 +43,24 @@
 </template>
 <script lang="ts" setup>
 import { SmileOutlined } from '@ant-design/icons-vue';
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, watch,onUpdated } from 'vue';
 import CreateTask from '@/components/CreateTask.vue'
 import HeaderLayOut from '@/components/HeaderLayOut.vue';
-import { useRouter } from 'vue-router'
+import { useRouter,useRoute } from 'vue-router'
 import projectService from '@/api/projectservice';
 const router = useRouter();
 const props = defineProps({
   projectId: String
 })
 
-
+const route = useRoute()
 const selectedKeys1 = ref(['1']);
 const openKeys = ref(['sub1']);
+const selectedProject = ref(null);
 
 onMounted(() => {
+  selectedProject.value = route.params.projectId
+ // console.log(props.projectId)
   // console.log(props.projectId)
   // if (props.projectId == 'undefined') {
   //   let userId = localStorage.getItem('userId');
@@ -73,9 +76,13 @@ onMounted(() => {
 
 })
 
-watch(props, (value) => {
-  // router.push({ name: 'tasks', params: { projectId: value.projectId } });
+onUpdated(()=>{
+ // selectedProject.value = route.params.projectId
+ 
+
 })
+
+
 
 
 

@@ -33,6 +33,13 @@ public class ProjectController {
         return Response.success();
     }
 
+    @GetMapping("/project")
+    public Response getProjectById(@RequestParam String id){
+        var res = projectService.getById(id);
+        return Response.success(res);
+
+    }
+
 
     @PostMapping("/getProjectPage")
     public Response getProjectPage(@RequestBody ProjectSearchParam searchParam){

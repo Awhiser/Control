@@ -34,7 +34,7 @@ export default {
         searchName:"输入名称搜索"
     },
     project:{
-        name:"项目名",
+        name:"项目",
         leader:"负责人"
     },
     projectMember:{

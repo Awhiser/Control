@@ -8,19 +8,9 @@
 
                 <div>
 
-                    <a-dropdown>
-                        <span style="font-size: 20px;color: white;" @click.prevent>
-                            {{ $t('project.name') }} - {{ projectName }}
-                            <DownOutlined />
-                        </span>
-
-                        <template #overlay>
-                            <a-menu @click="handleMenuClick">
-                                <a-menu-item v-for=" record of projectList" :key="record.id" :title="record.name">
-                                {{record.name }}</a-menu-item>
-                            </a-menu>
-                        </template>
-                    </a-dropdown>
+                    <a-select  v-model:value="projectId" style="width: 120px" @change="changeProject"  >
+                          <a-select-option  v-for=" record of projectList" :value="record.id">{{record.name}}</a-select-option>
+                   </a-select>
 
                 </div>
 
@@ -44,52 +34,33 @@
 </template>
 
 <script setup>
-import { DownOutlined } from '@ant-design/icons-vue';
 import projectService from '@/api/projectservice';
-import { ref, onMounted, onBeforeMount ,watch} from 'vue';
+import { ref, onMounted ,watch} from 'vue';
 import { useRouter } from 'vue-router'
 const router = useRouter();
-const props = defineModel({
-    projectId: String
-})
-
-const projectName= ref(null)
+const projectId = defineModel("projectId");
 
 const projectList = ref([])
-
 onMounted(() => {
-   // console.log(props.projectId)
-    if (props.projectId == 'undefined') {
-        return;
-    }
+    loadProjectList();
+})
 
-    let userId = localStorage.getItem('userId');
+function changeProject(e) {
+    router.push({ name: 'tasks', params: { projectId: e } })
 
+}
+
+function loadProjectList(){
+    let userId = localStorage.getItem("userId");
     projectService.getProjectByUserId(userId).then(res => {
         if (res.data.length == 0) {
             return;
         }
         projectList.value = res.data
-        for (let i = 0; i < res.data.length; i++) {
-            if (res.data[i].id == props.projectId) {
-                projectName.value = res.data[i].name;
-                break;
-            }
-        } 
     })
-})
-
-function handleMenuClick(e) {
-    projectName.value = e.item.title
-    localStorage.setItem("projectId", e.key)
-    router.push({ name: 'main', params: { projectId: e.key } })
-
 }
 
-watch(props, (value) => {
-    console.log(value)
-  // router.push({ name: 'tasks', params: { projectId: value.projectId } });
-})
+
 
 
 </script>

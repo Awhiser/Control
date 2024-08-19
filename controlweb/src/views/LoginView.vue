@@ -54,7 +54,7 @@ function handleAction() {
                 if (res.data.length == 0) {
                     router.push({ name: "main" ,params:{projectId:  "undefined" }})
                 }
-                router.push({ name: 'main', params: { projectId: res.data[0].id} });
+                router.push({ name: 'tasks', params: { projectId: res.data[0].id}},);
             })
         })
    }

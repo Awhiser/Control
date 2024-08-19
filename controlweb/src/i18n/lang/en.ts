@@ -34,7 +34,7 @@ export default {
         searchName:"input Name search"
     },
     project: {
-        name: "ProjectName",
+        name: "Project",
         leader: "Leader"
     },
     projectMember:{
