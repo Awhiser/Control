@@ -11,20 +11,26 @@
                 mode="inline"
                 :style="{ height: '100%', borderRight: 0 }"
             >
-                <a-menu-item key="1"> <RouterLink to="/sys/project"  >  {{$t('button.projectManager') }} </RouterLink>  </a-menu-item>
-                <!-- <a-menu-item key="2">option4</a-menu-item> -->
-
-
-
-                
+            
+            <a-menu-item key="1"> <RouterLink to="/sys/project"  >  {{$t('button.projectManager') }} </RouterLink>  </a-menu-item>
+              
             <a-sub-menu >
                 <template #title>
                  <span>
-               用户管理
-              </span>
+                  {{$t('setting.user') }}
+                 </span>
             </template>
                 <a-menu-item key="2">  <RouterLink to="/sys/user">  {{$t('button.userManager') }} </RouterLink>  </a-menu-item>
                 <a-menu-item key="3">  <RouterLink to="/sys/userconnector">  {{$t('button.userConnectorManager') }} </RouterLink> </a-menu-item>
+            </a-sub-menu>
+
+            <a-sub-menu >
+                <template #title>
+                 <span>
+                  {{$t('setting.task') }}
+                 </span>
+            </template>
+                <a-menu-item key="4">   <RouterLink to="/sys/taskType">  {{$t('setting.taskType') }} </RouterLink>   </a-menu-item>
             </a-sub-menu>
         
             </a-menu>

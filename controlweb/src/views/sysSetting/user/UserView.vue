@@ -61,7 +61,7 @@
 
 <script setup>
 
-import { ref, onMounted, onBeforeMount } from 'vue';
+import { ref, onBeforeMount } from 'vue';
 import i18n from '@/i18n/index';
 import CreateUser from '@/components/sys/user/CreateUser.vue'
 import EditUser from '@/components/sys/user/EditUser.vue'
@@ -112,10 +112,10 @@ onBeforeMount(() => {
 })
 
 function loadData() {
-  // userService.getList({ pageSize: pageSize.value, pageIndex: current.value - 1, name: searchName.value }).then(res => {
-  //   total.value = res.data.totalElement;
-  //   data.value = res.data.dataList;
-  // });
+  userService.getList({ pageSize: pageSize.value, pageIndex: current.value - 1, name: searchName.value }).then(res => {
+    total.value = res.data.totalElement;
+    data.value = res.data.dataList;
+  });
 }
 
 function onSearch() {

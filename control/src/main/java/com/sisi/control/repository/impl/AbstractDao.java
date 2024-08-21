@@ -26,6 +26,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 
@@ -128,6 +129,7 @@ public class AbstractDao<Entity extends AbstractEntity, Repo extends JpaReposito
     public Entity save(Entity entity){
         entity.setTenantId(ContextHolder.getContext().getTenantId());
         entity.setIsDelete(false);
+        entity.setUpdateTime(new Date());
         return  repo.save(entity);
     }
 

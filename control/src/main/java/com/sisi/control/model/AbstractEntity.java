@@ -5,6 +5,8 @@ import jakarta.persistence.MappedSuperclass;
 import lombok.Data;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.util.Date;
+
 @Data
 @MappedSuperclass//实体继承映射
 public class AbstractEntity {
@@ -12,4 +14,6 @@ public class AbstractEntity {
     public String id;
     public String tenantId;
     public Boolean isDelete;
+    public Date createTime;
+    public Date updateTime;
 }

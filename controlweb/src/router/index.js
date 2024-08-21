@@ -57,6 +57,12 @@ const router = createRouter({
             name: 'sys_userconnector',
             props: true,
             component: () => import('../views/sysSetting/user/UserConnectorView.vue')
+          },
+          {
+            path: '/sys/taskType',
+            name: 'sys_taskType',
+            props: true,
+            component: () => import('../views/sysSetting/task/TaskTypeView.vue')
           }
       ]
     }

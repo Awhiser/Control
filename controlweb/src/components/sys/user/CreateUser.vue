@@ -27,12 +27,11 @@
    
   </template>
   <script lang="ts"  setup>
-  import { ref, h  } from 'vue';
+  import { ref  } from 'vue';
   import type { Rule } from 'ant-design-vue/es/form';
   import userService from '@/api/userservice.js' 
   import { message } from 'ant-design-vue';
   import i18n from '@/i18n/index'
-import { ReloadOutlined } from '@ant-design/icons-vue';
   const createUserForm = ref();
   const createRules: Record<string, Rule[]> = {
     name: [{ required: true, message: '', trigger: 'change' }],

@@ -67,6 +67,14 @@ export default {
     page: {
         total: "Total"
     },
+    setting:{
+        user:"UserSetting",
+        task:"TaskSetting",
+        taskType:"TaskType"
+   },
+   taskType:{
+    name:"TaskType"
+   },
 
     "服务器异常": "ServerError",
     "用户名已存在": "UserNameExist",

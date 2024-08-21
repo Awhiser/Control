@@ -49,28 +49,24 @@ public class TaskService {
         var tenantId = ContextHolder.getContext().getTenantId();
         task.setId(CommonUtils.idGenerate());
         task.setTenantId(tenantId);
+
+        task.setCreateTime(new Date());
         //todo 实现自定义字段 workFlow create
         taskDao.save(task);
         return Response.success(task.id);
     }
 
     public TaskVo getTask(String taskId) {
-//        var task = taskDao.findById(taskId);
-//        UserInfo userInfo = null;
-//        if (StringUtils.hasText(task.getAssignee())) {
-//            userInfo = userService.getUserById(task.getAssignee());
-//        }
-//        TaskVo taskVo = new TaskVo(task, userInfo);
         TaskSearchParam searchParam = new TaskSearchParam();
         searchParam.setIds(Arrays.asList(taskId));
-        var list = getTaskList(searchParam).getDataList();
+        var list = getList(searchParam).getDataList();
         if (list.isEmpty()) {
             return null;
         }
         return list.get(0);
     }
 
-    public PageView<TaskVo> getTaskList(TaskSearchParam param) {
+    public PageView<TaskVo> getList(TaskSearchParam param) {
         var pageRes = taskDao.getTaskList(param);
         List<Task> taskList = new ArrayList<>();
         List<String> userIds = new ArrayList<>();

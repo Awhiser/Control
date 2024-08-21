@@ -32,7 +32,7 @@ public class TaskVo {
         this.id = param.getId();
         this.title = param.getTitle();
         this.type = param.getType();
-        this.assignee = generateAssignee(userInfo);
+        this.assignee = new UserVo(userInfo);
         //this.versionId = param.versionId;
         this.priority = param.getPriority();
         this.tags = param.getTags();
@@ -43,16 +43,16 @@ public class TaskVo {
         this.updateTime = param.getUpdateTime();
     }
 
-    private UserVo generateAssignee(UserInfo userInfo){
-        if(userInfo == null || !StringUtils.hasText(userInfo.getId())){
-            return null;
-        }
-        UserVo assigneeVo = new UserVo();
-        assigneeVo.setId(userInfo.getId());
-        userInfo.setName(userInfo.getName());
-        assigneeVo.setDisplayName(assigneeVo.getDisplayName());
-        return assigneeVo;
-    }
+//    private UserVo generateAssignee(UserInfo userInfo){
+//        if(userInfo == null || !StringUtils.hasText(userInfo.getId())){
+//            return null;
+//        }
+//        UserVo assigneeVo = new UserVo();
+//        assigneeVo.setId(userInfo.getId());
+//        assigneeVo.setName(userInfo.getName());
+//        assigneeVo.setDisplayName(assigneeVo.getDisplayName());
+//        return assigneeVo;
+//    }
 
 
 

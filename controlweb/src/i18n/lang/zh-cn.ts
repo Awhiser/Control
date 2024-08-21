@@ -67,6 +67,15 @@ export default {
     }, page:{
         total:"总数"
        },
+
+       setting:{
+            user:"用户设置",
+            task:"需求设置",
+            taskType:"需求类型"
+       },
+       taskType:{
+        name:"需求类型"
+       },
    
     "服务器异常":"服务器异常",
     "用户名已存在":"用户名已存在",

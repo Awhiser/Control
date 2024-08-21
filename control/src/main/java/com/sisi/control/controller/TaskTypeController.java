@@ -4,10 +4,7 @@ import com.sisi.control.model.response.Response;
 import com.sisi.control.model.tasktype.TaskType;
 import com.sisi.control.service.task.TaskTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,7 +19,7 @@ public class TaskTypeController {
     }
 
     @PostMapping("/create")
-    public Response create(TaskType type){
+    public Response create(@RequestBody TaskType type){
         var res =  taskTypeService.create(type);
         return Response.success(res);
     }

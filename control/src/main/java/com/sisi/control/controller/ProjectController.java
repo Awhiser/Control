@@ -6,6 +6,7 @@ import com.sisi.control.model.projectmember.ProjectMember;
 import com.sisi.control.model.projectmember.ProjectMemberSearchParam;
 import com.sisi.control.model.project.Project;
 import com.sisi.control.model.project.ProjectSearchParam;
+import com.sisi.control.model.projectmember.ProjectMemberVo;
 import com.sisi.control.model.response.Response;
 import com.sisi.control.service.ProjectMemberService;
 import com.sisi.control.service.ProjectService;
@@ -75,7 +76,7 @@ public class ProjectController {
     }
 
     @PostMapping("/projectMemmber/getList")
-    public Response<PageView<ProjectMember>> getProjectMemberList(@RequestBody ProjectMemberSearchParam projectMemberSearchParam){
+    public Response<PageView<ProjectMemberVo>> getProjectMemberList(@RequestBody ProjectMemberSearchParam projectMemberSearchParam){
         var res =  projectMemberService.getList(projectMemberSearchParam);
         return Response.success(res);
     }

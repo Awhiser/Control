@@ -35,7 +35,7 @@ public class TaskController {
 
     @PostMapping("/getList")
     public Response<PageView<TaskVo>> getList(@RequestBody TaskSearchParam searchParam){
-        var res = taskService.getTaskList(searchParam);
+        var res = taskService.getList(searchParam);
         return Response.success(res);
     }
 

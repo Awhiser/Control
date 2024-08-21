@@ -3,6 +3,7 @@ package com.sisi.control.service.task;
 import com.sisi.control.context.ContextHolder;
 import com.sisi.control.model.tasktype.TaskType;
 import com.sisi.control.repository.impl.TaskTypeDao;
+import com.sisi.control.utils.CommonUtils;
 import com.soundicly.jnanoidenhanced.jnanoid.NanoIdUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ public class TaskTypeService {
         var context = ContextHolder.getContext();
         type.setIsDelete(false);
         type.setTenantId(context.getTenantId());
-        type.setId(context.getTenantId()+ NanoIdUtils.randomNanoId());
+        type.setId(CommonUtils.idGenerate());
         var res =  taskTypeDao.save(type);
         return res;
     }

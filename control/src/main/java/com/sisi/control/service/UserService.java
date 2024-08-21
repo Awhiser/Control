@@ -37,6 +37,9 @@ public class UserService {
         userInfo.id = tenantId + userInfo.name;
         userInfo.isDelete = false;
         userInfo.tenantId = tenantId;
+        if(!StringUtils.hasText(userInfo.getDisplayName())) {
+            userInfo.setDisplayName(userInfo.getName());
+        }
         userDao.save(userInfo);
         return Response.success();
     }
