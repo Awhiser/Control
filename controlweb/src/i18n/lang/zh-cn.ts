@@ -10,7 +10,10 @@ export default {
         priority: '优先级',
         assignee: '经办人',
         tags: '标签',
-        status: '状态'
+        status: '状态',
+        desc:'描述',
+        dueDate:"到期日"
+
 
     },
     button:{

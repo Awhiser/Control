@@ -12,7 +12,9 @@ export default {
         priority: 'Priority',
         assignee: 'Assignee',
         tags: 'Tag',
-        status: 'Status'
+        status: 'Status',
+        desc:'Description',
+        dueDate:"Duedate"
     },
     button: {
         create: "Create",
