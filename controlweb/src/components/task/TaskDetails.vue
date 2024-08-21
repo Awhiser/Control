@@ -1,11 +1,11 @@
 <template>
-    <a-drawer v-model:open="show" :width="'65%'" placement="right" @close="closeDraw">
+    <a-drawer v-model:open="show" :width="'50%'" placement="right" @close="closeDraw">
         <a-flex gap="middle" vertical>
-            <a-row>
+            <!-- <a-row>
                 <a-col :span="24">
                     <span> {{ taskView.projectId }}</span>
                 </a-col>
-            </a-row>
+            </a-row> -->
 
             <a-row>
                 <a-col :span="24">
@@ -16,14 +16,13 @@
             <a-row>
                 <a-col :span="12"> <a-button type="primary" size="large"> Edit </a-button> <a-button type="primary" size="large"> More </a-button> </a-col>
            
-              
                 <a-col :span="12"> <a-button type="primary" size="large"> Transition </a-button> </a-col>
             </a-row>
 
 
             <a-row>
                 <a-col :span="6"> <span>经办人:</span> </a-col>
-                <a-col :span="6"> <span> {{ taskView.assignee }}</span> </a-col>
+                <a-col :span="6"> <span> {{ taskView.assignee.displayName }}</span> </a-col>
 
                 <a-col :span="6"> <span>状态:</span> </a-col>
                 <a-col :span="6"> <span> {{ taskView.status }}</span> </a-col>
@@ -55,17 +54,17 @@
 
             <a-row>
                 <a-col :span="6"> <span>创建时间:</span> </a-col>
-                <a-col :span="18"> <span> {{ dayjs(taskView.createTime).format(dateFormat) }}</span> </a-col>
+                <a-col :span="18"> <span> {{ taskView.createTime? dayjs(taskView.createTime).format(dateFormat) :"" }}</span> </a-col>
             </a-row>
 
             <a-row>
                 <a-col :span="6"> <span>更新时间:</span> </a-col>
-                <a-col :span="18"> <span> {{ dayjs(taskView.updateTime).format(dateFormat) }}</span> </a-col>
+                <a-col :span="18"> <span> {{ taskView.updateTime ? dayjs(taskView.updateTime).format(dateFormat) : ""  }}</span> </a-col>
             </a-row>
 
             <a-row>
                 <a-divider orientation="left">描述</a-divider>
-                <a-col :span="24"> <span> XXXXXXXX </span> </a-col>
+                <a-col :span="24"> <span> {{taskView.description}} </span> </a-col>
 
             </a-row>
 

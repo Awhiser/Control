@@ -8,7 +8,7 @@
 
                 <div>
 
-                    <a-select  v-model:value="projectId" style="width: 120px" @change="changeProject"  >
+                    <a-select  v-model:value="projectId" style="width: 120px" @change="changeProject"  :placeholder="$t('project.name') "  >
                           <a-select-option  v-for=" record of projectList" :value="record.id">{{record.name}}</a-select-option>
                    </a-select>
 
@@ -18,7 +18,7 @@
 
             <div style="width: 300px;">
                 <a-menu style="background-color: #1677ff;" theme="dark" mode="horizontal">
-                    <a-menu-item key="1"> {{ $t('home.name') }} </a-menu-item>
+                    <!-- <a-menu-item key="1"> {{ $t('home.name') }} </a-menu-item> -->
                     <a-menu-item key="2">
                         <RouterLink :to="{ name: 'sys' }">{{ $t('button.syssetting') }}</RouterLink>
                     </a-menu-item>

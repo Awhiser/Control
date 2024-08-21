@@ -12,6 +12,10 @@
       {{ record.title}}
     </a>
   </template>
+  <template v-if="column.key === 'assignee'">
+      {{ record.assignee.displayName}}
+  </template>
+
   <template v-else-if="column.key === 'tags'">
     <span>
       <a-tag v-for="tag in record.tags" :key="tag" >
@@ -24,14 +28,17 @@
 </a-table>
 
 
- <a-pagination
+ <!-- <a-pagination
       v-model:current="current"
       v-model:page-size="pageSize"
       show-size-changer
       :total="total"
       :show-total="total => i18n.global.t('page.total') + ` : ${total}`"
-    /> 
+    />  -->
 
+
+    <a-pagination v-model:current="current" v-model:page-size="pageSize" show-size-changer :total="total"
+      @change="onChangePage" :show-total="total => i18n.global.t('page.total') + ` : ${total}`" />
 
 
 
@@ -42,9 +49,11 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import taskService from '@/api/taskservice';
-import { onMounted ,onUpdated} from 'vue' 
-import TaskDetails from '@/components/TaskDetails.vue'
+import { onMounted ,watch} from 'vue' 
+import TaskDetails from '@/components/task/TaskDetails.vue'
+import { useRoute } from 'vue-router';
 import i18n from '@/i18n';
+const route = useRoute();
 
 const props = defineProps({
     projectId: String
@@ -55,8 +64,8 @@ const taskId =ref('')
 
 
 const pageSize = ref(50)
-const  current = ref(1)
-const total = ref(100)
+const current = ref(1)
+const total = ref(0)
 
 
 const columns = [
@@ -96,6 +105,9 @@ const columns = [
 ];
 
 
+
+
+
 let data = ref([
 //   {
 //     id: 'X-1',
@@ -109,18 +121,21 @@ let data = ref([
 ]);
 
 
-   onMounted(() => {
-   
+  onMounted(() => {
+    loadData();
   })
 
-  onUpdated(()=>{
-    //console.log(props.projectId)
-   // data.value = [];
-    taskService.getTaskList({projectId:props.projectId}).then(res => {
-          data.value = res.data.dataList ;
-          total.value = data.value.length;
-     })
+  watch(() => route.params.projectId, (newId, oldId) => {
+    loadData();
   })
+
+  function loadData(){
+    taskService.getTaskList({pageSize: pageSize.value, pageIndex: current.value - 1,projectId:props.projectId}).then(res => {
+          data.value = res.data.dataList ;
+         
+         total.value = res.data.totalElement;
+     })
+  }
 
   function changeTable( pag,c,a){
     console.log(pag)
@@ -134,5 +149,10 @@ let data = ref([
     openTaskDetails.value = true;
     taskId.value = id;
   }
+
+  function onChangePage() {
+  loadData();
+  }
+
 
 </script>

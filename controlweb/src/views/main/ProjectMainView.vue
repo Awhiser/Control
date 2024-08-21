@@ -44,7 +44,7 @@
 <script lang="ts" setup>
 import { SmileOutlined } from '@ant-design/icons-vue';
 import { ref, onMounted, watch,onUpdated } from 'vue';
-import CreateTask from '@/components/CreateTask.vue'
+import CreateTask from '@/components/task/CreateTask.vue'
 import HeaderLayOut from '@/components/HeaderLayOut.vue';
 import { useRouter,useRoute } from 'vue-router'
 import projectService from '@/api/projectservice';
