@@ -5,6 +5,7 @@ import com.sisi.control.mq.MQType;
 import com.sisi.control.mq.model.TaskMessage;
 import com.sisi.control.mq.mqconfig.QueueConst;
 import com.sisi.control.service.task.TaskService;
+import com.sisi.control.utils.log.LogHelper;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
@@ -27,11 +28,9 @@ public class TaskMQConsumer {
     public void consumer(TaskMessage message) {
         //重新设置上下文,Warn 线程池会上下文共享
         ContextHolder.setContext(message.getContext());
-        System.out.println(Thread.currentThread().getName());
+        LogHelper.logInfo("处理TaskUpdate消息: "+message);
         if(message.mqType == MQType.TaskUpdate) {
-            System.out.println("处理TaskUpdate消息:"+message);
             taskService.updateChangeLog(message.getTask(),message.getOldTask(),message.getContext().getToken().getUserId());
         }
-        System.out.println("消费者收到消息:"+message);
     }
 }

@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 //@Entity
 public class CustomField extends AbstractEntity {
-    public String type;
+    public CustomFieldType type;
     public String name;
 
 }

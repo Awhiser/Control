@@ -8,17 +8,26 @@
           <a-sub-menu key="sub1">
             <template #title>
               <span>
-                subnav 1
+              {{ i18n.global.t('task.name') }}
               </span>
             </template>
             <a-menu-item key="1">
-              <RouterLink :to="{ name: 'tasks', params: { projectId: props.projectId } }">Tasks</RouterLink>
+              <RouterLink :to="{ name: 'tasks', params: { projectId: props.projectId } }">{{ i18n.global.t('task.name') }} </RouterLink>
             </a-menu-item>
-            <a-menu-item key="2">
+          </a-sub-menu>
+
+            <!-- <a-menu-item key="2">
               <RouterLink :to="{ name: 'about', params: { projectId: 'X' } }">About</RouterLink>
             </a-menu-item>
-            <a-menu-item key="3">option3</a-menu-item>
-            <a-menu-item key="4">option4</a-menu-item>
+           -->
+          <a-sub-menu key="sub2">
+            <template #title>
+              <span>
+                {{ i18n.global.t('project.setting') }}
+              </span>
+            </template>
+            <a-menu-item key="3"> {{i18n.global.t('version.name')}}</a-menu-item>
+            <a-menu-item key="4">{{i18n.global.t('user.name')}}</a-menu-item>
           </a-sub-menu>
 
         </a-menu>
@@ -48,6 +57,7 @@ import CreateTask from '@/components/task/CreateTask.vue'
 import HeaderLayOut from '@/components/HeaderLayOut.vue';
 import { useRouter,useRoute } from 'vue-router'
 import projectService from '@/api/projectservice';
+import i18n from '@/i18n';
 const router = useRouter();
 const props = defineProps({
   projectId: String

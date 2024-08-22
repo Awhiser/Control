@@ -20,7 +20,7 @@ public class TaskVo {
     public String description;
     public Date duedate;
     public String projectId;
-
+    public UserVo creator;
     public Date createTime;
     public Date updateTime;
 
@@ -33,6 +33,7 @@ public class TaskVo {
         this.title = param.getTitle();
         this.type = param.getType();
         this.assignee = new UserVo(userInfo);
+        this.creator = new UserVo(userInfo);
         //this.versionId = param.versionId;
         this.priority = param.getPriority();
         this.tags = param.getTags();

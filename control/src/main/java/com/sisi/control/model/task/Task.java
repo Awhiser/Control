@@ -23,6 +23,7 @@ public class Task extends AbstractEntity {
     public Date  duedate;
     public String projectId;
     public String parentId;
+    public String creator;
     public Date createTime;
     public Date updateTime;
 

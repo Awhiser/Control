@@ -25,6 +25,7 @@ public class VersionService {
         version.setUpdateTime(new Date());
         version.setTenantId(context.getTenantId());
         version.setId(context.tenantId + NanoIdUtils.randomNanoId());
+        version.setCreateTime(new Date());
         return versionDao.save(version);
     }
 
