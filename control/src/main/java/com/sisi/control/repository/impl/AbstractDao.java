@@ -3,62 +3,46 @@ package com.sisi.control.repository.impl;
 import com.sisi.control.context.ContextHolder;
 import com.sisi.control.model.AbstractEntity;
 import com.sisi.control.model.AbstractSearch;
-import com.sisi.control.model.PageView;
-import com.sisi.control.model.task.Task;
-import com.sisi.control.model.user.UserInfo;
 import com.sisi.control.utils.jpatool.JPACondition;
-import com.sisi.control.utils.log.LogHelper;
-import io.micrometer.common.KeyValues;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
-
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 
 public class AbstractDao<Entity extends AbstractEntity, Repo extends JpaRepository<Entity, String> & JpaSpecificationExecutor<Entity>> {
-    public Repo repo;
+    protected Repo repo;
 
-    public String tenantField = "tenantId";
+    private String tenantField = "tenantId";
 
-    public AbstractDao(Repo repo) {
+    protected AbstractDao(Repo repo) {
         this.repo = repo;
     }
 
-    public Entity findById(String id) {
+    protected Entity findById(String id) {
         return repo.findOne(getIdSpecification(id)).orElse(null);
     }
 
-    public List<Entity> findAll() {
+    protected List<Entity> findAll() {
         return repo.findAll(getTenantIdAndIsDelete(-1));
     }
 
-    public List<Entity> findByIds(List<String> ids){
+    protected List<Entity> findByIds(List<String> ids){
         return  repo.findAll(getIdsSpecification(ids));
     }
 
-    public Entity findOneBySpecification(Specification specification){
+    protected Entity findOneBySpecification(Specification specification){
         var res = findBySpecification(specification);
         if(res.size() > 0){
             return res.get(0);
         }
         return null;
     }
-    public Entity findOneBySpecificationWithDel(Specification specification){
+    protected Entity findOneBySpecificationWithDel(Specification specification){
         var res = findBySpecificationWithDel(specification);
         if(res.size() > 0){
             return res.get(0);
@@ -66,11 +50,11 @@ public class AbstractDao<Entity extends AbstractEntity, Repo extends JpaReposito
         return null;
     }
 
-    public List<Entity> findBySpecification(Specification specification){
+    protected List<Entity> findBySpecification(Specification specification){
         return repo.findAll(specification.and(getTenantIdAndIsDelete(-1)));
     }
 
-    public List<Entity> findBySpecificationWithDel(Specification specification){
+    protected List<Entity> findBySpecificationWithDel(Specification specification){
         return repo.findAll(specification.and(getTenantIdAndIsDelete(1)));
     }
 
@@ -90,11 +74,11 @@ public class AbstractDao<Entity extends AbstractEntity, Repo extends JpaReposito
         repo.save(entity);
     }
 
-    public Specification<Entity> getIdSpecification(String id) {
+    protected Specification<Entity> getIdSpecification(String id) {
         return getIdsSpecification(Arrays.asList(id));
     }
 
-    public Specification<Entity> getIdsSpecification(List<String> ids) {
+    protected Specification<Entity> getIdsSpecification(List<String> ids) {
         JPACondition<Entity> jpaCondition = new JPACondition<>();
         if (ids.size() == 1) {
             jpaCondition.eq(Entity::getId, ids.get(0));
@@ -105,7 +89,7 @@ public class AbstractDao<Entity extends AbstractEntity, Repo extends JpaReposito
         return specification;
     }
 
-    public Specification<Entity> getTenantIdAndIsDelete(int isDelete){
+    protected Specification<Entity> getTenantIdAndIsDelete(int isDelete){
         var sp = new JPACondition<Entity>()
                 .eq(Entity::getTenantId,ContextHolder.getContext().tenantId)
                 .eq(Entity::getIsDelete,isDelete == 1 ? true : false)
@@ -113,7 +97,7 @@ public class AbstractDao<Entity extends AbstractEntity, Repo extends JpaReposito
         return sp;
     }
 
-    public Page<Entity> findByPage(Specification specification,AbstractSearch params){
+    protected Page<Entity> findByPage(Specification specification,AbstractSearch params){
         if(!CollectionUtils.isEmpty(params.getIds())) {
             specification = specification.and(getIdsSpecification(params.getIds()));
         }
@@ -121,22 +105,23 @@ public class AbstractDao<Entity extends AbstractEntity, Repo extends JpaReposito
         return page;
     }
 
-    public Page<Entity> findByPageWithDel(Specification specification,PageRequest pageRequest){
+    protected Page<Entity> findByPageWithDel(Specification specification,PageRequest pageRequest){
         var page = repo.findAll(specification.and(getTenantIdAndIsDelete(1)),pageRequest);
         return page;
     }
 
-    public Entity save(Entity entity){
+    protected Entity saveDB(Entity entity){
         entity.setTenantId(ContextHolder.getContext().getTenantId());
         entity.setIsDelete(false);
         entity.setUpdateTime(new Date());
         return  repo.save(entity);
     }
 
-    public void saveAll(List<Entity> entities){
+    protected void saveDBAll(List<Entity> entities){
         entities.forEach(entity -> {
             entity.setTenantId(ContextHolder.getContext().getTenantId());
             entity.setIsDelete(false);
+            entity.setUpdateTime(new Date());
         });
         repo.saveAll(entities);
     }

@@ -24,6 +24,9 @@ function searchUser(name) {
       return;
     }
     projectService.getProjectMemberList({projectId:projectId.value,name:name}).then(res=>{
+        if(res.data.totalElement == 0) {
+          return;
+        }
         userOpt.value = res.data.dataList.map(item => ({
         label: `${item.user.displayName} (${item.user.name})`,
         value: item.user.id,

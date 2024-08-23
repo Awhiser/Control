@@ -2,6 +2,7 @@ package com.sisi.control;
 
 import com.sisi.control.context.ContextHolder;
 import com.sisi.control.context.ControlContext;
+import com.sisi.control.model.task.Task;
 import com.sisi.control.mq.MQService;
 import com.sisi.control.mq.mqconfig.MQConfig;
 import com.sisi.control.repository.impl.TaskLinkDao;
@@ -11,6 +12,7 @@ import com.sisi.control.utils.CommonUtils;
 import com.sisi.control.utils.token.TokenUtil;
 import com.soundicly.jnanoidenhanced.jnanoid.NanoIdUtils;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -45,11 +47,12 @@ class ControlApplicationTests {
         ContextHolder.setContext(new ControlContext("1"));
 //        var u = userDao.getUserByUserName("ye");
        // TaskSearchParam param = new TaskSearchParam();
-        System.out.println(MQConfig.isEnableMQ());
-        System.out.println(NanoIdUtils.randomNanoId());
-        System.out.println(Thread.currentThread().getName());
-        var res=   taskLinkDao.getByTaskId("1");
-         res=   taskLinkDao.getByTaskId("1");
+//        System.out.println(MQConfig.isEnableMQ());
+//        System.out.println(NanoIdUtils.randomNanoId());
+//        System.out.println(Thread.currentThread().getName());
+//        var res=   taskLinkDao.getByTaskId("1");
+
+
 //        TaskMessage message = new TaskMessage();
 //        message.mqType = MQType.TaskUpdate;
 //        message.task = new Task();

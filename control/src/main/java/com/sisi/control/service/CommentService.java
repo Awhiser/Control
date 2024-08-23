@@ -2,6 +2,7 @@ package com.sisi.control.service;
 
 import com.sisi.control.context.ContextHolder;
 import com.sisi.control.model.comment.Comment;
+import com.sisi.control.model.comment.CommentDto;
 import com.sisi.control.repository.impl.CommentDao;
 import com.sisi.control.utils.CommonUtils;
 import com.soundicly.jnanoidenhanced.jnanoid.NanoIdUtils;
@@ -20,12 +21,12 @@ public class CommentService {
         this.commentDao = commentDao;
     }
 
-    public Comment create(Comment comment){
+    public CommentDto create(Comment comment){
         comment.setId(CommonUtils.idGenerate());
         return commentDao.save(comment);
     }
 
-    public Comment update(Comment comment){
+    public CommentDto update(Comment comment){
         return commentDao.save(comment);
     }
 
@@ -33,16 +34,16 @@ public class CommentService {
          commentDao.deleteById(id);
     }
 
-    public List<Comment> getByTaskId(String taskId){
+    public List<CommentDto> getByTaskId(String taskId){
        return commentDao.getByTaskId(taskId);
     }
 
-    public Comment getById(String id) {
-        return commentDao.findById(id);
-    }
-
-    public List<Comment> getByIds(List<String> ids) {
-        return commentDao.findByIds(ids);
-    }
+//    public Comment getById(String id) {
+//        return commentDao.findById(id);
+//    }
+//
+//    public List<Comment> getByIds(List<String> ids) {
+//        return commentDao.findByIds(ids);
+//    }
 
 }

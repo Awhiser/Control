@@ -123,10 +123,7 @@ const open = ref<boolean>(false);
 const showModal = () => {
   //projectService.getList();
   //加载资源
-  taskService.getCreateParams().then(res=>{
-    console.log(res.data)
-    createParam.value = res.data;
-  })
+  loadCreateParams();
   open.value = true;
 };
 
@@ -173,7 +170,9 @@ const handleOk = (e) => {
 
 
 function loadCreateParams(){
-  return taskService.getCreateParams();
+  taskService.getCreateParams().then(res=>{
+    createParam.value = res.data;
+  })
 
 }
 

@@ -14,11 +14,16 @@
             </a-row>
 
             <a-row>
-                <a-col :span="12"> <a-button type="primary" size="large"> Edit </a-button> <a-button type="primary" size="large"> More </a-button> </a-col>
+                <a-col :span="12"> <a-button type="primary" size="large" @click="openEditForm()" > Edit </a-button> <a-button type="primary" size="large"> More </a-button> </a-col>
            
                 <a-col :span="12"> <a-button type="primary" size="large"> Transition </a-button> </a-col>
             </a-row>
-
+            
+            <template>
+                <div>
+                    
+                </div>
+            </template>
 
             <a-row>
                 <a-col :span="6"> <span>经办人:</span> </a-col>
@@ -114,10 +119,8 @@
 
             <a-row>
                 <a-col :span="24">
-                    <a-tabs>
-                        <a-tab-pane key="1" tab="Comment">
-
-
+                    <a-tabs @tabClick="changeTab"  >
+                        <a-tab-pane key="Comment" tab="Comment">
                             <a-list item-layout="horizontal" :data-source="changeLogs">
                                 <template #renderItem="{ item }">
                                     <a-list-item>
@@ -125,21 +128,12 @@
                                             <template #title>
                                                 <a> {{ item.title }}</a>
                                             </template>
-
-
-
                                         </a-list-item-meta>
                                     </a-list-item>
                                 </template>
                             </a-list>
                         </a-tab-pane>
-                        <a-tab-pane key="2" tab="TaskChange">
-
-
-
-
-
-
+                        <a-tab-pane key="TaskChangeLog" tab="TaskChange" >
                             <a-timeline>
                                 <a-timeline-item> <a-list item-layout="horizontal" :data-source="changeLogs">
                                         <template #renderItem="{ item }">
@@ -164,9 +158,6 @@
 
 
                         </a-tab-pane>
-
-
-
                     </a-tabs>
 
                 </a-col>
@@ -174,6 +165,9 @@
         </a-flex>
 
     </a-drawer>
+
+    <edit-task v-model:open="openEdit" :editTask="taskView" ></edit-task>
+
 </template>
 
 
@@ -185,7 +179,10 @@ import { PlusOutlined } from '@ant-design/icons-vue';
 import { ref, watch } from 'vue'
 import dayjs from 'dayjs';
 import taskService from '@/api/taskservice';
+import taskChangeLogService from '@/api/taskchangelogservice';
 import type { UploadProps } from 'ant-design-vue';
+import EditTask from './EditTask.vue';
+
 const changeLogs = [
     {
         title: 'Azea ',
@@ -261,6 +258,8 @@ const dateFormat = 'YYYY-MM-DD HH:mm:ss';
 const show = defineModel('show')
 const taskId = defineModel("taskId")
 const showDetails = ref(false)
+
+const openEdit = ref(false)
 let taskView = ref({
     assignee: "YFM",
     createTime: "2024-06-27T06:40:35.543+00:00",
@@ -285,15 +284,8 @@ watch(show, (value, oldvalue) => {
         taskView.value = res.data;
         showDetails.value = true;
     })
-    // console.log("showDetails")
-    // showDetails.value = true;
 
-    // setTimeout(() => {
-    //     console.log("TaskData")
-    //     showDetails.value = true;
-    // }, 2000)
-
-
+    
 
 })
 
@@ -301,7 +293,19 @@ function closeDraw() {
     showDetails.value = false;
 }
 
+function openEditForm() {
+    console.log("11")
+    openEdit.value = true;
+}
 
+function changeTab(key){
+    console.log(key)
+    if(key=="TaskChangeLog"){
+        taskChangeLogService.getByTaskId(taskView.value.id).then(res=>{
+            
+        });
+    }
+}
 
 
 </script>

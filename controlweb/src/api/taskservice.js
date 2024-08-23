@@ -5,7 +5,9 @@ import { get, post, httpAction } from '@/api/request'
 const taskService = {
      create(params) {
         return post("/task/create",params);
-
+    },
+    update(params){
+        return post("/task/update",params);
     },
 
     getTaskList(params){

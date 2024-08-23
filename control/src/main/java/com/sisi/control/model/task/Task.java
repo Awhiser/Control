@@ -31,6 +31,8 @@ public class Task extends AbstractEntity {
 
     }
 
+
+
     public Task(TaskCreateParam param){
         this.title = param.getTitle();
         this.assignee = param.getAssignee();

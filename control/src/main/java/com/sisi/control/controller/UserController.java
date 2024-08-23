@@ -1,6 +1,6 @@
 package com.sisi.control.controller;
 
-import com.sisi.control.model.PageView;
+import com.sisi.control.model.PageResult;
 import com.sisi.control.model.response.Response;
 import com.sisi.control.model.user.*;
 import com.sisi.control.service.UserConnectorService;
@@ -32,7 +32,7 @@ public class UserController {
     }
 
     @PostMapping("/getList")
-    public Response<PageView<UserVo>> getUserList(@RequestBody UserSearchParam searchParam){
+    public Response<PageResult<UserInfoDto>> getUserList(@RequestBody UserSearchParam searchParam){
         var res = userService.getUserList(searchParam);
         return Response.success(res);
     }
@@ -62,7 +62,7 @@ public class UserController {
     }
 
     @GetMapping("/getUserConnectors")
-    public Response<UserConnector> getUserConnectors() {
+    public Response<UserConnectorDto> getUserConnectors() {
         var res = userConnectorService.getUserConnectors();
         return Response.success(res);
     }

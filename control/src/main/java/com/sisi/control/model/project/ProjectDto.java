@@ -1,23 +1,23 @@
 package com.sisi.control.model.project;
 
-import com.sisi.control.model.user.UserVo;
+import com.sisi.control.model.user.UserInfoDto;
 import lombok.Data;
 
 @Data
-public class ProjectVo {
+public class ProjectDto {
     String id;
     String name;
-    UserVo leader;
+    UserInfoDto leader;
 
 
-    public ProjectVo() {
+    public ProjectDto() {
 
     }
 
-    public ProjectVo(Project project) {
+    public ProjectDto(Project project) {
         this.id = project.getId();
         this.name = project.getName();
-        this.leader = new UserVo();
+        this.leader = new UserInfoDto();
         this.leader.setId(project.getLeaderId());
     }
 

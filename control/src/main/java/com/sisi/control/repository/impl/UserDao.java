@@ -1,31 +1,16 @@
 package com.sisi.control.repository.impl;
 
-import com.sisi.control.context.ContextHolder;
-import com.sisi.control.model.task.Task;
-import com.sisi.control.model.task.TaskSearchParam;
+import com.sisi.control.model.PageResult;
 import com.sisi.control.model.user.UserInfo;
+import com.sisi.control.model.user.UserInfoDto;
 import com.sisi.control.model.user.UserSearchParam;
 import com.sisi.control.repository.UserRepository;
 import com.sisi.control.utils.jpatool.JPACondition;
-import jakarta.persistence.Tuple;
-import jakarta.persistence.criteria.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.*;
 
 @Repository
@@ -35,13 +20,14 @@ public class UserDao extends AbstractDao<UserInfo,UserRepository> {
     }
 
 
-    public UserInfo getUserByUserName(String userName){
+    public UserInfoDto getUserByUserName(String userName){
         Specification<UserInfo> sp = JPACondition.<UserInfo>builder().eq(UserInfo::getName, userName).build();
-        return findOneBySpecification(sp);
+        var user = findOneBySpecification(sp);
+        return  user == null ? new UserInfoDto() : new UserInfoDto(user);
     }
 
 
-    public Page<UserInfo> getUserList(UserSearchParam param){
+    public PageResult<UserInfoDto> getUserList(UserSearchParam param){
         var jpaCondition =  new JPACondition<UserInfo>();
         if(StringUtils.hasText(param.getName())){
             jpaCondition.like(UserInfo::getName, "%" + param.getName()+ "%" );
@@ -49,8 +35,30 @@ public class UserDao extends AbstractDao<UserInfo,UserRepository> {
         if(StringUtils.hasText(param.getDisplayName())){
             jpaCondition.like(UserInfo::getDisplayName, "%" + param.getDisplayName()+ "%" );
         }
+        var res = findByPage(jpaCondition.build(),param);
 
-        return findByPage(jpaCondition.build(),param);
+        PageResult<UserInfoDto> pageResult = new PageResult<>();
+        pageResult.setDataList(res.stream().map(i->new UserInfoDto(i)).toList());
+        return pageResult;
+    }
+
+    public List<UserInfoDto> getByIds(List<String> ids) {
+        var res = findByIds(ids);
+        return res.stream().map(i->new UserInfoDto(i)).toList();
+    }
+
+    public UserInfoDto getById(String id) {
+        var res = findById(id);
+        return new UserInfoDto(res);
+    }
+
+    public void saveAll(List<UserInfo> userInfoList) {
+        saveDBAll(userInfoList);
+    }
+
+    public UserInfoDto save(UserInfo userInfo) {
+        var res = saveDB(userInfo);
+        return new UserInfoDto(res);
     }
 
 }

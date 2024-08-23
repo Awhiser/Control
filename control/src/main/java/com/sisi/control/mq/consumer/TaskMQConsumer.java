@@ -4,6 +4,7 @@ import com.sisi.control.context.ContextHolder;
 import com.sisi.control.mq.MQType;
 import com.sisi.control.mq.model.TaskMessage;
 import com.sisi.control.mq.mqconfig.QueueConst;
+import com.sisi.control.service.task.TaskChangeLogService;
 import com.sisi.control.service.task.TaskService;
 import com.sisi.control.utils.log.LogHelper;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -16,10 +17,12 @@ import org.springframework.stereotype.Component;
 public class TaskMQConsumer {
 
     private TaskService taskService;
+    private TaskChangeLogService taskChangeLogService;
 
     @Autowired
-    TaskMQConsumer(TaskService taskService){
+    TaskMQConsumer(TaskService taskService,TaskChangeLogService taskChangeLogService){
         this.taskService = taskService;
+        this.taskChangeLogService = taskChangeLogService;
     }
 
     @RabbitListener(queues = QueueConst.Task)
@@ -30,7 +33,7 @@ public class TaskMQConsumer {
         ContextHolder.setContext(message.getContext());
         LogHelper.logInfo("处理TaskUpdate消息: "+message);
         if(message.mqType == MQType.TaskUpdate) {
-            taskService.updateChangeLog(message.getTask(),message.getOldTask(),message.getContext().getToken().getUserId());
+            taskChangeLogService.updateChangeLog(message.getOldTask(),message.getTask(),message.getContext().getToken().getUserId());
         }
     }
 }

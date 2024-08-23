@@ -4,7 +4,7 @@ import lombok.Data;
 import org.springframework.util.StringUtils;
 
 @Data
-public class UserVo {
+public class UserInfoDto {
     public String id;
     public String name;
     public String displayName;
@@ -14,11 +14,11 @@ public class UserVo {
 
     //todo role
 
-    public UserVo(){
+    public UserInfoDto(){
 
     }
 
-    public UserVo(UserInfo user){
+    public UserInfoDto(UserInfo user){
         this.id = user.getId();
         this.name = user.getName();
         this.displayName = user.getDisplayName();

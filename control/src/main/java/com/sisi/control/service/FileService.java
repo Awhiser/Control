@@ -1,6 +1,7 @@
 package com.sisi.control.service;
 
 import com.sisi.control.context.ContextHolder;
+import com.sisi.control.utils.CommonUtils;
 import com.sisi.control.utils.DateUtils;
 import com.sisi.control.utils.log.LogHelper;
 import com.soundicly.jnanoidenhanced.jnanoid.NanoIdUtils;
@@ -37,7 +38,7 @@ public class FileService {
         }
         // 对上传的文件重命名，避免文件重名
         String oldName = file.getOriginalFilename();
-        String newName = NanoIdUtils.randomNanoId()+ oldName.substring(oldName.lastIndexOf("."));
+        String newName = CommonUtils.idGenerate() + oldName.substring(oldName.lastIndexOf("."));
 
         //todo CustomerFileSore post传输文件流 给外部自定义接口
 

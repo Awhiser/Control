@@ -6,16 +6,16 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 @Data
-public class PageView<T> {
+public class PageResult<T> {
     int totalPages;
     long totalElement;
     List<T> dataList;
 
-    public PageView(){
+    public PageResult(){
 
     }
 
-    public PageView(Page page){
+    public PageResult(Page page){
         this.totalPages = page.getTotalPages();
         this.totalElement = page.getTotalElements();
     }

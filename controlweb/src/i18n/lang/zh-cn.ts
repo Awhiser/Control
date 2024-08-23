@@ -4,7 +4,7 @@ export default {
     },
     task:{
         create:"创建",
-        success:"创建Task成功，点击跳转详情",
+        success:"操作成功",
         title: '标题',
         type: '类型',
         priority: '优先级',
@@ -12,7 +12,8 @@ export default {
         tags: '标签',
         status: '状态',
         desc:'描述',
-        dueDate:"到期日"
+        dueDate:"到期日",
+        name:"需求"
 
 
     },
@@ -38,7 +39,8 @@ export default {
     },
     project:{
         name:"项目",
-        leader:"负责人"
+        leader:"负责人",
+        setting:"项目设置"
     },
     projectMember:{
         role:"项目角色",
@@ -48,10 +50,13 @@ export default {
         operation:"操作"
     },
     user:{
-        name: '用户名',
+        name: '用户',
         displayName:"显示名",
         mail: '邮箱',
         password:"密码"
+    },
+    version:{
+        name:"版本"
     },
     userConnector :{
         name : '名称',

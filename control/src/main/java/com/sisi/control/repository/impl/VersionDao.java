@@ -1,7 +1,9 @@
 package com.sisi.control.repository.impl;
 
+import com.sisi.control.model.PageResult;
 import com.sisi.control.model.task.Task;
 import com.sisi.control.model.version.Version;
+import com.sisi.control.model.version.VersionDto;
 import com.sisi.control.model.version.VersionSearchParam;
 import com.sisi.control.repository.VersionRepository;
 import com.sisi.control.utils.jpatool.JPACondition;
@@ -20,8 +22,25 @@ public class VersionDao  extends AbstractDao<Version, VersionRepository>{
         super(versionRepository);
     }
 
-    public Page<Version> search(VersionSearchParam param){
+    public PageResult<VersionDto> search(VersionSearchParam param){
         var sp = JPACondition.<Version>builder().like(Version::getName,"%" + param.getName()+ "%").build();
-        return findByPage(sp,param);
+        var page = findByPage(sp,param);
+        PageResult<VersionDto> result = new PageResult<>(page);
+        result.setDataList(page.stream().map(i->new VersionDto(i)).toList());
+        return result;
+    }
+
+    public VersionDto save(Version version){
+        var res = saveDB(version);
+        return new VersionDto(res);
+    }
+    public VersionDto getById(String id){
+        var res = findById(id);
+        return new VersionDto(res);
+    }
+
+    public List<VersionDto> getByIds(List<String> ids){
+        var res = findByIds(ids);
+        return res.stream().map(i-> new VersionDto(i)).toList();
     }
 }

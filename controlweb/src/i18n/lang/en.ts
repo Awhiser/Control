@@ -14,7 +14,8 @@ export default {
         tags: 'Tag',
         status: 'Status',
         desc:'Description',
-        dueDate:"Duedate"
+        dueDate:"Duedate",
+        name:"Task"
     },
     button: {
         create: "Create",
@@ -37,7 +38,9 @@ export default {
     },
     project: {
         name: "Project",
-        leader: "Leader"
+        leader: "Leader",
+        setting:"ProjectSetting"
+
     },
     projectMember:{
         role:"ProjectRole",

@@ -2,6 +2,7 @@ package com.sisi.control.service.task;
 
 import com.sisi.control.context.ContextHolder;
 import com.sisi.control.model.tasktype.TaskType;
+import com.sisi.control.model.tasktype.TaskTypeDto;
 import com.sisi.control.repository.impl.TaskTypeDao;
 import com.sisi.control.utils.CommonUtils;
 import com.soundicly.jnanoidenhanced.jnanoid.NanoIdUtils;
@@ -19,25 +20,22 @@ public class TaskTypeService {
         this.taskTypeDao = taskTypeDao;
     }
 
-    public TaskType create(TaskType type){
-        var context = ContextHolder.getContext();
-        type.setIsDelete(false);
-        type.setTenantId(context.getTenantId());
+    public TaskTypeDto create(TaskType type){
         type.setId(CommonUtils.idGenerate());
         var res =  taskTypeDao.save(type);
         return res;
     }
 
-    public TaskType update(TaskType type){
-        return taskTypeDao.save(type);
+    public TaskTypeDto update(TaskType type){
+        return  taskTypeDao.save(type);
     }
 
     public void delete(String id){
         taskTypeDao.deleteById(id);
     }
 
-    public List<TaskType> getList(){
-        return taskTypeDao.findAll();
+    public List<TaskTypeDto> getList(){
+        return taskTypeDao.getAll();
     }
 
 }

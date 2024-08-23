@@ -2,6 +2,7 @@ package com.sisi.control.service;
 
 import com.sisi.control.context.ContextHolder;
 import com.sisi.control.model.controlfile.ControlFile;
+import com.sisi.control.model.controlfile.ControlFileDto;
 import com.sisi.control.repository.impl.ControlFileDao;
 import com.sisi.control.utils.CommonUtils;
 import com.sisi.control.utils.DateUtils;
@@ -24,7 +25,7 @@ public class ControlFileService {
         this.controlFileDao = controlFileDao;
     }
 
-    public ControlFile create(MultipartFile file, String taskId) {
+    public ControlFileDto create(MultipartFile file, String taskId) {
         ControlFile controlFile = new ControlFile();
         controlFile.setCreateTime(new Date());
         controlFile.setName(file.getOriginalFilename());

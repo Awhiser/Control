@@ -1,12 +1,12 @@
 package com.sisi.control.controller;
 
-import com.sisi.control.model.PageView;
-import com.sisi.control.model.project.ProjectVo;
+import com.sisi.control.model.PageResult;
+import com.sisi.control.model.project.ProjectDto;
 import com.sisi.control.model.projectmember.ProjectMember;
 import com.sisi.control.model.projectmember.ProjectMemberSearchParam;
 import com.sisi.control.model.project.Project;
 import com.sisi.control.model.project.ProjectSearchParam;
-import com.sisi.control.model.projectmember.ProjectMemberVo;
+import com.sisi.control.model.projectmember.ProjectMemberDto;
 import com.sisi.control.model.response.Response;
 import com.sisi.control.service.ProjectMemberService;
 import com.sisi.control.service.ProjectService;
@@ -64,7 +64,7 @@ public class ProjectController {
     }
 
     @GetMapping("/getProjectByUserId")
-    public Response<List<ProjectVo>> getProjectByUserId(@RequestParam String userId){
+    public Response<List<ProjectDto>> getProjectByUserId(@RequestParam String userId){
        var res =  projectService.getProjectByUserId(userId);
        return Response.success(res);
     }
@@ -76,8 +76,8 @@ public class ProjectController {
     }
 
     @PostMapping("/projectMemmber/getList")
-    public Response<PageView<ProjectMemberVo>> getProjectMemberList(@RequestBody ProjectMemberSearchParam projectMemberSearchParam){
-        var res =  projectMemberService.getList(projectMemberSearchParam);
+    public Response<PageResult<ProjectMemberDto>> getProjectMemberList(@RequestBody ProjectMemberSearchParam projectMemberSearchParam){
+        var res =  projectMemberService.getPage(projectMemberSearchParam);
         return Response.success(res);
     }
 

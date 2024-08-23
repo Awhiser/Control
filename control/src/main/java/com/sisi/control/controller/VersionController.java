@@ -1,8 +1,9 @@
 package com.sisi.control.controller;
 
-import com.sisi.control.model.PageView;
+import com.sisi.control.model.PageResult;
 import com.sisi.control.model.response.Response;
 import com.sisi.control.model.version.Version;
+import com.sisi.control.model.version.VersionDto;
 import com.sisi.control.model.version.VersionSearchParam;
 import com.sisi.control.service.VersionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,25 +21,25 @@ public class VersionController {
     }
 
     @PostMapping("/create")
-    public Response<Version> create(@RequestBody Version version){
+    public Response<VersionDto> create(@RequestBody Version version){
         var res = versionService.create(version);
         return Response.success(res);
     }
 
     @PostMapping("/getList")
-    public Response<PageView<Version>> getList(@RequestBody VersionSearchParam param){
+    public Response<PageResult<VersionDto>> getList(@RequestBody VersionSearchParam param){
         var res = versionService.searchVersion(param);
         return Response.success(res);
     }
 
     @GetMapping("/get")
-    public Response<PageView<Version>> get(@RequestParam String id){
+    public Response<PageResult<VersionDto>> get(@RequestParam String id){
         var res = versionService.getById(id);
         return Response.success(res);
     }
 
     @PostMapping("/update")
-    public Response<Version> update(@RequestBody Version version){
+    public Response<VersionDto> update(@RequestBody Version version){
         var res = versionService.update(version);
         return Response.success(res);
     }

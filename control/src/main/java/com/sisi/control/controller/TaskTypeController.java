@@ -2,6 +2,7 @@ package com.sisi.control.controller;
 
 import com.sisi.control.model.response.Response;
 import com.sisi.control.model.tasktype.TaskType;
+import com.sisi.control.model.tasktype.TaskTypeDto;
 import com.sisi.control.service.task.TaskTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +38,7 @@ public class TaskTypeController {
     }
 
     @GetMapping("/getList")
-    public Response<List<TaskType>> getList(){
+    public Response<List<TaskTypeDto>> getList(){
         var res = taskTypeService.getList();
         return Response.success(res);
     }

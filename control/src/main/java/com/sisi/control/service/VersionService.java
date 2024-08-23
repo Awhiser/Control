@@ -1,10 +1,12 @@
 package com.sisi.control.service;
 
 import com.sisi.control.context.ContextHolder;
-import com.sisi.control.model.PageView;
+import com.sisi.control.model.PageResult;
 import com.sisi.control.model.version.Version;
+import com.sisi.control.model.version.VersionDto;
 import com.sisi.control.model.version.VersionSearchParam;
 import com.sisi.control.repository.impl.VersionDao;
+import com.sisi.control.utils.CommonUtils;
 import com.soundicly.jnanoidenhanced.jnanoid.NanoIdUtils;
 import org.springframework.stereotype.Service;
 
@@ -19,17 +21,13 @@ public class VersionService {
     }
 
 
-    public Version create(Version version){
-        var context = ContextHolder.getContext();
-        version.setIsDelete(false);
-        version.setUpdateTime(new Date());
-        version.setTenantId(context.getTenantId());
-        version.setId(context.tenantId + NanoIdUtils.randomNanoId());
+    public VersionDto create(Version version){
+        version.setId(CommonUtils.idGenerate());
         version.setCreateTime(new Date());
         return versionDao.save(version);
     }
 
-    public Version update(Version version) {
+    public VersionDto update(Version version) {
         return versionDao.save(version);
     }
 
@@ -37,19 +35,17 @@ public class VersionService {
         versionDao.deleteById(id);
     }
 
-    public Version getById(String id){
-        return versionDao.findById(id);
+    public VersionDto getById(String id){
+        return versionDao.getById(id);
     }
 
-    public List<Version> getByIds(List<String> ids){
-        return versionDao.findByIds(ids);
+    public List<VersionDto> getByIds(List<String> ids){
+        return versionDao.getByIds(ids);
     }
 
-    public PageView<Version> searchVersion(VersionSearchParam versionSearchParam){
+    public PageResult<VersionDto> searchVersion(VersionSearchParam versionSearchParam){
         var pageRes =  versionDao.search(versionSearchParam);
-        PageView<Version> pageView = new PageView(pageRes);
-        pageView.setDataList(pageRes.toList());
-        return pageView;
+        return pageRes;
     }
 
 

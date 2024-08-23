@@ -1,18 +1,17 @@
 package com.sisi.control.model.task;
 
 import com.sisi.control.model.user.UserInfo;
-import com.sisi.control.model.user.UserVo;
+import com.sisi.control.model.user.UserInfoDto;
 import lombok.Data;
-import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.List;
 
 @Data
-public class TaskVo {
+public class TaskDto {
     public String id;
     public String title;
-    public UserVo assignee;
+    public UserInfoDto assignee;
     public String type;
   // todo public Version versionId;
     public String priority;
@@ -20,20 +19,24 @@ public class TaskVo {
     public String description;
     public Date duedate;
     public String projectId;
-    public UserVo creator;
+    public UserInfoDto creator;
     public Date createTime;
     public Date updateTime;
 
-    public TaskVo(){
+    public TaskDto(){
 
     }
 
-    public TaskVo(Task param , UserInfo userInfo){
+
+
+    public TaskDto(Task param){
         this.id = param.getId();
         this.title = param.getTitle();
         this.type = param.getType();
-        this.assignee = new UserVo(userInfo);
-        this.creator = new UserVo(userInfo);
+        this.assignee = new UserInfoDto();
+        this.assignee.id = param.assignee;
+        this.creator = new UserInfoDto();
+        this.creator.id = param.creator;
         //this.versionId = param.versionId;
         this.priority = param.getPriority();
         this.tags = param.getTags();
@@ -44,16 +47,6 @@ public class TaskVo {
         this.updateTime = param.getUpdateTime();
     }
 
-//    private UserVo generateAssignee(UserInfo userInfo){
-//        if(userInfo == null || !StringUtils.hasText(userInfo.getId())){
-//            return null;
-//        }
-//        UserVo assigneeVo = new UserVo();
-//        assigneeVo.setId(userInfo.getId());
-//        assigneeVo.setName(userInfo.getName());
-//        assigneeVo.setDisplayName(assigneeVo.getDisplayName());
-//        return assigneeVo;
-//    }
 
 
 

@@ -1,12 +1,13 @@
 package com.sisi.control.service;
 
 import com.sisi.control.context.ContextHolder;
-import com.sisi.control.model.PageView;
+import com.sisi.control.model.PageResult;
 import com.sisi.control.model.projectmember.ProjectMember;
 import com.sisi.control.model.projectmember.ProjectMemberSearchParam;
-import com.sisi.control.model.projectmember.ProjectMemberVo;
+import com.sisi.control.model.projectmember.ProjectMemberDto;
 import com.sisi.control.model.user.UserSearchParam;
 import com.sisi.control.repository.impl.ProjectMemberDao;
+import com.sisi.control.utils.CommonUtils;
 import com.soundicly.jnanoidenhanced.jnanoid.NanoIdUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,26 +30,24 @@ public class ProjectMemberService {
 
     }
 
-    public ProjectMember save(ProjectMember projectMember) {
+    public ProjectMemberDto save(ProjectMember projectMember) {
 
         if(!StringUtils.hasText(projectMember.getId())){
             if(projectMemberDao.exist(projectMember.getUserId(), projectMember.getProjectId())){
                 return null;
             }
-            projectMember.setId(ContextHolder.getContext().tenantId + NanoIdUtils.randomNanoId());
-            projectMember.setTenantId(ContextHolder.getContext().getTenantId());
-            projectMember.setIsDelete(false);
+            projectMember.setId(CommonUtils.idGenerate());
         }
         return projectMemberDao.save(projectMember);
     }
 
-    public PageView<ProjectMemberVo> getList(ProjectMemberSearchParam searchParam) {
-        PageView<ProjectMemberVo> pageView = new PageView<>();
+    public PageResult<ProjectMemberDto> getPage(ProjectMemberSearchParam searchParam) {
+        PageResult<ProjectMemberDto> pageResult = new PageResult<>();
         if (!StringUtils.hasText(searchParam.getProjectId())) {
             return null;
         }
-        List<ProjectMember> projectMemberList = projectMemberDao.getByProjectId(searchParam.getProjectId());
-        var userIds = projectMemberList.stream().map(i -> i.userId).toList();
+        List<ProjectMemberDto> projectMemberList = projectMemberDao.getByProjectId(searchParam.getProjectId());
+        var userIds = projectMemberList.stream().map(i -> i.getUser().getId()).toList();
         //查询的用户都在项目成员中
         UserSearchParam userSearchParam = new UserSearchParam();
         userSearchParam.setIds(userIds);
@@ -59,28 +58,28 @@ public class ProjectMemberService {
         }
         var userRes = userService.getUserList(userSearchParam);
         if (userRes.getTotalElement() == 0) {
-            return pageView;
+            return pageResult;
         }
 
         var userMap = userRes.getDataList().stream().collect(Collectors.toMap(i -> i.id, i -> i));
 
         var members =  projectMemberList.stream()
-                .filter(projectMember -> userMap.containsKey(projectMember.getUserId()))
+                .filter(projectMember -> userMap.containsKey(projectMember.getUser().getId()))
                 .map(projectMember -> {
-                    ProjectMemberVo vo = new ProjectMemberVo();
+                    ProjectMemberDto vo = new ProjectMemberDto();
                     vo.setId(projectMember.getId());
                     vo.setProjectId(searchParam.getProjectId());
-                    vo.setUser( userMap.get(projectMember.getUserId()));
+                    vo.setUser( userMap.get(projectMember.getUser().getId()));
                     return vo;
                 }).toList();
 
-       pageView.setDataList(members);
-       pageView.setTotalElement(userRes.getTotalElement());
-       pageView.setTotalPages(userRes.getTotalPages());
-       return pageView;
+       pageResult.setDataList(members);
+       pageResult.setTotalElement(userRes.getTotalElement());
+       pageResult.setTotalPages(userRes.getTotalPages());
+       return pageResult;
     }
 
-    public List<ProjectMember> getProjectMemberByUserId(String userId) {
+    public List<ProjectMemberDto> getProjectMemberByUserId(String userId) {
         return  projectMemberDao.getByUserId(userId);
     }
 

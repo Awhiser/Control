@@ -5,6 +5,7 @@ import com.google.gson.JsonArray;
 import com.sisi.control.context.ContextHolder;
 import com.sisi.control.context.ControlContext;
 import com.sisi.control.model.user.UserConnector;
+import com.sisi.control.model.user.UserConnectorDto;
 import com.sisi.control.model.user.UserInfo;
 import com.sisi.control.repository.impl.UserConnectorDao;
 import com.sisi.control.repository.impl.UserDao;
@@ -41,8 +42,8 @@ public class UserConnectorService {
         userConnectorDao.save(userConnector);
     }
 
-    public List<UserConnector> getUserConnectors(){
-       return  userConnectorDao.findAll();
+    public List<UserConnectorDto> getUserConnectors(){
+       return  userConnectorDao.getAll();
     }
 
     public void update(UserConnector userConnector){
@@ -51,7 +52,7 @@ public class UserConnectorService {
 
 
     public void syncUser(String id){
-        var userConnector = userConnectorDao.findById(id);
+        var userConnector = userConnectorDao.getById(id);
         var usersJson = httpUtils.get(userConnector.getUrl());
 
         var userArray = new Gson().fromJson(usersJson, JsonArray.class);
