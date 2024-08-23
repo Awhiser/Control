@@ -39,6 +39,12 @@ public class TaskLinkController {
         return Response.success(res);
     }
 
+    @GetMapping("/delete")
+    public Response delete(String id){
+        taskLinkService.deleteById(id);
+        return Response.success();
+    }
+
 
 
 

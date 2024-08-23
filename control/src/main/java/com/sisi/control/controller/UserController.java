@@ -15,7 +15,7 @@ public class UserController {
 
     private UserConnectorService userConnectorService;
 
-    UserController(UserService userService, UserConnectorService userConnectorService)
+    public UserController(UserService userService, UserConnectorService userConnectorService)
     {
         this.userService = userService;
         this.userConnectorService = userConnectorService;

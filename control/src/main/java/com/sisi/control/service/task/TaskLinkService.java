@@ -35,13 +35,9 @@ public class TaskLinkService {
         return taskLinkDao.getById(id);
     }
 
-//    public List<TaskLink> getByIds(List<String> ids){
-//        return taskLinkDao.findByIds(ids);
-//    }
-//
-//    public void deleteById(String id){
-//        taskLinkDao.deleteByIdWithRealRemove(id);
-//    }
+    public void deleteById(String id){
+        taskLinkDao.deleteByIdWithRealRemove(id);
+    }
 
     public List<TaskLinkDto> getByTaskId(String taskId){
        return taskLinkDao.getByTaskId(taskId);
