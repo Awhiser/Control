@@ -24,7 +24,7 @@ public class UserInfoDto {
         this.displayName = user.getDisplayName();
         this.phone = user.getPhone();
         this.mail = user.getMail();
-        this.password = user.getPassword();
+       // this.password = user.getPassword();
     }
 
 

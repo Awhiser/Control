@@ -121,6 +121,7 @@
                 <a-col :span="24">
                     <a-tabs @tabClick="changeTab"  >
                         <a-tab-pane key="Comment" tab="Comment">
+                           
                             <a-list item-layout="horizontal" :data-source="changeLogs">
                                 <template #renderItem="{ item }">
                                     <a-list-item>
@@ -132,8 +133,11 @@
                                     </a-list-item>
                                 </template>
                             </a-list>
+
+
                         </a-tab-pane>
                         <a-tab-pane key="TaskChangeLog" tab="TaskChange" >
+                        
                             <a-timeline>
                                 <a-timeline-item> <a-list item-layout="horizontal" :data-source="changeLogs">
                                         <template #renderItem="{ item }">
@@ -275,6 +279,8 @@ let taskView = ref({
     updateTime: "2024-06-27T06:40:35.543+00:00"
 })
 
+let changLogs = [];
+
 watch(show, (value, oldvalue) => {
     if (value == false) {
         return
@@ -295,7 +301,8 @@ function openEditForm() {
 function changeTab(key){
     if(key=="TaskChangeLog"){
         taskChangeLogService.getByTaskId(taskView.value.id).then(res=>{
-            
+           changLogs = res.data;
+           console.log(changLogs)
         });
     }
 }

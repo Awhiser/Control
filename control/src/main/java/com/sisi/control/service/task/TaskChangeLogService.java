@@ -1,7 +1,6 @@
 package com.sisi.control.service.task;
 
 import com.google.gson.Gson;
-import com.sisi.control.model.task.Task;
 import com.sisi.control.model.task.TaskDto;
 import com.sisi.control.model.taskchangelog.TaskChangeLog;
 import com.sisi.control.model.taskchangelog.TaskChangeLogDto;
@@ -11,8 +10,6 @@ import com.sisi.control.service.VersionService;
 import com.sisi.control.utils.CommonUtils;
 import com.sisi.control.utils.DateUtils;
 import com.sisi.control.utils.log.LogHelper;
-import com.soundicly.jnanoidenhanced.jnanoid.NanoIdUtils;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -22,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TaskChangeLogService {
@@ -31,8 +29,9 @@ public class TaskChangeLogService {
     private VersionService versionService;
 
     @Autowired
-    public TaskChangeLogService(TaskChangeLogDao taskChangeLogDao) {
+    public TaskChangeLogService(TaskChangeLogDao taskChangeLogDao,UserService userService) {
         this.taskChangeLogDao = taskChangeLogDao;
+        this.userService = userService;
     }
 
     public void addChangeLogs(List<TaskChangeLog> lists){
@@ -110,7 +109,7 @@ public class TaskChangeLogService {
 
             logs.forEach(i -> {
                 i.setId(CommonUtils.idGenerate());
-                i.setUserId(operateUser);
+                i.setOperator(operateUser);
                 i.setTaskId(originTask.getId());
                 i.setOperateTime(new Date());
             });
@@ -142,6 +141,25 @@ public class TaskChangeLogService {
 
 
     public List<TaskChangeLogDto> getByTaskId(String taskId){
+        var taskChangeLogs = taskChangeLogDao.getByTaskId(taskId);
+        if(CollectionUtils.isEmpty(taskChangeLogs)){
+            return taskChangeLogs;
+        }
+
+        var userIds = taskChangeLogs.stream().map(i -> i.getOperator().getId()).toList();
+        if(CollectionUtils.isEmpty(userIds)){
+            return taskChangeLogs;
+        }
+
+        var userList = userService.getUserByIds(userIds);
+
+        if(CollectionUtils.isEmpty(userIds)) {
+            return taskChangeLogs;
+        }
+
+        userList.stream().collect(Collectors.toMap(k->k.id,v->v));
+
+
         return taskChangeLogDao.getByTaskId(taskId);
     }
 

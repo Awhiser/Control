@@ -44,13 +44,13 @@ public class UserService {
 
     public Response login(String userName, String password) {
         //todo 插拔
-        var user = userDao.getUserByUserName(userName);
+        var user = userDao.loginUserByUserNameAndPassword(userName,password);
         if (user == null) {
-            return Response.fail(MessageEnum.UserNameNotExist);
+            return Response.fail(MessageEnum.UserNamePasswordError);
         }
-        if (!user.getPassword().equals(password)) {
-            return Response.fail(MessageEnum.PasswordError);
-        }
+//        if (!user.getPassword().equals(password)) {
+//            return Response.fail(MessageEnum.PasswordError);
+//        }
         //generate token
         var token = tokenUtil.getToken(user.id, ContextHolder.getContext().getTenantId());
 

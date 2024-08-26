@@ -10,7 +10,7 @@ import java.util.Date;
 @Entity
 public class TaskChangeLog extends AbstractEntity {
     public String taskId;
-    public String userId;
+    public String operator;
     public String name;
     public String fromValue;
     public String toValue;

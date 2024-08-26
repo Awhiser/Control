@@ -1,6 +1,6 @@
 package com.sisi.control.model.taskchangelog;
 
-import com.sisi.control.repository.impl.TaskChangeLogDao;
+import com.sisi.control.model.user.UserInfoDto;
 import lombok.Data;
 
 import java.util.Date;
@@ -8,7 +8,7 @@ import java.util.Date;
 public class TaskChangeLogDto {
     public String id;
     public String taskId;
-    public String userId;
+    public UserInfoDto operator;
     public String name;
     public String fromValue;
     public String toValue;
@@ -21,7 +21,8 @@ public class TaskChangeLogDto {
     public TaskChangeLogDto(TaskChangeLog log) {
         this.id = log.id;
         this.taskId = log.taskId;
-        this.userId = log.userId;
+        this.operator = new UserInfoDto();
+        this.operator.setId(log.operator);
         this.name = log.name;
         this.fromValue = log.fromValue;
         this.toValue = log.toValue;

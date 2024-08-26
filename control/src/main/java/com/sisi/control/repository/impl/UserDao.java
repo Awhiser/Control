@@ -25,6 +25,12 @@ public class UserDao extends AbstractDao<UserInfo,UserRepository> {
         var user = findOneBySpecification(sp);
         return  user == null ? new UserInfoDto() : new UserInfoDto(user);
     }
+    public UserInfoDto loginUserByUserNameAndPassword(String userName,String passWord){
+        Specification<UserInfo> sp = JPACondition.<UserInfo>builder().eq(UserInfo::getName, userName).eq(UserInfo::getPassword, passWord).build();
+        var user = findOneBySpecification(sp);
+        return  user == null ? null : new UserInfoDto(user);
+    }
+
 
 
     public PageResult<UserInfoDto> getUserList(UserSearchParam param){
