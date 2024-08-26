@@ -44,7 +44,7 @@ public class ProjectMemberService {
     public PageResult<ProjectMemberDto> getPage(ProjectMemberSearchParam searchParam) {
         PageResult<ProjectMemberDto> pageResult = new PageResult<>();
         if (!StringUtils.hasText(searchParam.getProjectId())) {
-            return null;
+            return pageResult;
         }
         List<ProjectMemberDto> projectMemberList = projectMemberDao.getByProjectId(searchParam.getProjectId());
         var userIds = projectMemberList.stream().map(i -> i.getUser().getId()).toList();

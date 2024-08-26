@@ -28,22 +28,14 @@ public class UserLoginInterceptor implements HandlerInterceptor {
         // 获取token
 
         String tenantId = request.getHeader("tenantid");
-        String token = request.getHeader("token");
+
         var context = new ControlContext(tenantId);
         ContextHolder.setContext(context);
-
         var uri = request.getRequestURI();
         if(uri.endsWith("/api/user/login") || uri.endsWith("/api/user/register") ){
             return true;
         }
-
-
-//        if(tenantId.equals("1")){
-//            return true;
-//        }
-
-
-
+        String token = request.getHeader("token");
         if (StringUtils.isBlank(token) || (context.token = tokenUtil.containsToken(token) ) ==null  ){
             returnNoLogin(response);
             return false;

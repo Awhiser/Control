@@ -37,7 +37,7 @@ public class UserDao extends AbstractDao<UserInfo,UserRepository> {
         }
         var res = findByPage(jpaCondition.build(),param);
 
-        PageResult<UserInfoDto> pageResult = new PageResult<>();
+        PageResult<UserInfoDto> pageResult = new PageResult<>(res);
         pageResult.setDataList(res.stream().map(i->new UserInfoDto(i)).toList());
         return pageResult;
     }

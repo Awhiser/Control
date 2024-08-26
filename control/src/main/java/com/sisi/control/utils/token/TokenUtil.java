@@ -4,9 +4,11 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.sisi.control.context.ContextHolder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,6 +17,9 @@ public class TokenUtil {
 
     @Value("${token.secretKey}")
     private String secretKey;
+
+    @Value("${IsTestEnv}")
+    private boolean IsTestEnv;
 
     //todo
     Map<String,String> tokenCache = new HashMap<>();
@@ -60,6 +65,14 @@ public class TokenUtil {
     private long expireTime = 86400000;
 
     public ControlToken containsToken(String token) {
+
+        if(IsTestEnv){
+            ControlToken controlToken = new ControlToken();
+            controlToken.setTimeStamp(new Date().getTime());
+            controlToken.setUserId("1sisi");
+            return controlToken;
+        }
+
         if(!tokenCache.containsKey(token)){
             return null;
         }

@@ -103,7 +103,7 @@ public class TaskService {
             }
         });
         Map<String, UserInfoDto> userMap = new HashMap();
-        if(userMap.size() > 0) {
+        if(userIds.size() > 0) {
             userMap = userService.getUserByIds(userIds.stream().toList()).stream().collect(Collectors.toMap(i -> i.id, i -> i)) ;
         }
 
