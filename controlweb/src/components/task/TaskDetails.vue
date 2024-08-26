@@ -166,7 +166,7 @@
 
     </a-drawer>
 
-    <edit-task v-model:open="openEdit" :editTask="taskView" ></edit-task>
+    <edit-task v-model:open="openEdit" :editTask="taskView" @updated="()=>{loadData()}" ></edit-task>
 
 </template>
 
@@ -280,12 +280,7 @@ watch(show, (value, oldvalue) => {
         return
     }
    
-    taskService.getTask(taskId.value).then(res=>{
-        taskView.value = res.data;
-        showDetails.value = true;
-    })
-
-    
+    loadData();
 
 })
 
@@ -294,17 +289,23 @@ function closeDraw() {
 }
 
 function openEditForm() {
-    console.log("11")
     openEdit.value = true;
 }
 
 function changeTab(key){
-    console.log(key)
     if(key=="TaskChangeLog"){
         taskChangeLogService.getByTaskId(taskView.value.id).then(res=>{
             
         });
     }
+}
+
+function loadData(){
+    taskService.getTask(taskId.value).then(res=>{
+        taskView.value = res.data;
+        showDetails.value = true;
+    })
+
 }
 
 
