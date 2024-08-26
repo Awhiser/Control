@@ -41,11 +41,12 @@
   const user = defineModel('user',{default:{}});
   const open = defineModel('open',{default:false});
   const editUserForm = ref();
-  const editUser = ref({id:"",displayName:"",mail:""});
+  const editUser = ref({id:"",displayName:"",mail:"",name:""});
   watch(user,(value)=>{
     editUser.value.id = value.id;
     editUser.value.displayName = value.displayName;
     editUser.value.mail = value.mail;
+    editUser.value.name = value.name;
     //console.log(value)
   })
 
@@ -61,7 +62,7 @@
   
   const handleOk = (e) => {
 
-    userService.update(editUser.value).then(res=>{
+    userService.update({id: editUser.value.id, displayName:  editUser.value.displayName, mail: editUser.value.mail,name :  editUser.value.name   }  ).then(res=>{
 
         message.success(i18n.global.t("message.success"),1,()=>{location.reload()})
     })
