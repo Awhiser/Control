@@ -27,6 +27,7 @@ public class TaskDao extends AbstractDao<Task, TaskRepository>{
         if(StringUtils.hasText(param.getTitle())){
             jpaCondition.like(Task::getTitle, "%" + param.getTitle()+ "%" );
         }
+        jpaCondition.sortDesc(Task::getCreateTime);
         var page = findByPage(jpaCondition.build(),param);
         var resData= page.stream().map(i->new TaskDto(i)).toList();
         PageResult<TaskDto> pageRes = new PageResult<>(page);

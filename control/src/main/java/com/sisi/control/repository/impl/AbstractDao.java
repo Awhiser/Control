@@ -12,6 +12,7 @@ import org.springframework.util.CollectionUtils;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 
 public class AbstractDao<Entity extends AbstractEntity, Repo extends JpaRepository<Entity, String> & JpaSpecificationExecutor<Entity>> {
@@ -49,13 +50,13 @@ public class AbstractDao<Entity extends AbstractEntity, Repo extends JpaReposito
         }
         return null;
     }
-
+    //getTenantIdAndIsDelete 放前面 避免冲掉Sort
     protected List<Entity> findBySpecification(Specification specification){
-        return repo.findAll(specification.and(getTenantIdAndIsDelete(-1)));
+        return repo.findAll(getTenantIdAndIsDelete(-1).and(specification) );
     }
 
     protected List<Entity> findBySpecificationWithDel(Specification specification){
-        return repo.findAll(specification.and(getTenantIdAndIsDelete(1)));
+        return repo.findAll(getTenantIdAndIsDelete(1).and(specification));
     }
 
     public void deleteById(String id) {
@@ -101,12 +102,12 @@ public class AbstractDao<Entity extends AbstractEntity, Repo extends JpaReposito
         if(!CollectionUtils.isEmpty(params.getIds())) {
             specification = specification.and(getIdsSpecification(params.getIds()));
         }
-        var page =repo.findAll(specification.and(getTenantIdAndIsDelete(-1)),params.getPageRequest());
+        var page =repo.findAll( getTenantIdAndIsDelete(-1).and(specification) ,params.getPageRequest());
         return page;
     }
 
     protected Page<Entity> findByPageWithDel(Specification specification,PageRequest pageRequest){
-        var page = repo.findAll(specification.and(getTenantIdAndIsDelete(1)),pageRequest);
+        var page = repo.findAll(getTenantIdAndIsDelete(1).and(specification ),pageRequest);
         return page;
     }
 

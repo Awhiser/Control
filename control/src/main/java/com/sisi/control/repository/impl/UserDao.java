@@ -8,6 +8,7 @@ import com.sisi.control.repository.UserRepository;
 import com.sisi.control.utils.jpatool.JPACondition;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
@@ -23,7 +24,7 @@ public class UserDao extends AbstractDao<UserInfo,UserRepository> {
     public UserInfoDto getUserByUserName(String userName){
         Specification<UserInfo> sp = JPACondition.<UserInfo>builder().eq(UserInfo::getName, userName).build();
         var user = findOneBySpecification(sp);
-        return  user == null ? new UserInfoDto() : new UserInfoDto(user);
+        return user == null ? null : user.toDto();
     }
     public UserInfoDto loginUserByUserNameAndPassword(String userName,String passWord){
         Specification<UserInfo> sp = JPACondition.<UserInfo>builder().eq(UserInfo::getName, userName).eq(UserInfo::getPassword, passWord).build();
@@ -54,8 +55,8 @@ public class UserDao extends AbstractDao<UserInfo,UserRepository> {
     }
 
     public UserInfoDto getById(String id) {
-        var res = findById(id);
-        return new UserInfoDto(res);
+        var user = findById(id);
+        return  user == null ? null : user.toDto();
     }
 
     public void saveAll(List<UserInfo> userInfoList) {
@@ -66,5 +67,13 @@ public class UserDao extends AbstractDao<UserInfo,UserRepository> {
         var res = saveDB(userInfo);
         return new UserInfoDto(res);
     }
+
+    public void updateUserInfo(UserInfo userInfo){
+        var user = findById(userInfo.getId());
+        user.setDisplayName(userInfo.getDisplayName());
+        user.setMail(userInfo.getMail());
+        saveDB(user);
+    }
+
 
 }

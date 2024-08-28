@@ -28,4 +28,14 @@ public class UserInfo extends AbstractEntity {
         return StringUtils.hasText(displayName) ? displayName : name;
     }
 
+    public UserInfoDto toDto(){
+        UserInfoDto dto = new UserInfoDto();
+        dto.id = getId();
+        dto.name = getName();
+        dto.displayName = getDisplayName();
+        dto.phone = getPhone();
+        dto.mail = getMail();
+        return dto;
+    }
+
 }

@@ -15,7 +15,8 @@ export default {
         status: 'Status',
         desc:'Description',
         dueDate:"Duedate",
-        name:"Task"
+        name:"Task",
+        description:"Description"
     },
     button: {
         create: "Create",
@@ -31,7 +32,8 @@ export default {
         member:"Member",
         userManager: "UserManager",
         userConnectorManager: "UserConnectorManager",
-        createUser: "CreateUser"
+        createUser: "CreateUser",
+        comment:"Comment"
     },
     input:{
         searchName:"input Name search"
@@ -85,5 +87,6 @@ export default {
     "用户名已存在": "UserNameExist",
     "用户名不存在": "UserNameNotExist",
     "密码错误": "PasswordError",
-    "重新登录": "ReLogin"
+    "重新登录": "ReLogin",
+    "UserNamePasswordError":"UserName Or Password Error"
 }

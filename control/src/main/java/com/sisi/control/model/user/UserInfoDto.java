@@ -27,5 +27,16 @@ public class UserInfoDto {
        // this.password = user.getPassword();
     }
 
+    public UserInfo toBean(){
+        UserInfo bean = new UserInfo();
+        bean.id = getId();
+        bean.name = getName();
+        bean.displayName = getDisplayName();
+        bean.phone = getPhone();
+        bean.mail = getMail();
+        bean.password = getPassword();
+        return bean;
+    }
+
 
 }

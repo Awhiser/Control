@@ -14,14 +14,15 @@
             </a-row>
 
             <a-row>
-                <a-col :span="12"> <a-button type="primary" size="large" @click="openEditForm()" > Edit </a-button> <a-button type="primary" size="large"> More </a-button> </a-col>
-           
+                <a-col :span="12"> <a-button type="primary" size="large" @click="openEditForm()"> Edit </a-button> <a-button
+                        type="primary" size="large"> More </a-button> </a-col>
+
                 <a-col :span="12"> <a-button type="primary" size="large"> Transition </a-button> </a-col>
             </a-row>
-            
+
             <template>
                 <div>
-                    
+
                 </div>
             </template>
 
@@ -59,41 +60,45 @@
 
             <a-row>
                 <a-col :span="6"> <span>创建时间:</span> </a-col>
-                <a-col :span="18"> <span> {{ taskView.createTime? dayjs(taskView.createTime).format(dateFormat) :"" }}</span> </a-col>
+                <a-col :span="18"> <span> {{ taskView.createTime ? dayjs(taskView.createTime).format(dateFormat) : ""
+                }}</span> </a-col>
             </a-row>
 
             <a-row>
                 <a-col :span="6"> <span>更新时间:</span> </a-col>
-                <a-col :span="18"> <span> {{ taskView.updateTime ? dayjs(taskView.updateTime).format(dateFormat) : ""  }}</span> </a-col>
+                <a-col :span="18"> <span> {{ taskView.updateTime ? dayjs(taskView.updateTime).format(dateFormat) : ""
+                }}</span> </a-col>
             </a-row>
 
             <a-row>
                 <a-divider orientation="left">描述</a-divider>
-                <a-col :span="24"> <span> {{taskView.description}} </span> </a-col>
-
+                <div style="word-break: break-all; width: 90%;">
+                    <span> {{ taskView.description }}</span>
+                </div>
             </a-row>
 
-            <a-row>
-                <a-divider orientation="left">附件</a-divider>
-                <a-col :span="24"> <a-upload v-model:file-list="attachmentList"
-                        action="https://www.mocky.io/v2/5cc8019d300000980a055e76" list-type="picture-card"
-                        @preview="handlePreview">
-                        <div v-if="attachmentList.length < 8">
-                            <plus-outlined />
-                            <div style="margin-top: 8px">Upload</div>
-                        </div>
-                    </a-upload>
-                    <a-modal :open="previewVisible" :title="previewTitle" :footer="null" @cancel="handleCancel">
-                        <img alt="example" style="width: 100%" :src="previewImage" />
-                    </a-modal> </a-col>
-            </a-row>
 
-            <a-row>
-                <a-divider orientation="left">链接</a-divider>
-                <a-col :span="24"> 
-                    <a-collapse v-model:activeKey="activeKey" ghost>
-                        <a-collapse-panel key="1" header="CloneA">
-                            <a-list size="small" bordered :data-source="changeLogs">
+
+
+        </a-flex>
+        <a-divider orientation="left">附件</a-divider>
+        <a-upload v-model:file-list="attachmentList" action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+            list-type="picture-card" @preview="handlePreview">
+            <div v-if="attachmentList.length < 8">
+                <plus-outlined />
+                <div style="margin-top: 8px">Upload</div>
+            </div>
+        </a-upload>
+        <a-modal :open="previewVisible" :title="previewTitle" :footer="null" @cancel="handleCancel">
+            <img alt="example" style="width: 100%" :src="previewImage" />
+        </a-modal>
+
+
+        <a-divider orientation="left">链接</a-divider>
+
+        <a-collapse v-model:activeKey="activeKey" ghost>
+            <a-collapse-panel key="1" header="CloneA">
+                <!-- <a-list size="small" bordered :data-source="changeLogs">
                                 <template #renderItem="{ item }">
                                 <a-list-item>{{ item }}</a-list-item>
                                 </template>
@@ -103,26 +108,22 @@
                                 <template #footer>
                                 <div>Footer</div>
                                 </template>
-                        </a-list>
-                        </a-collapse-panel>
-                        <a-collapse-panel key="2" header="ClonB">
-                        <p>Link1</p>
-                        </a-collapse-panel>
- 
-                   </a-collapse>
-                
-                
-                </a-col>
-            </a-row>
+                        </a-list> -->
+            </a-collapse-panel>
+            <a-collapse-panel key="2" header="ClonB">
+                <p>Link1</p>
+            </a-collapse-panel>
+
+        </a-collapse>
 
 
 
-            <a-row>
-                <a-col :span="24">
-                    <a-tabs @tabClick="changeTab"  >
-                        <a-tab-pane key="Comment" tab="Comment">
-                           
-                            <a-list item-layout="horizontal" :data-source="changeLogs">
+
+
+        <a-tabs @tabClick="changeTab" v-model:activeKey="tabKey" >
+            <a-tab-pane key="Comment" tab="Comment">
+
+                <!-- <a-list item-layout="horizontal" :data-source="changeLogs">
                                 <template #renderItem="{ item }">
                                     <a-list-item>
                                         <a-list-item-meta description="Task Change Log">
@@ -132,76 +133,89 @@
                                         </a-list-item-meta>
                                     </a-list-item>
                                 </template>
-                            </a-list>
+                            </a-list> -->
 
 
-                        </a-tab-pane>
-                        <a-tab-pane key="TaskChangeLog" tab="TaskChange" >
-                        
-                            <a-timeline>
-                                <a-timeline-item> <a-list item-layout="horizontal" :data-source="changeLogs">
-                                        <template #renderItem="{ item }">
-                                            <a-list-item>
-                                                <a-list-item-meta>
-                                                    <template #title>
-                                                        <a> {{ item.title }} </a> 2015-09-01
-                                                    </template>
-
-                                                    <template #description>
-                                                        {{ item.title }}XXX
-                                                    </template>
-
-                                                </a-list-item-meta>
-                                            </a-list-item>
-                                        </template>
-                                    </a-list></a-timeline-item>
-                                <a-timeline-item>Solve initial network problems 2015-09-01</a-timeline-item>
-                                <a-timeline-item>Technical testing 2015-09-01</a-timeline-item>
-                                <a-timeline-item>Network problems being solved 2015-09-01</a-timeline-item>
-                            </a-timeline>
+             <a-comment>
+                    <template #content>
+                    <a-form-item>
+                        <a-textarea v-model:value="inputComment" :rows="4" />
+                    </a-form-item>
+                    <a-form-item>
+                        <a-button html-type="submit" :loading="isSubmitComment" type="primary" @click="submitComment">
+                        {{i18n.global.t('button.comment')}}
+                        </a-button>
+                    </a-form-item>
+                    </template>
+            </a-comment>
 
 
-                        </a-tab-pane>
-                    </a-tabs>
+            </a-tab-pane>
+            <a-tab-pane key="TaskChangeLog" tab="TaskChange">
 
-                </a-col>
-            </a-row>
-        </a-flex>
+                <a-timeline>
+                    <a-timeline-item v-for="log in changeLogs">
+
+
+                        <a-list-item>
+                            <a-list-item-meta>
+                                <template #title>
+                                    <a-row> <a-col :span="2">{{ log.operator }} </a-col> <a-col> {{
+                                        dayjs(log.operateTime).format(dateFormat) }} </a-col> </a-row>
+                                </template>
+
+                                <template #description>
+                                    <p v-for="item in log.data"> 
+                                        {{ (i18n.global.t(item.name)) }} ： {{ item.fromValue }} ---> {{ item.toValue }}</p>
+                                </template>
+
+                            </a-list-item-meta>
+                        </a-list-item>
+                    </a-timeline-item>
+                </a-timeline>
+
+
+            </a-tab-pane>
+        </a-tabs>
+
+
 
     </a-drawer>
 
-    <edit-task v-model:open="openEdit" :editTask="taskView" @updated="()=>{loadData()}" ></edit-task>
-
+    <edit-task v-model:open="openEdit" :editTask="taskView" @updated="() => { loadData() }"></edit-task>
 </template>
 
 
 
 <script setup lang="ts">
 
- 
+
 import { PlusOutlined } from '@ant-design/icons-vue';
 import { ref, watch } from 'vue'
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import taskService from '@/api/taskservice';
 import taskChangeLogService from '@/api/taskchangelogservice';
 import type { UploadProps } from 'ant-design-vue';
 import EditTask from './EditTask.vue';
+import i18n from '@/i18n';
+import ARow from 'ant-design-vue/es/grid/Row';
 
-const changeLogs = [
-    {
-        title: 'Azea ',
-    },
-    {
-        title: 'Ant Design Title 2',
-    },
-    {
-        title: 'Ant Design Title 3',
-    },
-    {
-        title: 'Ant Design Title 4',
-    },
-];
-const activeKey = ref(['1','2']);
+// const changeLogs = [
+//     {
+//         title: 'Azea ',
+//     },
+//     {
+//         title: 'Ant Design Title 2',
+//     },
+//     {
+//         title: 'Ant Design Title 3',
+//     },
+//     {
+//         title: 'Ant Design Title 4',
+//     },
+// ];
+const activeKey = ref(['1', '2']);
+const tabKey = ref("Comment");
 //attachment data
 
 function getBase64(file: File) {
@@ -279,18 +293,39 @@ let taskView = ref({
     updateTime: "2024-06-27T06:40:35.543+00:00"
 })
 
-let changLogs = [];
+const changeLogs = ref([]);
+
+const inputComment = ref('');
+const isSubmitComment = ref<boolean>(false);
+ const comments = ref([]);
 
 watch(show, (value, oldvalue) => {
     if (value == false) {
         return
     }
-   
+
     loadData();
 
 })
 
 function closeDraw() {
+    taskView.value = { 
+        assignee: "",
+    createTime: "",
+    description: "",
+    duedate: "",
+    id: "",
+    priority: "",
+    status: "",
+    projectId: "",
+    tags: [],
+    title: "",
+    type: "",
+    updateTime: ""
+}
+
+tabKey.value = "Comment";
+   
     showDetails.value = false;
 }
 
@@ -298,21 +333,62 @@ function openEditForm() {
     openEdit.value = true;
 }
 
-function changeTab(key){
-    if(key=="TaskChangeLog"){
-        taskChangeLogService.getByTaskId(taskView.value.id).then(res=>{
-           changLogs = res.data;
-           console.log(changLogs)
+function changeTab(key) {
+    if (key == "TaskChangeLog") {
+        taskChangeLogService.getByTaskId(taskView.value.id).then(res => {
+            convertChangeLog(res.data)
+            // res.data.sort((a, b) => b.operateTime.localeCompare(a.operateTime));
+            //  changeLogs.value = res.data;
+            //  console.log(changeLogs.value)
+
         });
     }
+
+    if(key == "Comment") {
+
+    }
+
 }
 
-function loadData(){
-    taskService.getTask(taskId.value).then(res=>{
+function loadData() {
+    taskService.getTask(taskId.value).then(res => {
         taskView.value = res.data;
         showDetails.value = true;
     })
 
+}
+
+function convertChangeLog(logs) {
+
+    if (logs.length == 0) {
+        return;
+    }
+
+    let group = {
+        data: [],
+        operator: logs[0].operator.displayName,
+        operateTime: logs[0].operateTime
+    }
+    changeLogs.value = [];
+    group.data.push(logs[0]);
+    changeLogs.value.push(group);
+    for (let i = 1; i < logs.length; i++) {
+        if (logs[i].operateTime == logs[i - 1].operateTime && logs[i].operator.id == logs[i - 1].operator.id) {
+            group.data.push(logs[i]);
+        } else {
+            group = {
+                data: [],
+                operator: logs[i].operator.displayName,
+                operateTime: logs[i].operateTime
+            };
+            group.data.push(logs[i]);
+            changeLogs.value.push(group);
+        }
+    }
+}
+
+function submitComment(){
+    console.log(inputComment.value)
 }
 
 
@@ -322,5 +398,4 @@ function loadData(){
 <style scoped >
 span {
     font-size: 18px;
-}
-</style>
+}</style>

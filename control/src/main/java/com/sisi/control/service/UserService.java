@@ -85,18 +85,8 @@ public class UserService {
         return pageRes;
     }
 
-    //todo 全传
     public void update(UserInfo userInfo){
-//        var user = userDao.findById(userInfo.getId());
-//
-//        if(StringUtils.hasText(userInfo.getDisplayName()) ){
-//            user.setDisplayName(userInfo.getDisplayName());
-//        }
-//
-//        if( StringUtils.hasText(userInfo.getMail()) ) {
-//            user.setMail(userInfo.getMail());
-//        }
-        userDao.save(userInfo);
+        userDao.updateUserInfo( userInfo);
     }
 
     public void delete(String id) {

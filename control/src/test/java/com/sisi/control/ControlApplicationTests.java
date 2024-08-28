@@ -41,6 +41,7 @@ class ControlApplicationTests {
        // var c = tokenUtil.getToken("aa","cc");
       //  var a = userDao.findById("");
       //  var resp = Response.success(new UserInfo());
+        var user = userDao.getById("1SRC");
 
         System.out.println(CommonUtils.idGenerate());
       //  var resp2 = Response.fail(new UserInfo());

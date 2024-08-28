@@ -13,8 +13,8 @@ export default {
         status: '状态',
         desc:'描述',
         dueDate:"到期日",
-        name:"需求"
-
+        name:"需求",
+        description:"描述"
 
     },
     button:{
@@ -31,7 +31,8 @@ export default {
         sync:"同步",
         userManager:"用户管理",
         userConnectorManager:"连接器管理",
-        createUser:"创建用户"
+        createUser:"创建用户",
+        comment:"评论"
     },
 
     input:{
@@ -89,5 +90,6 @@ export default {
     "用户名已存在":"用户名已存在",
     "用户名不存在":"用户名不存在",
     "密码错误":"密码错误",
-    "重新登录":"重新登录"
+    "重新登录":"重新登录",
+    "UserNamePasswordError":"校验用户名和密码是否正确"
   }

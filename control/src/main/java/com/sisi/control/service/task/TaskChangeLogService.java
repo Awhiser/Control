@@ -54,7 +54,7 @@ public class TaskChangeLogService {
                 log.setName("task.assignee");
                 var users = userService.getUserByIds(Arrays.asList(originTask.getAssignee().getId(), updateTask.getAssignee().getId()));
                 for (var user : users) {
-                    if (user.getId().equals(originTask.getAssignee())) {
+                    if (user.getId().equals(originTask.getAssignee().getId())) {
                         log.setFromValue(user.getDisplayName());
                     } else {
                         log.setToValue(user.getDisplayName());
@@ -106,12 +106,12 @@ public class TaskChangeLogService {
                 return;
             }
 
-
+            Date operateTime = new Date();
             logs.forEach(i -> {
                 i.setId(CommonUtils.idGenerate());
                 i.setOperator(operateUser);
                 i.setTaskId(originTask.getId());
-                i.setOperateTime(new Date());
+                i.setOperateTime(operateTime);
             });
             //save
             addChangeLogs(logs);
@@ -157,10 +157,15 @@ public class TaskChangeLogService {
             return taskChangeLogs;
         }
 
-        userList.stream().collect(Collectors.toMap(k->k.id,v->v));
+        var userMap = userList.stream().collect(Collectors.toMap(k->k.id,v->v));
 
+        for (var log : taskChangeLogs) {
+            if (userMap.containsKey(log.getOperator().getId())){
+                log.setOperator(userMap.get(log.getOperator().getId()));
+            }
+        }
 
-        return taskChangeLogDao.getByTaskId(taskId);
+        return taskChangeLogs;
     }
 
 }

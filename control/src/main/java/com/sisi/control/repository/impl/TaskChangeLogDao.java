@@ -17,10 +17,11 @@ public class TaskChangeLogDao extends AbstractDao<TaskChangeLog, TaskChangeLogRe
     }
 
     public List<TaskChangeLogDto> getByTaskId(String taskId) {
-        Specification<TaskChangeLog> sp = JPACondition.<TaskChangeLog>builder().eq(TaskChangeLog::getTaskId, taskId).build();
+        Specification<TaskChangeLog> sp = JPACondition.<TaskChangeLog>builder()
+                .eq(TaskChangeLog::getTaskId, taskId)
+                .sortDesc(TaskChangeLog::getOperateTime)
+                .build();
         var list = findBySpecification(sp);
-
-
         return list.stream().map(i->new TaskChangeLogDto(i)).toList();
     }
 

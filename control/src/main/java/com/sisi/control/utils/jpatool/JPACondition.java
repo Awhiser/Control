@@ -1,7 +1,10 @@
 package com.sisi.control.utils.jpatool;
 
+import com.sisi.control.model.AbstractEntity;
 import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.Order;
 import jakarta.persistence.criteria.Predicate;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.CollectionUtils;
 
@@ -31,6 +34,7 @@ public class JPACondition<T> {
         }
         Specification sp = (root, query, builder) -> {
             List<Predicate> predicates = new ArrayList<>();
+            List<Order> sorts = new ArrayList<>();
             for(var condition : conditions) {
                 var field = condition.fieldFn == null ?  condition.field : JPAFieldConvert.convertToFieldName(condition.fieldFn);
                 var type = condition.conditionType;
@@ -47,9 +51,19 @@ public class JPACondition<T> {
                     }
                     predicates.add(in);
                 }
+                if(type == ConditionType.sort) {
+                    if( condition.sortType == SortType.Asc  ) {
+                        sorts.add(builder.asc(root.get(field)));
+                    }else {
+                        sorts.add(builder.desc(root.get(field)));
+                    }
+                }
             }
             Predicate[] predicateArray = new Predicate[predicates.size()];
-            return builder.and( predicates.toArray(predicateArray) );
+            query.where(builder.and( predicates.toArray(predicateArray) ));
+            Order[] sortArray = new Order[sorts.size()];
+            query.orderBy(sorts.toArray(sortArray));
+            return query.getRestriction();
         };
         return sp;
     }
@@ -89,6 +103,14 @@ public class JPACondition<T> {
         return this;
     }
 
+    public JPACondition<T> sortAsc(IJPAFieldGetter<T> field) {
+        conditions.add(new Condition(ConditionType.sort,field,SortType.Asc));
+        return this;
+    }
+    public JPACondition<T> sortDesc(IJPAFieldGetter<T> field) {
+        conditions.add(new Condition(ConditionType.sort,field,SortType.Desc));
+        return this;
+    }
 
 
     private class Condition {
@@ -96,6 +118,7 @@ public class JPACondition<T> {
         public String field;
         public IJPAFieldGetter<T> fieldFn = null;
         public Object value;
+        public SortType sortType;
 
         public Condition(){
 
@@ -111,12 +134,24 @@ public class JPACondition<T> {
             this.fieldFn = field;
             this.value = value;
         }
+
+        public Condition(ConditionType conditionType,IJPAFieldGetter<T> field,SortType sortType){
+            this.conditionType = conditionType;
+            this.fieldFn = field;
+            this.sortType = sortType;
+        }
     }
 
     private enum ConditionType{
         eq,
         like,
-        in
+        in,
+        sort
+    }
+
+    private enum SortType{
+        Desc,
+        Asc
     }
 
 
