@@ -120,34 +120,53 @@
 
 
 
-        <a-tabs @tabClick="changeTab" v-model:activeKey="tabKey" >
+        <a-tabs @tabClick="changeTab" v-model:activeKey="tabKey">
             <a-tab-pane key="Comment" tab="Comment">
 
-                <!-- <a-list item-layout="horizontal" :data-source="changeLogs">
-                                <template #renderItem="{ item }">
-                                    <a-list-item>
-                                        <a-list-item-meta description="Task Change Log">
-                                            <template #title>
-                                                <a> {{ item.title }}</a>
-                                            </template>
-                                        </a-list-item-meta>
-                                    </a-list-item>
+                <a-list item-layout="horizontal" :data-source="commentList">
+                    <template #renderItem="{ item }">
+                        <a-list-item>
+                            <a-list-item-meta>
+                                <template #title>
+                                    <div style="word-break: break-all; width: 90%;">
+                                        {{ item.content }}
+                                    </div>
+                                  
                                 </template>
-                            </a-list> -->
+                                <template #description>
+                                  {{ item.user.displayName }}  {{ DateUtils.format(item.createTime) }}
+                                </template>
+                            </a-list-item-meta>
+                            <!-- {{ item.content }}1111 -->
+                            <!-- <a-comment :author="item.user.displayName">
 
+                                <template #content>
+                                    <div style="word-break: break-all; width: 90%;">
+                                        {{ item.content }}
+                                    </div>
+                                </template>
+                                <template #datetime> {{ DateUtils.format(item.createTime) }}
 
-             <a-comment>
-                    <template #content>
-                    <a-form-item>
-                        <a-textarea v-model:value="inputComment" :rows="4" />
-                    </a-form-item>
-                    <a-form-item>
-                        <a-button html-type="submit" :loading="isSubmitComment" type="primary" @click="submitComment">
-                        {{i18n.global.t('button.comment')}}
-                        </a-button>
-                    </a-form-item>
+                                </template>
+                            </a-comment> -->
+
+                        </a-list-item>
                     </template>
-            </a-comment>
+                </a-list>
+
+
+                <a-comment>
+                    <template #content>
+                        <a-form-item>
+                            <a-textarea v-model:value="inputComment" :rows="4" />
+                        </a-form-item>
+                        <a-form-item>
+                            <a-button html-type="submit" :loading="isSubmitComment" type="primary" @click="submitComment">
+                                {{ i18n.global.t('button.comment') }}
+                            </a-button>
+                        </a-form-item>
+                    </template>
+                </a-comment>
 
 
             </a-tab-pane>
@@ -165,7 +184,7 @@
                                 </template>
 
                                 <template #description>
-                                    <p v-for="item in log.data"> 
+                                    <p v-for="item in log.data">
                                         {{ (i18n.global.t(item.name)) }} ： {{ item.fromValue }} ---> {{ item.toValue }}</p>
                                 </template>
 
@@ -195,10 +214,12 @@ import { ref, watch } from 'vue'
 import dayjs, { Dayjs } from 'dayjs';
 import taskService from '@/api/taskservice';
 import taskChangeLogService from '@/api/taskchangelogservice';
-import type { UploadProps } from 'ant-design-vue';
+import commentService from '@/api/commentservice';
+import { message, type UploadProps } from 'ant-design-vue';
 import EditTask from './EditTask.vue';
 import i18n from '@/i18n';
 import ARow from 'ant-design-vue/es/grid/Row';
+import DateUtils from '@/api/dateutils';
 
 // const changeLogs = [
 //     {
@@ -297,7 +318,7 @@ const changeLogs = ref([]);
 
 const inputComment = ref('');
 const isSubmitComment = ref<boolean>(false);
- const comments = ref([]);
+const commentList = ref([]);
 
 watch(show, (value, oldvalue) => {
     if (value == false) {
@@ -305,27 +326,29 @@ watch(show, (value, oldvalue) => {
     }
 
     loadData();
+    tabKey.value = 'Comment';
+    loadComment();
 
 })
 
 function closeDraw() {
-    taskView.value = { 
+    taskView.value = {
         assignee: "",
-    createTime: "",
-    description: "",
-    duedate: "",
-    id: "",
-    priority: "",
-    status: "",
-    projectId: "",
-    tags: [],
-    title: "",
-    type: "",
-    updateTime: ""
-}
+        createTime: "",
+        description: "",
+        duedate: "",
+        id: "",
+        priority: "",
+        status: "",
+        projectId: "",
+        tags: [],
+        title: "",
+        type: "",
+        updateTime: ""
+    }
 
-tabKey.value = "Comment";
-   
+    tabKey.value = "Comment";
+
     showDetails.value = false;
 }
 
@@ -337,14 +360,11 @@ function changeTab(key) {
     if (key == "TaskChangeLog") {
         taskChangeLogService.getByTaskId(taskView.value.id).then(res => {
             convertChangeLog(res.data)
-            // res.data.sort((a, b) => b.operateTime.localeCompare(a.operateTime));
-            //  changeLogs.value = res.data;
-            //  console.log(changeLogs.value)
 
         });
     }
 
-    if(key == "Comment") {
+    if (key == "Comment") {
 
     }
 
@@ -387,8 +407,27 @@ function convertChangeLog(logs) {
     }
 }
 
-function submitComment(){
-    console.log(inputComment.value)
+function submitComment() {
+
+
+    isSubmitComment.value = true;
+    commentService.create({
+        taskId: taskView.value.id,
+        content: inputComment.value
+    }).then(res => {
+        inputComment.value = '';
+        loadComment();
+        message.info(i18n.global.t('message.success'))
+        isSubmitComment.value = false;
+
+    })
+
+}
+
+function loadComment() {
+    commentService.getByTaskId(taskId.value).then(res => {
+        commentList.value = res.data;
+    })
 }
 
 
@@ -398,4 +437,5 @@ function submitComment(){
 <style scoped >
 span {
     font-size: 18px;
-}</style>
+}
+</style>
