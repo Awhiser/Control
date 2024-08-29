@@ -1,5 +1,6 @@
 package com.sisi.control.repository.impl;
 
+import com.sisi.control.context.ContextHolder;
 import com.sisi.control.model.PageResult;
 import com.sisi.control.model.user.UserInfo;
 import com.sisi.control.model.user.UserInfoDto;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
@@ -65,14 +67,26 @@ public class UserDao extends AbstractDao<UserInfo,UserRepository> {
 
     public UserInfoDto save(UserInfo userInfo) {
         var res = saveDB(userInfo);
-        return new UserInfoDto(res);
+        return res.toDto();
     }
 
+    @Transactional
     public void updateUserInfo(UserInfo userInfo){
-        var user = findById(userInfo.getId());
-        user.setDisplayName(userInfo.getDisplayName());
-        user.setMail(userInfo.getMail());
-        saveDB(user);
+        StringBuilder updateSql = new StringBuilder("UPDATE userinfo SET");
+        updateSql.append(" displayname = '"+userInfo.getDisplayName()+"'");
+        updateSql.append(" , mail = '"+userInfo.getMail()+"'");
+        updateSql.append(" Where id = '"+userInfo.getId()+"'");
+        updateSql.append(" and tenantid = '"+ ContextHolder.getContext().tenantId+"'");
+        updateSql.append(" and isdelete = false");
+        var res = executeUpdateSql(updateSql.toString());
+        System.out.println(res);
+    }
+
+    @Transactional
+    public void testSQL(){
+        String sql  = "UPDATE userinfo SET name = 'password123' WHERE id = '1'";
+        executeUpdateSql(sql);
+        System.out.println("OKK");
     }
 
 

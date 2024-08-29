@@ -4,21 +4,27 @@ import com.sisi.control.context.ContextHolder;
 import com.sisi.control.model.AbstractEntity;
 import com.sisi.control.model.AbstractSearch;
 import com.sisi.control.utils.jpatool.JPACondition;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 
 public class AbstractDao<Entity extends AbstractEntity, Repo extends JpaRepository<Entity, String> & JpaSpecificationExecutor<Entity>> {
     protected Repo repo;
 
     private String tenantField = "tenantId";
+
+    @PersistenceContext
+    EntityManager entityManager;
 
     protected AbstractDao(Repo repo) {
         this.repo = repo;
@@ -128,5 +134,16 @@ public class AbstractDao<Entity extends AbstractEntity, Repo extends JpaReposito
     }
 
 
+
+    protected int executeUpdateSql(String sql){
+       // entityManager.getTransaction().begin();
+// 执行原生 SQL 更新语句
+        Query query = entityManager.createNativeQuery(sql);
+        int updatedCount = query.executeUpdate();
+
+//        entityManager.getTransaction().commit();
+//        entityManager.close();
+        return updatedCount;
+    }
 
 }

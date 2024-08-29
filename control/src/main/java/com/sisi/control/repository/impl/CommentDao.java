@@ -15,8 +15,8 @@ public class CommentDao extends AbstractDao<Comment, CommentRepository>{
     }
 
     public List<CommentDto> getByTaskId(String taskId) {
-        var sp =  new JPACondition<Comment>().eq(Comment::getTaskId,taskId).build();
-        return findBySpecification(sp).stream().map(i->new CommentDto(i)).toList();
+        var sp =  new JPACondition<Comment>().eq(Comment::getTaskId,taskId).sortDesc(Comment::getCreateTime).build();
+        return findBySpecification(sp).stream().map(CommentDto::new).toList();
     }
 
     public CommentDto save(Comment comment){
