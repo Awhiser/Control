@@ -13,14 +13,11 @@
         </template>
   
         <template v-if="column.key === 'operation'">
-  
+          <a-button @click="showEditForm(record)" > {{ $t('button.edit') }} </a-button>
           <a-popconfirm :title="i18n.global.t('message.confirm')" @confirm="deleteType(record.id)">
             <a-button danger style="margin-left: 15px;"> {{ $t('button.delete') }} </a-button>
           </a-popconfirm>
-  
         </template>
-  
-  
       </template>
     </a-table>
   
@@ -44,6 +41,30 @@
         </a-form>
       </div>
     </a-modal>
+
+
+    <a-modal v-model:open="openEditForm" :ok-text="i18n.global.t('button.edit')" @ok="edit()"
+      :title="i18n.global.t('button.edit')">
+      <a-divider />
+      <div style="height:200px;overflow-y:auto">
+        <a-form ref="editForm" :rules="formRules" layout="horizontal" :model="editData" style="max-width: 800px">
+          <a-form-item :label="i18n.global.t('taskLinkType.name')" name="name">
+            <a-input v-model:value="editData.name" />
+          </a-form-item>
+
+          <a-form-item :label="i18n.global.t('taskLinkType.out')" name="outName">
+            <a-input v-model:value="editData.outName" />
+          </a-form-item>
+
+          <a-form-item :label="i18n.global.t('taskLinkType.in')" name="inName">
+            <a-input v-model:value="editData.inName" />
+          </a-form-item>
+
+        </a-form>
+      </div>
+    </a-modal>
+
+
   </template>
      
   
@@ -64,13 +85,13 @@
     },
     {
       title: i18n.global.t('taskLinkType.out'),
-      dataIndex: 'out',
-      key: 'out',
+      dataIndex: 'outName',
+      key: 'outName',
     },
     {
       title: i18n.global.t('taskLinkType.in'),
-      dataIndex: 'in',
-      key: 'in',
+      dataIndex: 'inName',
+      key: 'inName',
     },
     {
       title: i18n.global.t('table.operation'),
@@ -80,13 +101,14 @@
   
   ];
   const createForm = ref();
+  const editForm = ref();
   const formRules: Record<string, Rule[]> = {
     name: [{ required: true, message: '', trigger: 'change' }],
     outName: [{ required: true, message: '', trigger: 'change' }],
     inName: [{ required: true, message: '', trigger: 'change' }]
   
   };
-  
+
   const data = ref([]);
   
   const taskLinkType = ref({
@@ -118,7 +140,10 @@
   function create(e) {
     createForm.value
       .validate().then(() => {
-        taskLinkTypeService.create(taskLinkType.value).then(res => {
+        taskLinkTypeService.create({name:taskLinkType.value.name,
+          inName:taskLinkType.value.inName,
+          outName:taskLinkType.value.outName
+        }).then(res => {
           message.success(i18n.global.t('message.success'), 1, () => {
             openCreateForm.value = false;
             loadData();
@@ -132,7 +157,32 @@
     openCreateForm.value = true;
   }
   
-  
+  const editData = ref({ name: '',
+    inName:"",
+    outName:""});
+  const openEditForm = ref(false);
+  function showEditForm(record){
+    editData.value = {
+      id: record.id,
+      name: record.name,
+      outName: record.outName,
+      inName :  record.inName
+    }
+    openEditForm.value = true;
+  }
+
+  function edit(){
+    editForm.value
+      .validate().then(() => {
+        taskLinkTypeService.update(editData.value).then(res => {
+            message.success(i18n.global.t('message.success'), 1, () => {
+              openEditForm.value = false;
+              loadData();
+            })
+        });
+      })
+
+  }
   
   
   </script>
