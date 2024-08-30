@@ -78,7 +78,8 @@ export default {
         user:"UserSetting",
         task:"TaskSetting",
         taskType:"TaskType",
-        taskLinkType:"taskLinkType"
+        taskLinkType:"taskLinkType",
+        customField:"CustomField"
    },
    taskType:{
     name:"TaskType"

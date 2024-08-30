@@ -19,7 +19,7 @@ public class TaskLinkController {
     }
 
     @PostMapping("/create")
-    public Response create(TaskLink link){
+    public Response create(@RequestBody TaskLink link){
         var res = taskLinkService.create(link);
         return Response.success(res);
     }

@@ -81,7 +81,8 @@ export default {
             user:"用户设置",
             task:"需求设置",
             taskType:"需求类型",
-            taskLinkType:"需求链接"
+            taskLinkType:"需求链接",
+            customField:"自定义字段"
        },
        taskType:{
         name:"需求类型"

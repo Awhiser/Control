@@ -7,8 +7,8 @@ import lombok.Data;
 @Data
 @Entity
 public class TaskLink extends AbstractEntity {
-    public String taskId;
+    public String outTaskId;
     public String linkId;
-    public String linkTaskId;
+    public String inTaskId;
     public boolean isOut;
 }
