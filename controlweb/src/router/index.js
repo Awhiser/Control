@@ -63,6 +63,12 @@ const router = createRouter({
             name: 'sys_taskType',
             props: true,
             component: () => import('../views/sysSetting/task/TaskTypeView.vue')
+          },
+          {
+            path: '/sys/taskLinkType',
+            name: 'sys_taskLinkType',
+            props: true,
+            component: () => import('../views/sysSetting/task/TaskLinkTypeView.vue')
           }
       ]
     }

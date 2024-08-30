@@ -4,10 +4,7 @@ import com.sisi.control.model.response.Response;
 import com.sisi.control.model.tasklink.TaskLink;
 import com.sisi.control.service.task.TaskLinkService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/taskLink")
@@ -21,7 +18,7 @@ public class TaskLinkController {
         this.taskLinkService = taskLinkService;
     }
 
-    @GetMapping("/create")
+    @PostMapping("/create")
     public Response create(TaskLink link){
         var res = taskLinkService.create(link);
         return Response.success(res);

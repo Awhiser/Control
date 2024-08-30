@@ -2,21 +2,20 @@ package com.sisi.control.model.tasklink;
 
 public class TaskLinkDto {
     public String id;
-    public TaskLinkEnum linkType;
-    public String linkName;
-    public String description;
-    public String url;
     public String taskId;
+    public String linkId;
+    public String linkName;
+    public String linkTaskId;
+    public boolean isOut;
 
     public TaskLinkDto() {
 
     }
 
     public TaskLinkDto(TaskLink link) {
-        this.linkType = link.linkType;
-        this.linkName = link.linkName;
-        this.description = link.description;
-        this.url = link.url;
+        this.linkId = link.linkId;
+        this.isOut = link.isOut;
+        this.linkTaskId = link.linkTaskId;
         this.taskId = link.taskId;
         this.id = link.id;
 

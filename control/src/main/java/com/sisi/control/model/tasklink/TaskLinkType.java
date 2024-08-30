@@ -6,9 +6,9 @@ import lombok.Data;
 
 @Data
 @Entity
-public class TaskLink extends AbstractEntity {
-    public String taskId;
-    public String linkId;
-    public String linkTaskId;
-    public boolean isOut;
+public class TaskLinkType extends AbstractEntity {
+    public String name;
+    public String outName;
+    public String inName;
+
 }

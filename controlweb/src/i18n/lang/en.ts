@@ -77,10 +77,17 @@ export default {
     setting:{
         user:"UserSetting",
         task:"TaskSetting",
-        taskType:"TaskType"
+        taskType:"TaskType",
+        taskLinkType:"taskLinkType"
    },
    taskType:{
     name:"TaskType"
+   },
+   taskLinkType:{
+    name:"Name",
+    out:"OutName",
+    in:"InName"
+    
    },
 
     "服务器异常": "ServerError",

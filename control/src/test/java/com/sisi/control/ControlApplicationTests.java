@@ -38,14 +38,18 @@ class ControlApplicationTests {
 
     @Test
     void contextLoads() {
+        ContextHolder.setContext(new ControlContext("1"));
        // var c = tokenUtil.getToken("aa","cc");
       //  var a = userDao.findById("");
       //  var resp = Response.success(new UserInfo());
-        var user = userDao.getById("1SRC");
+        var user = userDao.getById("1");
+        user.setMail("2222");
+        user.setDisplayName("ye2");
+        userDao.updateUserInfo(user.toBean());
 
         System.out.println(CommonUtils.idGenerate());
       //  var resp2 = Response.fail(new UserInfo());
-        ContextHolder.setContext(new ControlContext("1"));
+
 //        var u = userDao.getUserByUserName("ye");
        // TaskSearchParam param = new TaskSearchParam();
 //        System.out.println(MQConfig.isEnableMQ());

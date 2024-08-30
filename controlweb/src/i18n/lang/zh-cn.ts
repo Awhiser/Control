@@ -80,10 +80,17 @@ export default {
        setting:{
             user:"用户设置",
             task:"需求设置",
-            taskType:"需求类型"
+            taskType:"需求类型",
+            taskLinkType:"需求链接"
        },
        taskType:{
         name:"需求类型"
+       },
+       taskLinkType:{
+        name:"链接类型",
+        out:"链出名称",
+        in:"链入名称"
+        
        },
    
     "服务器异常":"服务器异常",
