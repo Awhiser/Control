@@ -18,7 +18,6 @@ public class TaskLinkTypeDto {
         this.name = type.getName();
         this.outName = type.getOutName();
         this.inName = type.getInName();
-
     }
 
 

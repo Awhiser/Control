@@ -48,7 +48,7 @@ function changeProject(e) {
 
 }
 
-function loadProjectList(){
+function loadProjectList() {
     let userId = localStorage.getItem("userId");
     projectService.getProjectByUserId(userId).then(res => {
         if (res.data.length == 0) {
