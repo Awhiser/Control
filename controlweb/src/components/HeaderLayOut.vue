@@ -5,11 +5,9 @@
             <a-flex gap="80">
                 <div style="font-size: 30px;color: white;">Control</div>
 
-
                 <div>
-
-                    <a-select  v-model:value="projectId" style="width: 120px" @change="changeProject"  :placeholder="$t('project.name') "  >
-                          <a-select-option  v-for=" record of projectList" :value="record.id">{{record.name}}</a-select-option>
+                    <a-select  v-model:value="projectId" style="width: 120px"   :placeholder="$t('project.name') "  >
+                          <a-select-option @click="changeProject(record.id)" v-for=" record of projectList" :value="record.id">{{record.name}}</a-select-option>
                    </a-select>
 
                 </div>

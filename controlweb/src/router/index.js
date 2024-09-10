@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import LoginView from '../views/LoginView.vue'
-import { userStore } from '@/stores/userStore'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -71,7 +70,12 @@ const router = createRouter({
             component: () => import('../views/sysSetting/task/TaskLinkTypeView.vue')
           }
       ]
-    }
+    },
+    {
+      path: '/taskDetail',
+      name: 'taskDetail',
+      component: () => import('../views/task/TaskDetailsView.vue')
+    },
   ]
 })
 

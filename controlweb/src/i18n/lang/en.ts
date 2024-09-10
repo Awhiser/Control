@@ -90,6 +90,11 @@ export default {
     in:"InName"
     
    },
+   taskLink : {
+    outTask:"OutTask",
+    inTask:"InTask",
+    link:"Link"
+},
 
     "服务器异常": "ServerError",
     "用户名已存在": "UserNameExist",
