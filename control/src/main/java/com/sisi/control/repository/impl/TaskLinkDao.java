@@ -18,10 +18,15 @@ public class TaskLinkDao extends AbstractDao<TaskLink, TaskLinkRepository> {
     }
 
     public List<TaskLinkDto> getByTaskId(String taskId){
-        Specification sp =  JPACondition.<TaskLink>builder()
-                .eq(TaskLink::getId,taskId)
+        Specification inTaskSp =  JPACondition.<TaskLink>builder()
+                .eq(TaskLink::getInTaskId,taskId)
                 .build();
-        return findBySpecification(sp).stream().map(i-> new TaskLinkDto(i)).toList();
+
+        Specification outTaskSp =  JPACondition.<TaskLink>builder()
+                .eq(TaskLink::getOutTaskId,taskId)
+                .build();
+
+        return findBySpecification(inTaskSp.or(outTaskSp)).stream().map(i-> new TaskLinkDto(i)).toList();
     }
 
     public TaskLinkDto save(TaskLink taskLink){

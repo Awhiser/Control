@@ -28,7 +28,10 @@ public class TaskLinkTypeDao extends AbstractDao<TaskLinkType, TaskLinkTypeRepos
         return res.stream().map(i-> new TaskLinkTypeDto(i)).toList();
     }
 
-
+    public List<TaskLinkTypeDto> getByIds(List<String> ids){
+        var res = findByIds(ids);
+        return res.stream().map(i-> new TaskLinkTypeDto(i)).toList();
+    }
 
 
 }

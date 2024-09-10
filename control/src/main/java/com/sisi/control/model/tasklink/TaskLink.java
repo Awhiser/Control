@@ -10,5 +10,4 @@ public class TaskLink extends AbstractEntity {
     public String outTaskId;
     public String linkId;
     public String inTaskId;
-    public boolean isOut;
 }

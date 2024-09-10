@@ -94,32 +94,24 @@
         </a-modal>
 
 
-        <a-divider orientation="left">链接</a-divider>
+        <a-divider orientation="left">链接 <a @click="openCreateTaskLink()">+</a></a-divider>
 
-        <a-collapse v-model:activeKey="activeKey" ghost>
-            <a-collapse-panel key="1" header="CloneA">
-                <!-- <a-list size="small" bordered :data-source="changeLogs">
-                                <template #renderItem="{ item }">
-                                <a-list-item>{{ item }}</a-list-item>
-                                </template>
-                                <template #header>
-                                <div>Header</div>
-                                </template>
-                                <template #footer>
-                                <div>Footer</div>
-                                </template>
-                        </a-list> -->
+        <a-collapse :activeKey="activetaskLinkKey"  ghost>
+            <a-collapse-panel :show-arrow="false"  v-for="link in taskLinkList" :header="link.name" :key="link.id" >
+               <a-list size="small" bordered >
+                    <template v-for="item in link.outTask">
+                    <a-list-item>{{ item.link.outName }}  <a>{{ item.inTask.title }}</a></a-list-item>
+                    </template>
+                    <template v-for="item in link.inTask">
+                    <a-list-item>{{ item.link.inName }}  <a>{{ item.outTask.title }}</a></a-list-item>
+                    </template>
+                </a-list> 
+              
             </a-collapse-panel>
-            <a-collapse-panel key="2" header="ClonB">
-                <p>Link1</p>
-            </a-collapse-panel>
-
+          
         </a-collapse>
 
-
-
-
-
+       
         <a-tabs @tabClick="changeTab" v-model:activeKey="tabKey">
             <a-tab-pane key="Comment" tab="Comment">
 
@@ -202,6 +194,7 @@
     </a-drawer>
 
     <edit-task v-model:open="openEdit" :editTask="taskView" @updated="() => { loadData() }"></edit-task>
+   <create-task-link :taskId="taskView.id" :projectId="taskView.projectId"  v-model:open="openTaskLink" >  </create-task-link>
 </template>
 
 
@@ -211,7 +204,7 @@
 
 import { PlusOutlined } from '@ant-design/icons-vue';
 import { ref, watch } from 'vue'
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import taskService from '@/api/taskservice';
 import taskChangeLogService from '@/api/taskchangelogservice';
 import commentService from '@/api/commentservice';
@@ -220,24 +213,12 @@ import EditTask from './EditTask.vue';
 import i18n from '@/i18n';
 import ARow from 'ant-design-vue/es/grid/Row';
 import DateUtils from '@/api/dateutils';
+import CreateTaskLink from './CreateTaskLink.vue';
+import taskLinkService from '@/api/tasklinkservice';
 
-// const changeLogs = [
-//     {
-//         title: 'Azea ',
-//     },
-//     {
-//         title: 'Ant Design Title 2',
-//     },
-//     {
-//         title: 'Ant Design Title 3',
-//     },
-//     {
-//         title: 'Ant Design Title 4',
-//     },
-// ];
-const activeKey = ref(['1', '2']);
+
 const tabKey = ref("Comment");
-//attachment data
+
 
 function getBase64(file: File) {
 
@@ -250,6 +231,7 @@ function getBase64(file: File) {
 const previewVisible = ref(false);
 const previewImage = ref('');
 const previewTitle = ref('');
+const openTaskLink = ref(false);
 const attachmentList = ref<UploadProps['fileList']>([
     {
         uid: '-1',
@@ -320,14 +302,19 @@ const inputComment = ref('');
 const isSubmitComment = ref<boolean>(false);
 const commentList = ref([]);
 
+
+const taskLinkList = ref([]);
+const activetaskLinkKey = ref([]);
 watch(show, (value, oldvalue) => {
     if (value == false) {
         return
     }
 
     loadData();
+    loadTaskLink();
     tabKey.value = 'Comment';
     loadComment();
+  
 
 })
 
@@ -365,7 +352,7 @@ function changeTab(key) {
     }
 
     if (key == "Comment") {
-
+        loadComment();
     }
 
 }
@@ -428,6 +415,55 @@ function loadComment() {
     commentService.getByTaskId(taskId.value).then(res => {
         commentList.value = res.data;
     })
+}
+
+function loadTaskLink() {
+
+    
+
+    let group = [];
+    taskLinkList.value = [];
+    activetaskLinkKey.value = [];
+    taskLinkService.getByTaskId(taskId.value).then(res=>{
+
+        for(let i of res.data) {
+         
+            if( !group[i.link.id]) {
+                group[i.link.id] = {
+                            id:i.link.id,
+                            name:i.link.name,
+                            outTask: [],
+                            inTask:[],
+                         }
+
+            }
+
+            if(i.inTask.id === taskId.value) {
+                group[i.link.id].inTask.push(i)
+            }
+
+            if(i.outTask.id === taskId.value) {
+                group[i.link.id].outTask.push(i)
+            }
+
+        }
+
+        for(var key in group){
+            taskLinkList.value.push(group[key]);
+            activetaskLinkKey.value.push(key)
+        }
+
+
+
+   
+    //  console.log(group);
+        
+    })
+}
+
+
+function openCreateTaskLink() {
+    openTaskLink.value = true;
 }
 
 

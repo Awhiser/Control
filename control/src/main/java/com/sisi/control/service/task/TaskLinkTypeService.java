@@ -41,8 +41,11 @@ public class TaskLinkTypeService {
     }
 
     public TaskLinkTypeDto get(String id){
-
         return taskLinkTypeDao.get(id);
+    }
+
+    public List<TaskLinkTypeDto> getByIds(List<String> ids) {
+        return taskLinkTypeDao.getByIds(ids);
     }
 
 }

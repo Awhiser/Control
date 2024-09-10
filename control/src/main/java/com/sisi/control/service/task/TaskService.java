@@ -13,6 +13,7 @@ import com.sisi.control.service.ProjectService;
 import com.sisi.control.service.UserService;
 import com.sisi.control.service.VersionService;
 import com.sisi.control.utils.CommonUtils;
+import jakarta.servlet.http.PushBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -119,6 +120,8 @@ public class TaskService {
     }
 
 
-
+    public List<TaskDto> getByIds(List<String> ids) {
+      return   taskDao.getByIds(ids);
+    }
 
 }
