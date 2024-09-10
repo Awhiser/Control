@@ -1,136 +1,138 @@
 <template>
-    <a-drawer v-model:open="show" :width="'50%'" placement="right" @close="closeDraw">
-        <a-flex gap="middle" vertical>
-            <!-- <a-row>
+
+
+    <a-flex gap="middle" vertical>
+        <!-- <a-row>
                 <a-col :span="24">
                     <span> {{ taskView.projectId }}</span>
                 </a-col>
             </a-row> -->
 
-            <a-row>
-                <a-col :span="24">
-                    <span style="font-size: 28px;"> {{ taskView.title }}</span>
-                </a-col>
-            </a-row>
+        <a-row>
+            <a-col :span="24">
+                <span style="font-size: 28px;"> {{ taskView.title }}</span>
+            </a-col>
+        </a-row>
 
-            <a-row>
-                <a-col :span="12"> <a-button type="primary" size="large" @click="openEditForm()"> Edit </a-button> <a-button
-                        type="primary" size="large"> More </a-button> </a-col>
+        <a-row>
+            <a-col :span="12"> <a-button type="primary" size="large" @click="openEditForm()"> Edit </a-button> <a-button
+                    type="primary" size="large"> More </a-button> </a-col>
 
-                <a-col :span="12"> <a-button type="primary" size="large"> Transition </a-button> </a-col>
-            </a-row>
+            <a-col :span="12"> <a-button type="primary" size="large" @click="log()"> Transition </a-button> </a-col>
+        </a-row>
 
-            <template>
-                <div>
+        <template>
+            <div>
 
-                </div>
-            </template>
-
-            <a-row>
-                <a-col :span="6"> <span>经办人:</span> </a-col>
-                <a-col :span="6"> <span> {{ taskView.assignee.displayName }}</span> </a-col>
-
-                <a-col :span="6"> <span>状态:</span> </a-col>
-                <a-col :span="6"> <span> {{ taskView.status }}</span> </a-col>
-            </a-row>
-
-            <a-row>
-                <a-col :span="6"> <span>类型:</span> </a-col>
-                <a-col :span="6"> <span> {{ taskView.type }}</span> </a-col>
-
-                <a-col :span="6"> <span>优先级:</span> </a-col>
-                <a-col :span="6"> <span> {{ taskView.priority }}</span> </a-col>
-            </a-row>
-
-
-            <a-row>
-                <a-col :span="6"> <span>标签:</span> </a-col>
-                <a-col :span="18">
-                    <a-tag v-for="tag in taskView.tags" :key="tag">
-                        {{ tag }}
-                    </a-tag>
-                </a-col>
-            </a-row>
-
-
-            <a-row>
-                <a-col :span="6"> <span>到期日:</span> </a-col>
-                <a-col :span="18"> <span> {{ dayjs(taskView.duedate).format('YYYY-MM-DD') }}</span> </a-col>
-            </a-row>
-
-            <a-row>
-                <a-col :span="6"> <span>创建时间:</span> </a-col>
-                <a-col :span="18"> <span> {{ taskView.createTime ? dayjs(taskView.createTime).format(dateFormat) : ""
-                }}</span> </a-col>
-            </a-row>
-
-            <a-row>
-                <a-col :span="6"> <span>更新时间:</span> </a-col>
-                <a-col :span="18"> <span> {{ taskView.updateTime ? dayjs(taskView.updateTime).format(dateFormat) : ""
-                }}</span> </a-col>
-            </a-row>
-
-            <a-row>
-                <a-divider orientation="left">描述</a-divider>
-                <div style="word-break: break-all; width: 90%;">
-                    <span> {{ taskView.description }}</span>
-                </div>
-            </a-row>
-
-
-
-
-        </a-flex>
-        <a-divider orientation="left">附件</a-divider>
-        <a-upload v-model:file-list="attachmentList" action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-            list-type="picture-card" @preview="handlePreview">
-            <div v-if="attachmentList.length < 8">
-                <plus-outlined />
-                <div style="margin-top: 8px">Upload</div>
             </div>
-        </a-upload>
-        <a-modal :open="previewVisible" :title="previewTitle" :footer="null" @cancel="handleCancel">
-            <img alt="example" style="width: 100%" :src="previewImage" />
-        </a-modal>
+        </template>
+
+        <a-row>
+            <a-col :span="6"> <span>经办人:</span> </a-col>
+            <a-col :span="6"> <span> {{ taskView.assignee.displayName }}</span> </a-col>
+
+            <a-col :span="6"> <span>状态:</span> </a-col>
+            <a-col :span="6"> <span> {{ taskView.status }}</span> </a-col>
+        </a-row>
+
+        <a-row>
+            <a-col :span="6"> <span>类型:</span> </a-col>
+            <a-col :span="6"> <span> {{ taskView.type }}</span> </a-col>
+
+            <a-col :span="6"> <span>优先级:</span> </a-col>
+            <a-col :span="6"> <span> {{ taskView.priority }}</span> </a-col>
+        </a-row>
 
 
-        <a-divider orientation="left">链接 <a @click="openCreateTaskLink()">+</a></a-divider>
+        <a-row>
+            <a-col :span="6"> <span>标签:</span> </a-col>
+            <a-col :span="18">
+                <a-tag v-for="tag in taskView.tags" :key="tag">
+                    {{ tag }}
+                </a-tag>
+            </a-col>
+        </a-row>
 
-        <a-collapse :activeKey="activetaskLinkKey"  ghost>
-            <a-collapse-panel :show-arrow="false"  v-for="link in taskLinkList" :header="link.name" :key="link.id" >
-               <a-list size="small" bordered >
-                    <template v-for="item in link.outTask">
-                    <a-list-item>{{ item.link.outName }}  <a>{{ item.inTask.title }}</a></a-list-item>
-                    </template>
-                    <template v-for="item in link.inTask">
-                    <a-list-item>{{ item.link.inName }}  <a>{{ item.outTask.title }}</a></a-list-item>
-                    </template>
-                </a-list> 
-              
-            </a-collapse-panel>
-          
-        </a-collapse>
 
-       
-        <a-tabs @tabClick="changeTab" v-model:activeKey="tabKey">
-            <a-tab-pane key="Comment" tab="Comment">
+        <a-row>
+            <a-col :span="6"> <span>到期日:</span> </a-col>
+            <a-col :span="18"> <span> {{ dayjs(taskView.duedate).format('YYYY-MM-DD') }}</span> </a-col>
+        </a-row>
 
-                <a-list item-layout="horizontal" :data-source="commentList">
-                    <template #renderItem="{ item }">
-                        <a-list-item>
-                            <a-list-item-meta>
-                                <template #title>
-                                    <div style="word-break: break-all; width: 90%;">
-                                        {{ item.content }}
-                                    </div>
-                                  
-                                </template>
-                                <template #description>
-                                  {{ item.user.displayName }}  {{ DateUtils.format(item.createTime) }}
-                                </template>
-                            </a-list-item-meta>
-                            <!-- {{ item.content }}1111 -->
-                            <!-- <a-comment :author="item.user.displayName">
+        <a-row>
+            <a-col :span="6"> <span>创建时间:</span> </a-col>
+            <a-col :span="18"> <span> {{ taskView.createTime ? dayjs(taskView.createTime).format(dateFormat) : ""
+            }}</span> </a-col>
+        </a-row>
+
+        <a-row>
+            <a-col :span="6"> <span>更新时间:</span> </a-col>
+            <a-col :span="18"> <span> {{ taskView.updateTime ? dayjs(taskView.updateTime).format(dateFormat) : ""
+            }}</span> </a-col>
+        </a-row>
+
+        <a-row>
+            <a-divider orientation="left">描述</a-divider>
+            <div style="word-break: break-all; width: 90%;">
+                <span> {{ taskView.description }}</span>
+            </div>
+        </a-row>
+
+
+
+
+    </a-flex>
+    <a-divider orientation="left">附件</a-divider>
+    <a-upload v-model:file-list="attachmentList" action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+        list-type="picture-card" @preview="handlePreview">
+        <div v-if="attachmentList.length < 8">
+            <plus-outlined />
+            <div style="margin-top: 8px">Upload</div>
+        </div>
+    </a-upload>
+    <a-modal :open="previewVisible" :title="previewTitle" :footer="null" @cancel="handleCancel">
+        <img alt="example" style="width: 100%" :src="previewImage" />
+    </a-modal>
+
+
+    <a-divider orientation="left">链接 <a @click="openCreateTaskLink()">+</a></a-divider>
+
+    <a-collapse :activeKey="activetaskLinkKey" ghost>
+        <a-collapse-panel :show-arrow="false" v-for="link in taskLinkList" :header="link.name" :key="link.id">
+            <a-list size="small" bordered>
+                <template v-for="item in link.outTask">
+                    <a-list-item>{{ item.link.outName }} <a @click="goTaskDetail(item.inTask.id)"> {{ item.inTask.title }}
+                        </a> </a-list-item>
+                </template>
+                <template v-for="item in link.inTask">
+                    <a-list-item>{{ item.link.inName }} <a @click="goTaskDetail(item.inTask.id)"> {{ item.outTask.title
+                    }}</a></a-list-item>
+                </template>
+            </a-list>
+
+        </a-collapse-panel>
+
+    </a-collapse>
+
+    <a-tabs @tabClick="changeTab" v-model:activeKey="tabKey">
+        <a-tab-pane key="Comment" tab="Comment">
+
+            <a-list item-layout="horizontal" :data-source="commentList">
+                <template #renderItem="{ item }">
+                    <a-list-item>
+                        <a-list-item-meta>
+                            <template #title>
+                                <div style="word-break: break-all; width: 90%;">
+                                    {{ item.content }}
+                                </div>
+
+                            </template>
+                            <template #description>
+                                {{ item.user.displayName }} {{ DateUtils.format(item.createTime) }}
+                            </template>
+                        </a-list-item-meta>
+                        <!-- {{ item.content }}1111 -->
+                        <!-- <a-comment :author="item.user.displayName">
 
                                 <template #content>
                                     <div style="word-break: break-all; width: 90%;">
@@ -142,59 +144,54 @@
                                 </template>
                             </a-comment> -->
 
-                        </a-list-item>
-                    </template>
-                </a-list>
+                    </a-list-item>
+                </template>
+            </a-list>
 
 
-                <a-comment>
-                    <template #content>
-                        <a-form-item>
-                            <a-textarea v-model:value="inputComment" :rows="4" />
-                        </a-form-item>
-                        <a-form-item>
-                            <a-button html-type="submit" :loading="isSubmitComment" type="primary" @click="submitComment">
-                                {{ i18n.global.t('button.comment') }}
-                            </a-button>
-                        </a-form-item>
-                    </template>
-                </a-comment>
+            <a-comment>
+                <template #content>
+                    <a-form-item>
+                        <a-textarea v-model:value="inputComment" :rows="4" />
+                    </a-form-item>
+                    <a-form-item>
+                        <a-button html-type="submit" :loading="isSubmitComment" type="primary" @click="submitComment">
+                            {{ i18n.global.t('button.comment') }}
+                        </a-button>
+                    </a-form-item>
+                </template>
+            </a-comment>
 
 
-            </a-tab-pane>
-            <a-tab-pane key="TaskChangeLog" tab="TaskChange">
+        </a-tab-pane>
+        <a-tab-pane key="TaskChangeLog" tab="TaskChange">
 
-                <a-timeline>
-                    <a-timeline-item v-for="log in changeLogs">
-
-
-                        <a-list-item>
-                            <a-list-item-meta>
-                                <template #title>
-                                    <a-row> <a-col :span="2">{{ log.operator }} </a-col> <a-col> {{
-                                        dayjs(log.operateTime).format(dateFormat) }} </a-col> </a-row>
-                                </template>
-
-                                <template #description>
-                                    <p v-for="item in log.data">
-                                        {{ (i18n.global.t(item.name)) }} ： {{ item.fromValue }} ---> {{ item.toValue }}</p>
-                                </template>
-
-                            </a-list-item-meta>
-                        </a-list-item>
-                    </a-timeline-item>
-                </a-timeline>
+            <a-timeline>
+                <a-timeline-item v-for="log in changeLogs">
 
 
-            </a-tab-pane>
-        </a-tabs>
+                    <a-list-item>
+                        <a-list-item-meta>
+                            <template #title>
+                                <a-row> <a-col :span="2">{{ log.operator }} </a-col> <a-col> {{
+                                    dayjs(log.operateTime).format(dateFormat) }} </a-col> </a-row>
+                            </template>
+
+                            <template #description>
+                                <p v-for="item in log.data">
+                                    {{ (i18n.global.t(item.name)) }} ： {{ item.fromValue }} ---> {{ item.toValue }}</p>
+                            </template>
+
+                        </a-list-item-meta>
+                    </a-list-item>
+                </a-timeline-item>
+            </a-timeline>
 
 
-
-    </a-drawer>
-
+        </a-tab-pane>
+    </a-tabs>
     <edit-task v-model:open="openEdit" :editTask="taskView" @updated="() => { loadData() }"></edit-task>
-   <create-task-link :taskId="taskView.id" :projectId="taskView.projectId"  v-model:open="openTaskLink" >  </create-task-link>
+    <create-task-link :taskId="taskView.id" :projectId="taskView.projectId" v-model:open="openTaskLink"> </create-task-link>
 </template>
 
 
@@ -203,7 +200,7 @@
 
 
 import { PlusOutlined } from '@ant-design/icons-vue';
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import dayjs from 'dayjs';
 import taskService from '@/api/taskservice';
 import taskChangeLogService from '@/api/taskchangelogservice';
@@ -217,16 +214,18 @@ import CreateTaskLink from './CreateTaskLink.vue';
 import taskLinkService from '@/api/tasklinkservice';
 
 
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
 const tabKey = ref("Comment");
 
 
-function getBase64(file: File) {
 
+function getBase64(file: File) {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     return reader.result;
-
-
 }
 const previewVisible = ref(false);
 const previewImage = ref('');
@@ -276,9 +275,9 @@ const handlePreview = (file: UploadProps['fileList'][number]) => {
 const dateFormat = 'YYYY-MM-DD HH:mm:ss';
 
 
-const show = defineModel('show')
-const taskId = defineModel("taskId")
-const showDetails = ref(false)
+
+const taskId = defineModel("taskId", { default: null })
+
 
 const openEdit = ref(false)
 let taskView = ref({
@@ -305,38 +304,57 @@ const commentList = ref([]);
 
 const taskLinkList = ref([]);
 const activetaskLinkKey = ref([]);
-watch(show, (value, oldvalue) => {
-    if (value == false) {
-        return
+
+
+// function closeDraw() {
+//     taskView.value = {
+//         assignee: "",
+//         createTime: "",
+//         description: "",
+//         duedate: "",
+//         id: "",
+//         priority: "",
+//         status: "",
+//         projectId: "",
+//         tags: [],
+//         title: "",
+//         type: "",
+//         updateTime: ""
+//     }
+
+//     tabKey.value = "Comment";
+
+//     showDetails.value = false;
+// }
+
+function log() {
+    console.log(taskId.value)
+
+}
+
+onMounted(() => {
+    if (taskId.value == null) {
+        return;
     }
 
+    loadTaskInitData()
+})
+
+watch(taskId, (value, oldvalue) => {
+    // if (value == false) {
+    //     return
+    // }
+    loadTaskInitData()
+
+
+
+})
+
+function loadTaskInitData() {
     loadData();
     loadTaskLink();
     tabKey.value = 'Comment';
     loadComment();
-  
-
-})
-
-function closeDraw() {
-    taskView.value = {
-        assignee: "",
-        createTime: "",
-        description: "",
-        duedate: "",
-        id: "",
-        priority: "",
-        status: "",
-        projectId: "",
-        tags: [],
-        title: "",
-        type: "",
-        updateTime: ""
-    }
-
-    tabKey.value = "Comment";
-
-    showDetails.value = false;
 }
 
 function openEditForm() {
@@ -360,7 +378,7 @@ function changeTab(key) {
 function loadData() {
     taskService.getTask(taskId.value).then(res => {
         taskView.value = res.data;
-        showDetails.value = true;
+        // showDetails.value = true;
     })
 
 }
@@ -419,45 +437,43 @@ function loadComment() {
 
 function loadTaskLink() {
 
-    
-
     let group = [];
     taskLinkList.value = [];
     activetaskLinkKey.value = [];
-    taskLinkService.getByTaskId(taskId.value).then(res=>{
+    taskLinkService.getByTaskId(taskId.value).then(res => {
 
-        for(let i of res.data) {
-         
-            if( !group[i.link.id]) {
+        for (let i of res.data) {
+
+            if (!group[i.link.id]) {
                 group[i.link.id] = {
-                            id:i.link.id,
-                            name:i.link.name,
-                            outTask: [],
-                            inTask:[],
-                         }
+                    id: i.link.id,
+                    name: i.link.name,
+                    outTask: [],
+                    inTask: [],
+                }
 
             }
 
-            if(i.inTask.id === taskId.value) {
+            if (i.inTask.id === taskId.value) {
                 group[i.link.id].inTask.push(i)
             }
 
-            if(i.outTask.id === taskId.value) {
+            if (i.outTask.id === taskId.value) {
                 group[i.link.id].outTask.push(i)
             }
 
         }
 
-        for(var key in group){
+        for (var key in group) {
             taskLinkList.value.push(group[key]);
             activetaskLinkKey.value.push(key)
         }
 
 
 
-   
-    //  console.log(group);
-        
+
+        //  console.log(group);
+
     })
 }
 
@@ -466,6 +482,13 @@ function openCreateTaskLink() {
     openTaskLink.value = true;
 }
 
+function goTaskDetail(taskId) {
+    let routeUrl = router.resolve({
+        name: "taskDetail",
+        query: { taskId: taskId ,projectId: taskView.value.projectId}
+    });
+    window.open(routeUrl.href, '_blank');
+}
 
 </script>
 

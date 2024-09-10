@@ -5,17 +5,17 @@
         <a-form ref="createTaskForm" :rules="taskCreateRules" :model="taskLink" :label-col="labelCol"
             :wrapper-col="wrapperCol" layout="horizontal" style="max-width: 800px">
 
-            <a-form-item :label="$t('taskLink.outTaskId')" name="outTaskId">
+            <a-form-item :label="$t('taskLink.outTask')" name="outTaskId">
                 <TaskSelect v-model:task-id="taskLink.outTaskId" :project-id="projectId"></TaskSelect>
             </a-form-item>
 
-            <a-form-item :label="$t('task.linkId')" name="linkId">
+            <a-form-item :label="$t('taskLink.link')" name="linkId">
                 <a-select v-model:value="taskLink.linkId">
                     <a-select-option v-for="item in taskLinkTypeList" :value="item.id">{{ item.name }}</a-select-option>
                 </a-select>
             </a-form-item>
 
-            <a-form-item :label="$t('taskLink.inTaskId')" name="inTaskId">
+            <a-form-item :label="$t('taskLink.inTask')" name="inTaskId">
                 <TaskSelect v-model:task-id="taskLink.inTaskId" :project-id="projectId"></TaskSelect>
             </a-form-item>
         </a-form>
