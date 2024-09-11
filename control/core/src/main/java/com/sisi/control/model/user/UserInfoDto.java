@@ -1,0 +1,41 @@
+package com.sisi.control.model.user;
+
+import lombok.Data;
+
+@Data
+public class UserInfoDto {
+    public String id;
+    public String name;
+    public String displayName;
+    public String phone;
+    public String mail;
+    public String password;
+
+    //todo role
+
+    public UserInfoDto(){
+
+    }
+
+    public UserInfoDto(UserInfo user){
+        this.id = user.getId();
+        this.name = user.getName();
+        this.displayName = user.getDisplayName();
+        this.phone = user.getPhone();
+        this.mail = user.getMail();
+       // this.password = user.getPassword();
+    }
+
+    public UserInfo toBean(){
+        UserInfo bean = new UserInfo();
+        bean.id = getId();
+        bean.name = getName();
+        bean.displayName = getDisplayName();
+        bean.phone = getPhone();
+        bean.mail = getMail();
+        bean.password = getPassword();
+        return bean;
+    }
+
+
+}
