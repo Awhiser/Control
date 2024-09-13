@@ -16,7 +16,8 @@ export default {
         desc:'Description',
         dueDate:"Duedate",
         name:"Task",
-        description:"Description"
+        description:"Description",
+        inputTitleOrDesc:"Input Title Or Desc"
     },
     button: {
         create: "Create",
@@ -33,7 +34,8 @@ export default {
         userManager: "UserManager",
         userConnectorManager: "UserConnectorManager",
         createUser: "CreateUser",
-        comment:"Comment"
+        comment:"Comment",
+        search:"Search"
     },
     input:{
         searchName:"input Name search"
@@ -68,7 +70,8 @@ export default {
     },
     message: {
         createSuccess: "Success",
-        confirm: "Confirm Again"
+        confirm: "Confirm Again",
+        operationSuccess:"Success"
 
     },
     page: {
@@ -94,6 +97,12 @@ export default {
     outTask:"OutTask",
     inTask:"InTask",
     link:"Link"
+},
+status:{
+    Todo:"Todo",
+    Handle:"Handle",
+    Complete:"Complete",
+    ReStart:"ReStart"
 },
 
     "服务器异常": "ServerError",

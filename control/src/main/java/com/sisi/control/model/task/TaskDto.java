@@ -19,6 +19,7 @@ public class TaskDto {
     public String description;
     public Date duedate;
     public String projectId;
+    public String status;
     public UserInfoDto creator;
     public Date createTime;
     public Date updateTime;
@@ -43,6 +44,7 @@ public class TaskDto {
         this.description = param.getDescription();
         this.duedate = param.getDuedate();
         this.projectId = param.getProjectId();
+        this.status = param.getStatus();
         this.createTime = param.getCreateTime();
         this.updateTime = param.getUpdateTime();
     }

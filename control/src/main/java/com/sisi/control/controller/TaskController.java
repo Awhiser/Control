@@ -51,4 +51,10 @@ public class TaskController {
         return Response.success(res);
     }
 
+    @GetMapping("/updateStatus")
+    public Response updateStatus(@RequestParam String taskId, String status) {
+        taskService.updateStatus(taskId, status);
+        return Response.success();
+    }
+
 }

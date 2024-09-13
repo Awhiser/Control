@@ -19,6 +19,9 @@ const taskService = {
     },
     getCreateParams() {
         return get("/task/getCreateParam");
+    },
+    updateStatus(taskId, status) {
+        return get(`/task/updateStatus?taskId=${taskId}&status=${status}`)
     }
 
  

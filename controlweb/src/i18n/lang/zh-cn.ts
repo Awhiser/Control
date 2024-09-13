@@ -14,8 +14,8 @@ export default {
         desc:'描述',
         dueDate:"到期日",
         name:"需求",
-        description:"描述"
-
+        description:"描述",
+        inputTitleOrDesc:"请输入标题或描述"
     },
     button:{
         create:"新建",
@@ -32,7 +32,8 @@ export default {
         userManager:"用户管理",
         userConnectorManager:"连接器管理",
         createUser:"创建用户",
-        comment:"评论"
+        comment:"评论",
+        search:"搜索"
     },
 
     input:{
@@ -71,8 +72,8 @@ export default {
     message:{
         createSuccess:"创建成功",
         confirm:"再次确认!",
-        success:"成功"    
-    
+        success:"成功",    
+        operationSuccess:"操作成功"
     }, page:{
         total:"总数"
        },
@@ -97,6 +98,12 @@ export default {
         outTask:"链出需求",
         inTask:"链入需求",
         link:"链接"
+    },
+    status:{
+        Todo:"待办",
+        Handle:"处理",
+        Complete:"完成",
+        ReStart:"重启"
     },
     "服务器异常":"服务器异常",
     "用户名已存在":"用户名已存在",

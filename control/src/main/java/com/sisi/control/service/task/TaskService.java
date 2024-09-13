@@ -45,10 +45,11 @@ public class TaskService {
 
     public Response create(Task task) {
         //todo check?
-        var tenantId = ContextHolder.getContext().getTenantId();
         task.setId(CommonUtils.idGenerate());
         task.setCreator(ContextHolder.getContext().getToken().userId);
         task.setCreateTime(new Date());
+        //todo workFlow
+        task.setStatus(TaskStatusConst.Todo);
         //todo 实现自定义字段 workFlow create
         taskDao.save(task);
         return Response.success(task.id);
@@ -93,26 +94,26 @@ public class TaskService {
     }
 
 
-    public void populateFullData(List<TaskDto> taskList){
+    public void populateFullData(List<TaskDto> taskList) {
         HashSet<String> userIds = new HashSet<>();
         taskList.stream().forEach(task -> {
             if (StringUtils.hasText(task.getAssignee().getId())) {
                 userIds.add(task.getAssignee().getId());
             }
-            if(StringUtils.hasText(task.getCreator().getId())){
+            if (StringUtils.hasText(task.getCreator().getId())) {
                 userIds.add(task.getCreator().getId());
             }
         });
         Map<String, UserInfoDto> userMap = new HashMap();
-        if(userIds.size() > 0) {
-            userMap = userService.getUserByIds(userIds.stream().toList()).stream().collect(Collectors.toMap(i -> i.id, i -> i)) ;
+        if (userIds.size() > 0) {
+            userMap = userService.getUserByIds(userIds.stream().toList()).stream().collect(Collectors.toMap(i -> i.id, i -> i));
         }
 
-        for(var task : taskList) {
-            if(userMap.containsKey(task.getAssignee().getId())){
+        for (var task : taskList) {
+            if (userMap.containsKey(task.getAssignee().getId())) {
                 task.setAssignee(userMap.get(task.getAssignee().getId()));
             }
-            if(userMap.containsKey(task.getCreator().getId())) {
+            if (userMap.containsKey(task.getCreator().getId())) {
                 task.setCreator(userMap.get(task.getCreator().getId()));
             }
         }
@@ -121,7 +122,10 @@ public class TaskService {
 
 
     public List<TaskDto> getByIds(List<String> ids) {
-      return   taskDao.getByIds(ids);
+        return taskDao.getByIds(ids);
     }
 
+    public void updateStatus(String taskId, String status) {
+        taskDao.updateStatus(taskId, status);
+    }
 }

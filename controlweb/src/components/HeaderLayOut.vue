@@ -58,9 +58,6 @@ function loadProjectList() {
     })
 }
 
-
-
-
 </script>
 
 <style></style>

@@ -15,24 +15,26 @@
         </a-row>
 
         <a-row>
-            <a-col :span="12"> <a-button type="primary" size="large" @click="openEditForm()"> Edit </a-button> <a-button
-                    type="primary" size="large"> More </a-button> </a-col>
+            <a-col :span="12"> <a-button type="primary"  @click="openEditForm()"> Edit </a-button> <a-button type="primary" > More </a-button> </a-col>
 
-            <a-col :span="12"> <a-button type="primary" size="large" @click="log()"> Transition </a-button> </a-col>
+            <a-col :span="12">
+               <a-button type="primary"  v-if="taskView?.status=='Todo'"   @click="updateStatus('Handle')"> {{i18n.global.t("status.Handle")}} </a-button>
+               
+               <a-button type="primary" v-if="taskView?.status=='Handle'"  @click="updateStatus('Complete')"> {{i18n.global.t("status.Complete")}} </a-button> 
+               
+               <a-button type="primary" v-if="taskView?.status=='Complete'"  @click="updateStatus('Handle')"> {{i18n.global.t("status.ReStart")}} </a-button> 
+
+               <a-button  @click="log()"> Log </a-button>  
+            
+            </a-col>
         </a-row>
-
-        <template>
-            <div>
-
-            </div>
-        </template>
 
         <a-row>
             <a-col :span="6"> <span>经办人:</span> </a-col>
             <a-col :span="6"> <span> {{ taskView.assignee.displayName }}</span> </a-col>
 
             <a-col :span="6"> <span>状态:</span> </a-col>
-            <a-col :span="6"> <span> {{ taskView.status }}</span> </a-col>
+            <a-col :span="6"> <span> {{ parseStatus(taskView.status) }}</span> </a-col>
         </a-row>
 
         <a-row>
@@ -43,7 +45,6 @@
             <a-col :span="6"> <span> {{ taskView.priority }}</span> </a-col>
         </a-row>
 
-
         <a-row>
             <a-col :span="6"> <span>标签:</span> </a-col>
             <a-col :span="18">
@@ -53,7 +54,6 @@
             </a-col>
         </a-row>
 
-
         <a-row>
             <a-col :span="6"> <span>到期日:</span> </a-col>
             <a-col :span="18"> <span> {{ dayjs(taskView.duedate).format('YYYY-MM-DD') }}</span> </a-col>
@@ -61,14 +61,12 @@
 
         <a-row>
             <a-col :span="6"> <span>创建时间:</span> </a-col>
-            <a-col :span="18"> <span> {{ taskView.createTime ? dayjs(taskView.createTime).format(dateFormat) : ""
-            }}</span> </a-col>
+            <a-col :span="18"> <span> {{ taskView.createTime ? dayjs(taskView.createTime).format(dateFormat) : "" }}</span> </a-col>
         </a-row>
 
         <a-row>
             <a-col :span="6"> <span>更新时间:</span> </a-col>
-            <a-col :span="18"> <span> {{ taskView.updateTime ? dayjs(taskView.updateTime).format(dateFormat) : ""
-            }}</span> </a-col>
+            <a-col :span="18"> <span> {{ taskView.updateTime ? dayjs(taskView.updateTime).format(dateFormat) : "" }}</span> </a-col>
         </a-row>
 
         <a-row>
@@ -78,21 +76,29 @@
             </div>
         </a-row>
 
-
-
-
     </a-flex>
-    <a-divider orientation="left">附件</a-divider>
-    <a-upload v-model:file-list="attachmentList" action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-        list-type="picture-card" @preview="handlePreview">
-        <div v-if="attachmentList.length < 8">
-            <plus-outlined />
-            <div style="margin-top: 8px">Upload</div>
-        </div>
-    </a-upload>
-    <a-modal :open="previewVisible" :title="previewTitle" :footer="null" @cancel="handleCancel">
-        <img alt="example" style="width: 100%" :src="previewImage" />
-    </a-modal>
+    <a-divider orientation="left">附件  <a-upload  name="file"  action=""> <a >+</a></a-upload>  </a-divider>
+
+    
+
+    
+
+
+
+    <a-row>
+        <a-col :span="4" v-for="file in attachmentList"  >
+            <a-card  size="small" style="width: 130px">
+                <template #cover>
+                    <a-image :width="130" :height="140" :src="file.url" />
+                </template>
+                <a style="margin-left: -5px; margin-right: 2px;" > <DownloadOutlined :style="{color:'#1677ff'}" /> </a>  
+               <span style="font-size: 15px; "  :title="file.name" > {{file.name.substring(0,12)}} </span> 
+              
+            </a-card>
+
+        </a-col>
+
+       </a-row>
 
 
     <a-divider orientation="left">链接 <a @click="openCreateTaskLink()">+</a></a-divider>
@@ -199,7 +205,7 @@
 <script setup lang="ts">
 
 
-import { PlusOutlined } from '@ant-design/icons-vue';
+import { PlusOutlined,DownloadOutlined } from '@ant-design/icons-vue';
 import { ref, watch, onMounted } from 'vue'
 import dayjs from 'dayjs';
 import taskService from '@/api/taskservice';
@@ -233,22 +239,22 @@ const previewTitle = ref('');
 const openTaskLink = ref(false);
 const attachmentList = ref<UploadProps['fileList']>([
     {
-        uid: '-1',
-        name: 'image.png',
+        uid: '-1222',
+        name: 'image.img',
         status: 'done',
-        url: 'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/BB1p1XFm.img?w=768&h=1123&m=6&x=162&y=193&s=164&d=164',
+        url: 'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/BB1p1XFm.img',
     },
     {
         uid: '-2',
-        name: 'image.png',
+        name: 'image.img',
         status: 'done',
-        url: 'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/BB1p01pN.img?w=768&h=820&m=6&x=381&y=257&s=174&d=174',
+        url: 'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/BB1p01pN.img',
     },
     {
         uid: '-xxx',
         percent: 50,
         name: 'image.png',
-        status: 'uploading',
+        status: 'done',
         url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
     },
     {
@@ -305,27 +311,6 @@ const commentList = ref([]);
 const taskLinkList = ref([]);
 const activetaskLinkKey = ref([]);
 
-
-// function closeDraw() {
-//     taskView.value = {
-//         assignee: "",
-//         createTime: "",
-//         description: "",
-//         duedate: "",
-//         id: "",
-//         priority: "",
-//         status: "",
-//         projectId: "",
-//         tags: [],
-//         title: "",
-//         type: "",
-//         updateTime: ""
-//     }
-
-//     tabKey.value = "Comment";
-
-//     showDetails.value = false;
-// }
 
 function log() {
     console.log(taskId.value)
@@ -490,11 +475,34 @@ function goTaskDetail(taskId) {
     window.open(routeUrl.href, '_blank');
 }
 
+function updateStatus(status) {
+    taskService.updateStatus(taskView.value.id,status).then(res=>{
+        taskView.value.status = status;
+        message.success({ content: i18n.global.t("message.operationSuccess"), duration: 1 })
+    })
+
+}
+
+function parseStatus(status) {
+    if(status == "Todo" || status == "Handle" || status == "Complete" ) {
+        return i18n.global.t('status.'+status)
+    }
+    return status;
+}
+
 </script>
 
 
 <style scoped >
 span {
     font-size: 18px;
+}
+
+.spantext-overflow{
+    display: block;
+  width: 50px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 </style>

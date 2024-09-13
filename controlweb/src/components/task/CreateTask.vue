@@ -148,8 +148,8 @@ const handleOk = (e) => {
       taskService.create(taskparam).then(res=>{
           message.success(
             { 
-              content: h( "a", { target:"blank" ,href:"http://www.baidu.com"},   i18n.global.t("task.success") ),
-              duration:1,
+              content: h( "a", { target:"blank" ,href:`/taskDetail?taskId=${res.data.data}&projectId=${task.value.projectId}`},   i18n.global.t("message.createSuccess")  ),
+              duration:1.5,
               onClose:()=>{ open.value = false; location.reload(); }
             }
           )
