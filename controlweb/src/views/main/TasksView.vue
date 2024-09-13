@@ -1,9 +1,18 @@
 <template  >
-  <a-table ref="taskTable" :scroll="{ y: 850 }" :pagination="false" :key="new Date().getTime()"
+
+   
+  <a-row :gutter="16" id="taksFilter">
+    <a-col> <a-textarea size="middle" v-model:value="searchParams.title"  :placeholder="i18n.global.t('task.inputTitleOrDesc')"  auto-size /> </a-col>  
+    <a-col> {{ $t('task.type') }} : <a-select mode="multiple" style="width: 200px" :options="value"  ></a-select></a-col>  
+    <a-col> {{ $t('task.priority') }} : <a-select mode="multiple" style="width: 200px" :options="value"  ></a-select></a-col>  
+    <a-col> {{ $t('task.assignee') }} : <a-select mode="multiple" style="width: 200px" :options="value"  ></a-select></a-col>  
+    <a-col> {{ $t('task.tags') }} : <a-select mode="tags" style="width: 200px"  ></a-select></a-col>  
+    <a-col> {{ $t('task.status') }} : <a-select mode="multiple" style="width: 200px" :options="value"  ></a-select></a-col>  
+    <a-col> <a-button type="primary" > {{$t('button.search')}} </a-button></a-col>  
+  </a-row>
+
+  <a-table ref="taskTable" :scroll="{ y: 700 }" :pagination="false" :key="new Date().getTime()"
     :row-key="record => record.id" :columns="columns" :data-source="data">
-
-
-
     <template #bodyCell="{ column, record }">
       <template v-if="column.key === 'title'">
         <a @click="showTaskDetails(record.id)">
@@ -38,11 +47,6 @@
   <a-pagination v-model:current="current" v-model:page-size="pageSize" show-size-changer :total="total"
     @change="onChangePage" :show-total="total => i18n.global.t('page.total') + ` : ${total}`" />
 
-
-
- 
-
-
   <a-drawer v-model:open="openTaskDetails" :width="'50%'" placement="right" >
     <TaskDetails :taskId="taskId" ></TaskDetails>
   </a-drawer>
@@ -69,6 +73,17 @@ const pageSize = ref(50)
 const current = ref(1)
 const total = ref(0)
 
+const value = ref([{value:"Task"},{value:"Bug"},{value:"Story"},{value:"BreakDown"}]);
+
+//搜索参数
+const searchParams = ref({
+   title:null,
+   type:null,
+   assignee:null,
+   tags:null,
+   priority:null,
+   status:null
+})
 
 
 const columns = [
@@ -157,5 +172,13 @@ function onChangePage() {
   loadData();
 }
 
+
+function search(){
+
+  taskService.search().then(res=>{
+    
+  })
+
+}
 
 </script>
