@@ -2,6 +2,7 @@ package com.sisi.control.model;
 
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Transient;
 import lombok.Data;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -16,4 +17,6 @@ public class AbstractEntity {
     public Boolean isDelete;
     public Date createTime;
     public Date updateTime;
+
+
 }

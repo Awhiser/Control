@@ -22,6 +22,9 @@ const taskService = {
     },
     updateStatus(taskId, status) {
         return get(`/task/updateStatus?taskId=${taskId}&status=${status}`)
+    },
+    getFilterParam(projectId) {
+        return get(`/task/getFilterParam?projectId=${projectId}`)
     }
 
  

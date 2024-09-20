@@ -79,10 +79,6 @@
     </a-flex>
     <a-divider orientation="left">附件  <a-upload  name="file"  action=""> <a >+</a></a-upload>  </a-divider>
 
-    
-
-    
-
 
 
     <a-row>

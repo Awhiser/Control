@@ -17,7 +17,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public Response exceptionHandler(Exception e){
 
-        LogHelper.logError("GlobalException: "+e.getMessage());
+        LogHelper.logError("GlobalException: ",e);
         return Response.fail(MessageEnum.ServerError);
     }
 }

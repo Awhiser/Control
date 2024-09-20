@@ -146,4 +146,17 @@ public class AbstractDao<Entity extends AbstractEntity, Repo extends JpaReposito
         return updatedCount;
     }
 
+    protected List<Entity> executeSelectSql(String sql,Class classz){
+        Query query = entityManager.createNativeQuery(sql,classz);
+        return query.getResultList();
+    }
+
+    protected long executeCountSql(String sql) {
+        Query query = entityManager.createNativeQuery(sql);
+        return (long) query.getSingleResult();
+    }
+
+
+
+
 }

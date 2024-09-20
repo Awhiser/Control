@@ -1,24 +1,39 @@
 <template>
-  <a-select v-model:value="userId" show-search :placeholder="i18n.global.t('input.searchName')" :options="userOpt"
+  <a-select  style="width: 200px"   :filter-option="false" v-model:value="userId" :mode="mode" show-search label-in-value  :placeholder="i18n.global.t('input.searchName')" :options="userOpt"
     :not-found-content="null" @search="searchUser"> </a-select>
+
+    <!-- <a-select v-if="mode=='multiple'" 
+    style="width: 200px"
+     v-model:value="userId" 
+     mode="multiple" 
+     :placeholder="i18n.global.t('input.searchName')"
+      :options="userOpt"
+      :filter-option="false"
+    :not-found-content="fetching ? undefined : null"
+    @search="searchUser"> </a-select> -->
 </template>
 <script lang="ts"  setup>
-
+import { ref } from 'vue'
 import userService from '@/api/userservice';
 import projectService from '@/api/projectservice';
 import i18n from '@/i18n';
-const userId = defineModel("userId")
+const userId = defineModel("userId", { default: [] })
 const userOpt = defineModel("userOpt", { default: [] })
-
+const mode = defineModel("mode", { default: "combobox" }) 
 const onlyProjectUser = defineModel("onlyProjectUser", { default: false })
 const projectId =  defineModel("projectId", { default: null })
 
+const fetching = ref(false)
 function searchUser(name) {
   if (name == "") {
     return;
   }
-  userId.value = null
 
+  if(mode.value == 'combobox'){
+    userId.value = null
+  }
+
+  fetching.value = true;
   if(onlyProjectUser.value){
     if(!projectId.value){
       return;
@@ -32,6 +47,8 @@ function searchUser(name) {
         value: item.user.id,
       }))
 
+      console.log()
+      fetching.value = false;
     });
 
     return;
@@ -43,6 +60,7 @@ function searchUser(name) {
       label: `${user.displayName} (${user.name})`,
       value: user.id,
     }))
+    fetching.value = false;
   })
 
 

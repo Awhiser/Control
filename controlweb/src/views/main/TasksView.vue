@@ -3,12 +3,23 @@
    
   <a-row :gutter="16" id="taksFilter">
     <a-col> <a-textarea size="middle" v-model:value="searchParams.title"  :placeholder="i18n.global.t('task.inputTitleOrDesc')"  auto-size /> </a-col>  
-    <a-col> {{ $t('task.type') }} : <a-select mode="multiple" style="width: 200px" :options="value"  ></a-select></a-col>  
-    <a-col> {{ $t('task.priority') }} : <a-select mode="multiple" style="width: 200px" :options="value"  ></a-select></a-col>  
-    <a-col> {{ $t('task.assignee') }} : <a-select mode="multiple" style="width: 200px" :options="value"  ></a-select></a-col>  
-    <a-col> {{ $t('task.tags') }} : <a-select mode="tags" style="width: 200px"  ></a-select></a-col>  
-    <a-col> {{ $t('task.status') }} : <a-select mode="multiple" style="width: 200px" :options="value"  ></a-select></a-col>  
-    <a-col> <a-button type="primary" > {{$t('button.search')}} </a-button></a-col>  
+    <a-col> {{ $t('task.type') }} : <a-select mode="multiple" v-model:value="searchParams.type" style="width: 200px" >
+      <a-select-option v-for="item in taksFilterParams?.types" :value="item">{{item}}</a-select-option>
+    </a-select></a-col>  
+    <a-col> {{ $t('task.priority') }} : <a-select mode="multiple"  style="width: 200px" v-model:value="searchParams.priority"  >
+      <a-select-option v-for="num in 10" :value="'p' + num">P{{ num }}</a-select-option>
+    </a-select></a-col>  
+    <a-col  > {{ $t('task.assignee') }} : 
+        <UserSelect :mode="'multiple'" v-model:userId="searchParams.assignee" :onlyProjectUser="true" :projectId="props.projectId"  > </UserSelect>
+     </a-col>  
+    <a-col> {{ $t('task.tags') }} : <a-select mode="tags" style="width: 200px" v-model:value="searchParams.tags" ></a-select></a-col>  
+
+    <a-col> {{ $t('task.status') }} : <a-select mode="multiple" style="width: 200px"  v-model:value="searchParams.status"  >
+      <a-select-option value="Todo" >{{ $t('status.Todo') }}</a-select-option>
+      <a-select-option  value="Handle" >{{ $t('status.Handle') }}</a-select-option>
+      <a-select-option   value="Complete">{{ $t('status.Complete') }}</a-select-option>
+    </a-select></a-col>  
+    <a-col> <a-button type="primary" @click="search" > {{$t('button.search')}} </a-button></a-col>  
   </a-row>
 
   <a-table ref="taskTable" :scroll="{ y: 700 }" :pagination="false" :key="new Date().getTime()"
@@ -59,6 +70,8 @@ import { onMounted, watch } from 'vue'
 import TaskDetails from '@/components/task/TaskDetails.vue'
 import { useRoute } from 'vue-router';
 import i18n from '@/i18n';
+import UserSelect from '@/components/UserSelect.vue';
+
 const route = useRoute();
 
 const props = defineProps({
@@ -78,13 +91,14 @@ const value = ref([{value:"Task"},{value:"Bug"},{value:"Story"},{value:"BreakDow
 //搜索参数
 const searchParams = ref({
    title:null,
-   type:null,
-   assignee:null,
-   tags:null,
-   priority:null,
-   status:null
+   type:[],
+   assignee:[],
+   tags:[],
+   priority:[],
+   status:[]
 })
 
+const taksFilterParams = ref()
 
 const columns = [
   {
@@ -141,6 +155,14 @@ let data = ref([
 
 onMounted(() => {
   loadData();
+
+  taskService.getFilterParam(props.projectId).then(res=>{
+    // createParam.value = res.data;
+    taksFilterParams.value = res.data;
+    console.log(taksFilterParams.value)
+  })
+
+
 })
 
 watch(() => route.params.projectId, (newId, oldId) => {
@@ -148,7 +170,11 @@ watch(() => route.params.projectId, (newId, oldId) => {
 })
 
 function loadData() {
-  taskService.getTaskList({ pageSize: pageSize.value, pageIndex: current.value - 1, projectId: props.projectId }).then(res => {
+  searchParams.value.pageSize = pageSize.value
+  searchParams.value.pageIndex = current.value - 1
+  searchParams.value.projectId = props.projectId;
+
+  taskService.getTaskList(searchParams.value).then(res => {
     data.value = res.data.dataList;
 
     total.value = res.data.totalElement;
@@ -174,11 +200,8 @@ function onChangePage() {
 
 
 function search(){
-
-  taskService.search().then(res=>{
-    
-  })
-
+  current.value = 1;
+  loadData();
 }
 
 </script>

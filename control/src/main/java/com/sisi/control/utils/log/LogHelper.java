@@ -23,6 +23,11 @@ public class LogHelper {
      * 打印错误日志
      */
     public static void logError(String msg, Exception e){
+
+//        StringBuffer buffer = new StringBuffer();
+//        for (var i = 0 ; i <e.getStackTrace().length; i++ ){
+//            buffer.append(e.getStackTrace()[i].toString() + "\n");
+//        }
         logger.log(Level.ERROR,msg +":\n"+e.getMessage());
     }
 

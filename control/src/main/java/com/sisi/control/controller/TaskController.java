@@ -57,4 +57,10 @@ public class TaskController {
         return Response.success();
     }
 
+    @GetMapping("/getFilterParam")
+    public Response getFilterParam(@RequestParam String projectId){
+        var res =  taskService.getFilterParam(projectId);
+        return Response.success(res);
+    }
+
 }

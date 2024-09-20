@@ -2,6 +2,7 @@ package com.sisi.control.model.task;
 
 import com.sisi.control.model.AbstractEntity;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Transient;
 import lombok.Data;
 import org.springframework.util.StringUtils;
 
@@ -27,7 +28,6 @@ public class Task extends AbstractEntity {
     public String status;
     public Date createTime;
     public Date updateTime;
-
     public Task(){
 
     }

@@ -1,5 +1,6 @@
 package com.sisi.control.repository.impl;
 
+import com.sisi.control.context.ContextHolder;
 import com.sisi.control.model.PageResult;
 import com.sisi.control.model.task.Task;
 import com.sisi.control.model.task.TaskDto;
@@ -24,47 +25,53 @@ public class TaskDao extends AbstractDao<Task, TaskRepository>{
 
 
     public PageResult<TaskDto> getTaskPage(TaskSearchParam param) {
-        var jpaCondition = new JPACondition<Task>();
+//, COUNT(*) OVER () AS totalCount
+        String selectSql = "Select * ";
+        String countSql = "Select Count(*) ";
+
+        StringBuffer sql = new StringBuffer("from task where tenantid = '" + ContextHolder.getContext().getTenantId()+"' " + " And isdelete = false");
+
+
         if (StringUtils.hasText(param.getProjectId())) {
-            jpaCondition.eq(Task::getProjectId, param.getProjectId());
+            sql.append(" And projectId = '"+ param.getProjectId()+"'");
         }
         if (StringUtils.hasText(param.getTitle())) {
-            jpaCondition.like(Task::getTitle, "%" + param.getTitle() + "%");
+            sql.append(" And title like "+ "'%" + param.getTitle() + "%'");
+
         }
 
         if (!CollectionUtils.isEmpty(param.getAssignee())) {
-            jpaCondition.in(Task::getAssignee, param.getAssignee());
+            sql.append(" And assignee in  "+ "(" + sqlStringArray(param.getAssignee())  + ")");
+
         }
         if (!CollectionUtils.isEmpty(param.getPriority())) {
-            jpaCondition.in(Task::getPriority, param.getPriority());
+            sql.append(" And priority in  "+ "(" + sqlStringArray(param.getPriority()) + ")");
+
         }
         if (!CollectionUtils.isEmpty(param.getStatus())) {
-            jpaCondition.in(Task::getStatus, param.getStatus());
+            sql.append(" And status in  "+ "(" + sqlStringArray(param.getStatus())  + ")");
+
         }
         if (!CollectionUtils.isEmpty(param.getType())) {
-            jpaCondition.in(Task::getType, param.getType());
-        }
-        jpaCondition.sortDesc(Task::getCreateTime);
+            sql.append(" And type in  "+ "(" + sqlStringArray(param.getType())  + ")");
 
-        var sp = jpaCondition.build();
+        }
 
         if (!CollectionUtils.isEmpty(param.getTags())) {
-            Specification orSp = (root, query, builder)->{
-                List<Predicate> predicates = new ArrayList<>();
-                for (int i = 0; i < param.getTags().size() ; i++) {
-                 builder.like(root.get("tags"), "%"+ param.getTags().get(i) +"%" );
-                }
-                return builder.or(predicates.toArray(new Predicate[]{}));
-
-            };
-            sp = orSp.and(sp);
+            sql.append(" And STRING_TO_ARRAY( tags, ',' ) &&  "+ "ARRAY[" + sqlStringArray(param.getTags()) + "]");
         }
 
+        var count = executeCountSql(countSql + sql.toString());
 
-        var page = findByPage(sp, param);
-        var resData = page.stream().map(i -> new TaskDto(i)).toList();
-        PageResult<TaskDto> pageRes = new PageResult<>(page);
+        sql.append(" ORDER BY createtime DESC  LIMIT "+ param.getPageSize()   +" OFFSET "+ param.getPageIndex() * param.getPageSize());
+        var res =  executeSelectSql(selectSql + sql.toString(),Task.class);
+
+
+        var resData = res.stream().map(i -> new TaskDto(i)).toList();
+        PageResult<TaskDto> pageRes = new PageResult<>();
+        pageRes.setTotalElement(count);
         pageRes.setDataList(resData);
+
         return pageRes;
     }
 
@@ -91,6 +98,17 @@ public class TaskDao extends AbstractDao<Task, TaskRepository>{
     public void updateStatus(String taskId, String status) {
         String sql  = "UPDATE task SET status = '"+status+"' WHERE id = '"+taskId+"'";
         executeUpdateSql(sql);
+    }
+
+    public String sqlStringArray(List list){
+        String sqlStr = "";
+        for (int i = 0; i < list.size() ; i++) {
+            sqlStr += "'"+ list.get(i)+"'";
+            if ( i != list.size() -1){
+                sqlStr += ",";
+            }
+        }
+        return  sqlStr ;
     }
 
 

@@ -128,4 +128,14 @@ public class TaskService {
     public void updateStatus(String taskId, String status) {
         taskDao.updateStatus(taskId, status);
     }
+
+
+    public TaskFilterParams getFilterParam(String projectId){
+        TaskFilterParams taskFilterParams = new TaskFilterParams();
+        var types = taskTypeService.getList();
+        taskFilterParams.setTypes(types.stream().map(i->i.name).toList());
+
+        return taskFilterParams;
+    }
+
 }
