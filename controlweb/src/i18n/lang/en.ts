@@ -104,6 +104,12 @@ status:{
     Complete:"Complete",
     ReStart:"ReStart"
 },
+version:{
+    name:"Name",
+    status:"Status",
+    process:"Process",
+    description:"Description"
+},
 
     "服务器异常": "ServerError",
     "用户名已存在": "UserNameExist",

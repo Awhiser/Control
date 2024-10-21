@@ -6,4 +6,5 @@ import lombok.Data;
 @Data
 public class VersionSearchParam extends AbstractSearch {
     public String name;
+    public String projectId;
 }

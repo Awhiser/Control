@@ -26,8 +26,8 @@ public class VersionController {
         return Response.success(res);
     }
 
-    @PostMapping("/getList")
-    public Response<PageResult<VersionDto>> getList(@RequestBody VersionSearchParam param){
+    @PostMapping("/getPage")
+    public Response<PageResult<VersionDto>> getPage(@RequestBody VersionSearchParam param){
         var res = versionService.searchVersion(param);
         return Response.success(res);
     }
@@ -48,6 +48,12 @@ public class VersionController {
     public Response delete(@RequestParam String id) {
         versionService.delete(id);
         return Response.success();
+    }
+
+    @PostMapping("/getDetailPage")
+    public Response<PageResult<VersionDto>> getDetailPage(@RequestBody VersionSearchParam param){
+        var res = versionService.getDetailPage(param);
+        return Response.success(res);
     }
 
 }

@@ -20,4 +20,8 @@ public class PageResult<T> {
         this.totalElement = page.getTotalElements();
     }
 
+    public long getTotalPages(){
+        return totalPages;
+    }
+
 }

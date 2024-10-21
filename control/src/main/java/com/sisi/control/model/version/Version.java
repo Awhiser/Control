@@ -16,5 +16,4 @@ public class Version extends AbstractEntity {
     public Date updateTime;
     public String projectId;
 
-
 }

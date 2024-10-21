@@ -26,7 +26,7 @@
                 {{ i18n.global.t('project.setting') }}
               </span>
             </template>
-            <a-menu-item key="3"> {{i18n.global.t('version.name')}}</a-menu-item>
+            <a-menu-item key="3">  <RouterLink :to="{ name: 'version', params: { projectId: props.projectId } }">{{i18n.global.t('version.name')}}  </RouterLink> </a-menu-item>
             <a-menu-item key="4">{{i18n.global.t('user.name')}}</a-menu-item>
           </a-sub-menu>
 

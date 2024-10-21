@@ -30,6 +30,13 @@ const router = createRouter({
             props: true,
             component: () => import('../views/main/AboutView.vue')
           
+        },
+        {
+          path: '/project/:projectId/version',
+          name: 'version',
+          props: true,
+          component: () => import('../views/main/VersionView.vue')
+         
         }
       ]
     },

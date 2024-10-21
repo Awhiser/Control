@@ -1,7 +1,9 @@
 package com.sisi.control.model.version;
 
-import java.util.Date;
+import lombok.Data;
 
+import java.util.Date;
+@Data
 public class VersionDto {
     public String id;
     public String name;

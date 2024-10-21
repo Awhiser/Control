@@ -23,7 +23,12 @@ public class VersionDao  extends AbstractDao<Version, VersionRepository>{
     }
 
     public PageResult<VersionDto> search(VersionSearchParam param){
-        var sp = JPACondition.<Version>builder().like(Version::getName,"%" + param.getName()+ "%").build();
+
+        var builder = JPACondition.<Version>builder();
+        if(StringUtils.hasText(param.getName())) {
+            builder.like(Version::getName,"%" + param.getName()+ "%");
+        }
+        var sp =  builder.eq(Version::getProjectId,param.getProjectId()).build();
         var page = findByPage(sp,param);
         PageResult<VersionDto> result = new PageResult<>(page);
         result.setDataList(page.stream().map(i->new VersionDto(i)).toList());

@@ -58,7 +58,10 @@ export default {
         password:"密码"
     },
     version:{
-        name:"版本"
+        name:"版本",
+        status:"状态",
+        process:"进度",
+        description:"描述"
     },
     userConnector :{
         name : '名称',
