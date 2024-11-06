@@ -1,5 +1,6 @@
 package com.sisi.control.service;
 
+import com.sisi.control.model.task.Task;
 import com.sisi.control.model.version.VersionStatistic;
 import com.sisi.control.model.version.VersionStatisticDto;
 import com.sisi.control.repository.impl.VersionDao;
@@ -32,5 +33,15 @@ public class VersionStatisticService {
     public List<VersionStatisticDto> getByVersionIds(List<String> ids) {
         return versionStatisticDao.getByVersionIds(ids);
     }
+
+    //
+    public void update(String versionId , long count){
+        var versionStatistic = versionStatisticDao.getByVersionId(versionId);
+        versionStatistic.totalTask += count;
+        versionStatisticDao.save(new VersionStatistic(versionStatistic) );
+    }
+
+    //
+
 
 }

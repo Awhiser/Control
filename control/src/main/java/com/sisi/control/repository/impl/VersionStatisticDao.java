@@ -35,4 +35,11 @@ public class VersionStatisticDao  extends AbstractDao<VersionStatistic, VersionS
         return findBySpecification(sp).stream().map(i->new VersionStatisticDto(i)).toList();
 
     }
+
+    public VersionStatisticDto getByVersionId(String versionId){
+        Specification<VersionStatistic> sp = JPACondition.<VersionStatistic>builder().eq(VersionStatistic::getVersionId, versionId).build();
+        var res = findOneBySpecification(sp);
+        return new VersionStatisticDto(res);
+    }
+
 }

@@ -12,6 +12,10 @@ public class VersionDto {
     public Date updateTime;
     public String projectId;
 
+    public VersionDto(){
+
+    }
+
     public VersionDto(Version version) {
         this.id = version.id;
         this.name = version.name;

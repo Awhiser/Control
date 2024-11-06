@@ -5,6 +5,7 @@ import com.sisi.control.model.PageResult;
 import com.sisi.control.model.response.Response;
 import com.sisi.control.model.task.*;
 import com.sisi.control.model.user.UserInfoDto;
+import com.sisi.control.model.version.VersionDto;
 import com.sisi.control.mq.MQService;
 import com.sisi.control.mq.MQType;
 import com.sisi.control.mq.model.TaskMessage;
@@ -51,8 +52,9 @@ public class TaskService {
         //todo workFlow
         task.setStatus(TaskStatusConst.Todo);
         //todo 实现自定义字段 workFlow create
-        taskDao.save(task);
-        return Response.success(task.id);
+        var res = taskDao.save(task);
+        mqService.publishTaskMsg(new TaskMessage(MQType.TaskUpdate, res, null));
+        return Response.success(res.id);
     }
 
     public TaskDto getTask(String taskId) {
@@ -96,6 +98,7 @@ public class TaskService {
 
     public void populateFullData(List<TaskDto> taskList) {
         HashSet<String> userIds = new HashSet<>();
+        HashSet<String> versionIds = new HashSet<>();
         taskList.stream().forEach(task -> {
             if (StringUtils.hasText(task.getAssignee().getId())) {
                 userIds.add(task.getAssignee().getId());
@@ -103,10 +106,17 @@ public class TaskService {
             if (StringUtils.hasText(task.getCreator().getId())) {
                 userIds.add(task.getCreator().getId());
             }
+            if (StringUtils.hasText(task.getVersion().getId())) {
+                versionIds.add(task.getVersion().getId());
+            }
         });
         Map<String, UserInfoDto> userMap = new HashMap();
         if (userIds.size() > 0) {
             userMap = userService.getUserByIds(userIds.stream().toList()).stream().collect(Collectors.toMap(i -> i.id, i -> i));
+        }
+        Map<String, VersionDto> versionMap = new HashMap();
+        if(versionIds.size() > 0) {
+            versionService.getByIds(versionIds.stream().toList()).stream().collect(Collectors.toMap(i->i.id,i->i));
         }
 
         for (var task : taskList) {
@@ -115,6 +125,9 @@ public class TaskService {
             }
             if (userMap.containsKey(task.getCreator().getId())) {
                 task.setCreator(userMap.get(task.getCreator().getId()));
+            }
+            if (versionMap.containsKey(task.getVersion().getId())) {
+                task.setVersion(versionMap.get(task.getVersion().getId()));
             }
         }
 

@@ -2,6 +2,8 @@ package com.sisi.control.model.task;
 
 import com.sisi.control.model.user.UserInfo;
 import com.sisi.control.model.user.UserInfoDto;
+import com.sisi.control.model.version.Version;
+import com.sisi.control.model.version.VersionDto;
 import lombok.Data;
 
 import java.util.Date;
@@ -13,7 +15,7 @@ public class TaskDto {
     public String title;
     public UserInfoDto assignee;
     public String type;
-  // todo public Version versionId;
+    public VersionDto version;
     public String priority;
     public List<String> tags;
     public String description;
@@ -38,7 +40,8 @@ public class TaskDto {
         this.assignee.id = param.assignee;
         this.creator = new UserInfoDto();
         this.creator.id = param.creator;
-        //this.versionId = param.versionId;
+        this.version = new VersionDto();
+        this.version.setId(param.versionId);
         this.priority = param.getPriority();
         this.tags = param.getTags();
         this.description = param.getDescription();
