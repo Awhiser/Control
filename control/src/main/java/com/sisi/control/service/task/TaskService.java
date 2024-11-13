@@ -12,9 +12,8 @@ import com.sisi.control.mq.model.TaskMessage;
 import com.sisi.control.repository.impl.TaskDao;
 import com.sisi.control.service.ProjectService;
 import com.sisi.control.service.UserService;
-import com.sisi.control.service.VersionService;
+import com.sisi.control.service.version.VersionService;
 import com.sisi.control.utils.CommonUtils;
-import jakarta.servlet.http.PushBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -78,7 +77,7 @@ public class TaskService {
         var taskTypeList = taskTypeService.getList();
         vo.setTaskTypeList(taskTypeList);
         //获取版本
-
+        versionService.getByIds()
 
         //扩展的自定义字段
         return vo;

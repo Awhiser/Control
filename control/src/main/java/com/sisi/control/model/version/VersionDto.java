@@ -19,7 +19,8 @@ public class VersionDto {
     public VersionDto(Version version) {
         this.id = version.id;
         this.name = version.name;
-        this.status = version.status;
+
+        //this.status = version.status;
         this.description = version.description;
         this.updateTime = version.updateTime;
         this.projectId = version.projectId;

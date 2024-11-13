@@ -82,7 +82,8 @@ export default {
         task:"TaskSetting",
         taskType:"TaskType",
         taskLinkType:"taskLinkType",
-        customField:"CustomField"
+        customField:"CustomField",
+        versionStatus:"VersionStatus"
    },
    taskType:{
     name:"TaskType"
@@ -103,6 +104,10 @@ status:{
     Handle:"Handle",
     Complete:"Complete",
     ReStart:"ReStart"
+},
+versionStatus:{
+    name:"名称",
+    isShow:"创建需求时是否启用该状态的版本"
 },
 version:{
     name:"Name",

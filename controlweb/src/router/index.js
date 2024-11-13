@@ -75,6 +75,12 @@ const router = createRouter({
             name: 'sys_taskLinkType',
             props: true,
             component: () => import('../views/sysSetting/task/TaskLinkTypeView.vue')
+          },
+          {
+            path: '/sys/versionStatus',
+            name: 'sys_versionStatus',
+            props: true,
+            component: () => import('../views/sysSetting/task/VersionStatus.vue')
           }
       ]
     },

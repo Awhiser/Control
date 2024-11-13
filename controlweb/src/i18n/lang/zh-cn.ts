@@ -86,7 +86,8 @@ export default {
             task:"需求设置",
             taskType:"需求类型",
             taskLinkType:"需求链接",
-            customField:"自定义字段"
+            customField:"自定义字段",
+            versionStatus:"版本状态"
        },
        taskType:{
         name:"需求类型"
@@ -101,6 +102,10 @@ export default {
         outTask:"链出需求",
         inTask:"链入需求",
         link:"链接"
+    },
+    versionStatus:{
+        name:"名称",
+        isShow:"创建需求时是否启用该状态的版本"
     },
     status:{
         Todo:"待办",

@@ -6,7 +6,7 @@ import com.sisi.control.model.taskchangelog.TaskChangeLog;
 import com.sisi.control.model.taskchangelog.TaskChangeLogDto;
 import com.sisi.control.repository.impl.TaskChangeLogDao;
 import com.sisi.control.service.UserService;
-import com.sisi.control.service.VersionService;
+import com.sisi.control.service.version.VersionService;
 import com.sisi.control.utils.CommonUtils;
 import com.sisi.control.utils.DateUtils;
 import com.sisi.control.utils.log.LogHelper;

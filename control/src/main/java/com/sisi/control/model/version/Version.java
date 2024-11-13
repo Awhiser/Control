@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 public class Version extends AbstractEntity {
     public String name;
-    public String status;
+    public String statusId;
     public String description;
     public Date updateTime;
     public String projectId;

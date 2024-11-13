@@ -5,15 +5,20 @@ import com.sisi.control.model.response.Response;
 import com.sisi.control.model.version.Version;
 import com.sisi.control.model.version.VersionDto;
 import com.sisi.control.model.version.VersionSearchParam;
-import com.sisi.control.service.VersionService;
+import com.sisi.control.model.version.VersionStatus;
+import com.sisi.control.service.version.VersionService;
+import com.sisi.control.service.version.VersionStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/version")
 public class VersionController {
 
     private VersionService versionService;
+    private VersionStatusService versionStatusService;
 
     @Autowired
     public VersionController(VersionService versionService){
@@ -56,4 +61,21 @@ public class VersionController {
         return Response.success(res);
     }
 
+    @PostMapping("/createStatus")
+    public Response<VersionStatus> createStatus(@RequestBody VersionStatus versionStatus){
+        var res = versionStatusService.create(versionStatus);
+        return Response.success(res);
+    }
+
+    @PostMapping("/updateStatus")
+    public Response<VersionStatus> updateStatus(@RequestBody VersionStatus versionStatus){
+        var res = versionStatusService.update(versionStatus);
+        return Response.success(res);
+    }
+
+    @GetMapping("/getStatusList")
+    public Response<List<VersionStatus>> getStatusList(){
+        var res = versionStatusService.getList();
+        return Response.success(res);
+    }
 }

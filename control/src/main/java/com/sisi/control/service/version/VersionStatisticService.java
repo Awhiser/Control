@@ -1,4 +1,4 @@
-package com.sisi.control.service;
+package com.sisi.control.service.version;
 
 import com.sisi.control.model.task.Task;
 import com.sisi.control.model.version.VersionStatistic;
@@ -41,7 +41,7 @@ public class VersionStatisticService {
         versionStatisticDao.save(new VersionStatistic(versionStatistic) );
     }
 
-    //
+
 
 
 }

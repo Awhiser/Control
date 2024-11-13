@@ -4,7 +4,7 @@ import com.sisi.control.context.ContextHolder;
 import com.sisi.control.mq.MQType;
 import com.sisi.control.mq.model.TaskMessage;
 import com.sisi.control.mq.mqconfig.QueueConst;
-import com.sisi.control.service.VersionStatisticService;
+import com.sisi.control.service.version.VersionStatisticService;
 import com.sisi.control.service.task.TaskChangeLogService;
 import com.sisi.control.service.task.TaskService;
 import com.sisi.control.utils.log.LogHelper;
@@ -37,9 +37,9 @@ public class TaskMQConsumer {
         if(message.mqType == MQType.TaskUpdate) {
             taskChangeLogService.updateChangeLog(message.getOldTask(),message.getTask(),message.getContext().getToken().getUserId());
         }
-        if(message.mqType == MQType.TaskCreate) {
 
-           // versionStatisticService.update(message.getTask().get  );
+        if(message.mqType == MQType.TaskCreate) {
+            versionStatisticService.update(message.getTask().getVersion().getId(),1);
         }
     }
 }

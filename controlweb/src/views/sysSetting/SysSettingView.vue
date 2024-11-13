@@ -33,7 +33,8 @@
                 <a-menu-item key="4">   <RouterLink to="/sys/taskType">  {{$t('setting.taskType') }} </RouterLink>   </a-menu-item>
                 <a-menu-item key="5">   <RouterLink to="/sys/taskType">  {{$t('setting.customField') }} </RouterLink>   </a-menu-item>
                 <a-menu-item key="6">   <RouterLink to="/sys/taskLinkType">  {{$t('setting.taskLinkType') }} </RouterLink>   </a-menu-item>
-            </a-sub-menu>
+                <a-menu-item key="6">   <RouterLink to="/sys/versionStatus">  {{$t('setting.versionStatus') }} </RouterLink>   </a-menu-item>
+              </a-sub-menu>
         
             </a-menu>
       </a-layout-sider>

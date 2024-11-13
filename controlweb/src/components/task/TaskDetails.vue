@@ -193,7 +193,7 @@
         </a-tab-pane>
     </a-tabs>
     <edit-task v-model:open="openEdit" :editTask="taskView" @updated="() => { loadData() }"></edit-task>
-    <create-task-link :taskId="taskView.id" :projectId="taskView.projectId" v-model:open="openTaskLink"> </create-task-link>
+    <create-task-link :taskId="taskView.id" :projectId="taskView.projectId" v-model:open="openTaskLink" @updated="()=>{loadTaskLink()}"  > </create-task-link>
 </template>
 
 

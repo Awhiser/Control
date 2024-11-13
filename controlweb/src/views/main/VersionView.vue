@@ -57,7 +57,7 @@
           </a-form-item>
 
           <a-form-item :label="i18n.global.t('version.status')" name="status" >
-            <a-input v-model:value="createVersion.status" />
+            <a-input v-model:value="createVersion.statusId" />
           </a-form-item>
         
           <a-form-item :label="i18n.global.t('version.description')" name="description" >
@@ -81,7 +81,7 @@
           </a-form-item>
 
           <a-form-item :label="i18n.global.t('version.status')" name="status" >
-            <a-input v-model:value="createVersion.status" />
+            <a-input v-model:value="createVersion.statusId" />
           </a-form-item>
         
           <a-form-item :label="i18n.global.t('version.description')" name="description" >
@@ -112,7 +112,7 @@ const createRules: Record<string, Rule[]> = {
 
 const createVersion = ref({
   name:"",
-  status:"",
+  statusId:"",
   description:""
 })
 
